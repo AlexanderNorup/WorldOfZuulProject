@@ -1,3 +1,5 @@
+package worldofzuul;
+
 /**
  * This class is part of the "World of Zuul" application.
  * "World of Zuul" is a very simple, text based adventure game.
@@ -16,9 +18,6 @@
  * @author Michael Kolling and David J. Barnes
  * @version 2006.03.30
  */
-
-package worldofzuul;
-
 public class Command {
     private CommandWord commandWord;
     private String secondWord;
