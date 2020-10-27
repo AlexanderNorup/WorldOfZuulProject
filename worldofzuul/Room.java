@@ -4,6 +4,9 @@ import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
 
+/**
+ * Represents a room and contains information about items in the room, and the rooms next to it.
+ */
 
 public class Room {
     private String description;
