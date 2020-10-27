@@ -2,6 +2,9 @@ package worldofzuul;
 
 import java.util.HashMap;
 
+/**
+ * Contains information about valid commands and can turn strings in to the valid Command type.
+ */
 
 public class CommandWords {
     private HashMap<String, CommandWord> validCommands;
