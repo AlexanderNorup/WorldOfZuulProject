@@ -28,6 +28,7 @@ public class Item {
 
     @Override
     public String toString() {
+        //TODO should print extras as well
         return name + ": price: " + price + "; calories: " + calories + "; protein: " + protein + ";";
     }
 
