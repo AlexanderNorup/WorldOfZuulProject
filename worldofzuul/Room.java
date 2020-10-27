@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
 
- */
 public class Room {
     private String description;
     private HashMap<String, Room> exits;
@@ -14,7 +13,7 @@ public class Room {
     public Room(String description) {
         this.description = description;
         exits = new HashMap<String, Room>();
-        items = new ArrayList<>();
+        items = new ArrayList<Item>();
     }
 
     public void setExit(String direction, Room neighbor) {
