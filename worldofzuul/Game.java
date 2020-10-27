@@ -62,27 +62,21 @@ public class Game
         System.out.println(currentRoom.getLongDescription());
     }
 
-    private boolean processCommand(Command command) 
-    {
+    private boolean processCommand(Command command) {
         boolean wantToQuit = false;
 
         CommandWord commandWord = command.getCommandWord();
 
-        if(commandWord == CommandWord.UNKNOWN) {
-            System.out.println("I don't know what you mean...");
-            return false;
+        switch (commandWord) {
+            case GO -> goRoom(command);
+            case HELP -> printHelp();
+            case QUIT -> wantToQuit = quit(command);
+            case UNKNOWN -> System.out.println("I don't know what you mean");
+            default -> System.out.println("processCommand -> unregistered command!");
         }
 
-        if (commandWord == CommandWord.HELP) {
-            printHelp();
-        }
-        else if (commandWord == CommandWord.GO) {
-            goRoom(command);
-        }
-        else if (commandWord == CommandWord.QUIT) {
-            wantToQuit = quit(command);
-        }
         return wantToQuit;
+
     }
 
     private void printHelp() 
@@ -93,6 +87,11 @@ public class Game
         System.out.println("Your command words are:");
         parser.showCommands();
     }
+
+    /**
+     * bla bla
+     * @param command the comand blab babllll
+     */
 
     private void goRoom(Command command) 
     {
