@@ -17,11 +17,8 @@ public class CommandWords {
 
     public CommandWord getCommandWord(String commandWord) {
         CommandWord command = validCommands.get(commandWord);
-        if (command != null) {
-            return command;
-        } else {
-            return CommandWord.UNKNOWN;
-        }
+
+        return command != null ? command: CommandWord.UNKNOWN;
     }
 
     public boolean isCommand(String aString) {
