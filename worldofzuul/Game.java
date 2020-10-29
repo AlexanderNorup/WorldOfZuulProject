@@ -19,9 +19,9 @@ public class Game {
         ile1 = new Room("in 1st ile", new ArrayList<>());
         ile2 = new Room("in 2nd ile", new ArrayList<>());
         ile3 = new Room("in 3rd ile", new ArrayList<>());
-        cashier = new Room("ad the cashier", new ArrayList<>());
-        butcher = new Room("ad the butcher", new ArrayList<>());
-        produce = new Room("ad the produce section", new ArrayList<>());
+        cashier = new Room("at the cashier", new ArrayList<>());
+        butcher = new Room("at the butcher", new ArrayList<>());
+        produce = new Room("at the produce section", new ArrayList<>());
         frozen = new Room("in the frozen section", new ArrayList<>());
         dairy = new Room("in the dairy section", new ArrayList<>());
         bakery = new Room("ad the bakery", new ArrayList<>());
