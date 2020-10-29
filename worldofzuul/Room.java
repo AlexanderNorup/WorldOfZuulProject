@@ -32,7 +32,7 @@ public class Room {
         StringBuilder returnString = new StringBuilder("Exits:");
         Set<String> keys = exits.keySet();
         for (String exit : keys) {
-            returnString.append(" ").append(exit);
+            returnString.append(" "+exit);
         }
         return returnString.toString();
     }
@@ -67,4 +67,3 @@ public class Room {
         return itemsString.toString();
     }
 }
-
