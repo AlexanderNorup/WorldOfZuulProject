@@ -61,8 +61,7 @@ public class Room {
         StringBuilder itemsString = new StringBuilder();
         itemsString.append("Available products: ");
         for(Item item : items){
-            itemsString.append(item.getName());
-            itemsString.append(", ");
+            itemsString.append("- "+item.getName() + "\n");
         }
         return itemsString.toString();
     }
