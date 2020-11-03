@@ -14,35 +14,43 @@ public class Game {
 
     //TODO: Create descriptive directions, add back command
     private void createRooms() {
-        Room outside,ile1,ile2,ile3, cashier,butcher,produce,frozen,dairy,bakery,tinnedGoods;
+        Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
 
-        outside = new Room("outside the main entrance of the store", new ArrayList<>());
-        ile1 = new Room("in 1st ile", new ArrayList<>());
-        ile2 = new Room("in 2nd ile", new ArrayList<>());
-        ile3 = new Room("in 3rd ile", new ArrayList<>());
-        cashier = new Room("at the cashier", new ArrayList<>());
-        butcher = new Room("at the butcher", new ArrayList<>());
-        produce = new Room("at the produce section", new ArrayList<>());
-        frozen = new Room("in the frozen section", new ArrayList<>());
+        outside = new Room("outside the main entrance of the store");
+        aisle1 = new Room("in the 1st aisle");
+        aisle2 = new Room("in the 2nd aisle");
+        aisle3 = new Room("in the 3rd aisle");
         dairy = new Room("in the dairy section", new ArrayList<>());
-        bakery = new Room("ad the bakery", new ArrayList<>());
-        tinnedGoods = new Room("in the tinned goods ile", new ArrayList<>());
+        bakery = new Room("at the bakery", new ArrayList<>());
+        frozen = new Room("in the frozen section", new ArrayList<>());
+        tinnedGoods = new Room("in the tinned goods section", new ArrayList<>());
+        produce = new Room("at the produce section", new ArrayList<>());
+        butcher = new Room("at the butcher", new ArrayList<>());
+        cashier = new Room("at the cashier", new ArrayList<>());
 
-        outside.setExit("north", ile1);
+        outside.setExit("south", aisle1);
 
-        ile1.setExit("north", ile2);
-        ile1.setExit("east", tinnedGoods);
-        ile1.setExit("west", frozen);
+        aisle1.setExit("east", dairy);
+        dairy.setExit("west", aisle1);
+        aisle1.setExit("west", bakery);
+        bakery.setExit("east", aisle1);
+        aisle1.setExit("south", aisle2);
 
-        ile2.setExit("north", ile3);
-        ile2.setExit("east", dairy);
-        ile2.setExit("west", bakery);
+        aisle2.setExit("north", aisle1);
+        aisle2.setExit("east", frozen);
+        frozen.setExit("west", aisle2);
+        aisle2.setExit("west", tinnedGoods);
+        tinnedGoods.setExit("east", aisle2);
+        aisle2.setExit("south", aisle3);
 
-        ile3.setExit("north", cashier);
-        ile3.setExit("east", butcher);
-        ile3.setExit("west", produce);
+        aisle3.setExit("north", aisle2);
+        aisle3.setExit("east", produce);
+        produce.setExit("west", aisle3);
+        aisle3.setExit("west", butcher);
+        butcher.setExit("east", aisle3);
+        aisle3.setExit("south", cashier);
 
-        currentRoom = outside;
+        currentRoom = outside; //this sets the starting position to "outside"
     }
 
     public void play() {
