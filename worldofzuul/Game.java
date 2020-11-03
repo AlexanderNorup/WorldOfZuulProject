@@ -135,6 +135,7 @@ public class Game {
     }
 
     private void resetGame(){
+        reactToResults();
         player.deleteInventory(); // deletes all items in the inventory
         createRooms(); //creates the rooms again and fills them with items
         System.out.println(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + "." );
@@ -143,6 +144,39 @@ public class Game {
         printPlayer();
         System.out.println(currentRoom.getLongDescription());
 
+    }
+
+    private void reactToResults(){
+        int happiness = 0;
+        double co2 = 0;
+        for(GameResult finishedGame : finishedGames){
+            happiness += finishedGame.getHappiness();
+            co2 += finishedGame.getCo2();
+        }
+
+        if (co2 < 100) {
+            System.out.println("you notice your armpits are more stained than usual");
+        }else if(co2 < 200){
+            System.out.println(" it's to hot to walk barefoot");
+        }else if(co2 < 300){
+            System.out.println("you can boil an egg in the ocean");
+        }else if(co2 < 400){
+            System.out.println("you've sold your oven, as you don't need it");
+        }else {
+            System.out.println("the store is on fire");
+        }
+
+        if (happiness < 100) {
+            System.out.println("you notice that you've started snapping at your friends");
+        }else if(happiness < 200){
+            System.out.println("you don't want to eat, even when your hungry");
+        }else if(happiness < 300){
+            System.out.println("you're wondering if theres a point to anything");
+        }else if(happiness < 400){
+            System.out.println("you've joined a fascist movement");
+        }else {
+            System.out.println("you have successfully toppled the government, gasoline is the only currency");
+        }
     }
 
     private void goRoom(Command command) {
