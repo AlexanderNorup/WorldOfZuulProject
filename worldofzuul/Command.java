@@ -20,8 +20,8 @@ package worldofzuul;
  */
 
 public class Command {
-    private CommandWord commandWord;
-    private String secondWord;
+    private final CommandWord commandWord;
+    private final String secondWord;
 
     public Command(CommandWord commandWord, String secondWord) {
         this.commandWord = commandWord;
