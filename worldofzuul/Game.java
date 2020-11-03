@@ -122,10 +122,10 @@ public class Game {
         String checker = command.getSecondWord();
 
         if(checker.equalsIgnoreCase("section")){ //checks if the second word is section
-            currentRoom.getItemsString(); //prints items from the current room
+            System.out.println(currentRoom.getItemsString()); //prints items from the current room
         }
         else if(checker.equalsIgnoreCase("inventory")){ //checks if the second word is inventory
-            player.getInventoryString(); //prints items from player inventory
+            System.out.println(player.getInventoryString()); //prints items from player inventory
         }
     }
 
