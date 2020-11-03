@@ -18,9 +18,9 @@ public class Game {
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
 
         outside = new Room("outside the main entrance of the store", new ArrayList<>());
-        ile1 = new Room("in 1st ile");
-        ile2 = new Room("in 2nd ile");
-        ile3 = new Room("in 3rd ile");
+        aisle1 = new Room("in 1st ile");
+        aisle2 = new Room("in 2nd ile");
+        aisle3 = new Room("in 3rd ile");
         butcher = new Room("at the butcher", ItemGenerator.getButcherItems());
         produce = new Room("at the produce section", ItemGenerator.getProduceItems());
         frozen = new Room("in the frozen section", ItemGenerator.getFrozenItems());
@@ -29,19 +29,19 @@ public class Game {
         tinnedGoods = new Room("in the tinned goods ile", ItemGenerator.getTinnedGoodsItems());
         cashier = new Room("at the cashier");
 
-        outside.setExit("north", ile1);
+        outside.setExit("north", aisle1);
 
-        ile1.setExit("north", ile2);
-        ile1.setExit("east", tinnedGoods);
-        ile1.setExit("west", frozen);
+        aisle1.setExit("north", aisle2);
+        aisle1.setExit("east", tinnedGoods);
+        aisle1.setExit("west", frozen);
 
-        ile2.setExit("north", ile3);
-        ile2.setExit("east", dairy);
-        ile2.setExit("west", bakery);
+        aisle2.setExit("north", aisle3);
+        aisle2.setExit("east", dairy);
+        aisle2.setExit("west", bakery);
 
-        ile3.setExit("north", cashier);
-        ile3.setExit("east", butcher);
-        ile3.setExit("west", produce);
+        aisle3.setExit("north", cashier);
+        aisle3.setExit("east", butcher);
+        aisle3.setExit("west", produce);
 
         outside.setExit("south", aisle1);
 
@@ -181,6 +181,7 @@ public class Game {
 
     //TODO: move item from inventory to room
     private void drop(Command command){
+
         //get item from user
         Item item = null;
         //if item not null, remove item from inventory and add to store
