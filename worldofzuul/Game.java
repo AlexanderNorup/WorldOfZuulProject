@@ -175,7 +175,7 @@ public class Game {
         }else if(happiness < 400){
             System.out.println("you've joined a fascist movement");
         }else {
-            System.out.println("you have successfully toppelt the government, gasoline is the only currency");
+            System.out.println("you have successfully toppled the government, gasoline is the only currency");
         }
     }
 
