@@ -1,9 +1,13 @@
 package worldofzuul;
 
+/**
+ * Contains the valid command type and their corresponding String value.
+ */
+
 public enum CommandWord {
     GO("go"), QUIT("quit"), HELP("help"), UNKNOWN("?"),
     TAKE("take"), DROP("drop"), INSPECT("inspect"),
-    CHECK_SECTION("checksection"), CHECK_INVENTORY("checkinventory");
+    CHECK("check");
 
     private final String commandString;
 
