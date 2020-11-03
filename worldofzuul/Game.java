@@ -79,7 +79,7 @@ public class Game {
             case INSPECT -> inspect(command);
             case DROP -> drop(command);
             case TAKE -> take(command);
-            case CHECK -> checkSectionInventory(command);
+            case CHECK -> check(command);
             default -> System.out.println("processCommand -> unregistered command!");
         }
 
@@ -113,7 +113,7 @@ public class Game {
     }
 
     //checks if there is a second word when calling the check command and if it is either section or inventory.
-    private void checkSectionInventory(Command command) {
+    private void check(Command command) {
         if (!command.hasSecondWord() && !command.getSecondWord().equalsIgnoreCase("section")
                 || !command.hasSecondWord() && !command.getSecondWord().equalsIgnoreCase("inventory") ){
             System.out.println("Check what?");
