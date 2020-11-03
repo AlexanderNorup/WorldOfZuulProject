@@ -38,9 +38,8 @@ public class Player {
     }
 
     public void deleteInventory(){
-        for (Item item: inventory) {
-            removeItem(item); //removes all items in inventory
-        }
+       inventory.clear();
+
     }
 
     public String getInventoryString(){
