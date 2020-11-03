@@ -79,8 +79,7 @@ public class Game {
             case INSPECT -> inspect(command);
             case DROP -> drop(command);
             case TAKE -> take(command);
-            case CHECK_SECTION -> System.out.println(currentRoom.getItemsString());
-            //case CHECK_INVENTORY -> ;
+            case CHECK -> System.out.println(currentRoom.getItemsString());
             default -> System.out.println("processCommand -> unregistered command!");
         }
 
@@ -142,7 +141,12 @@ public class Game {
     //TODO: move item from inventory to room
     private void drop(Command command){
         //get item from user
+        Item item = null;
         //if item not null, remove item from inventory and add to store
+        if(item != null){
+
+            currentRoom.addItem(item);
+        }
         //if item null, print "'itemname' not found in inventory"
     }
 }
