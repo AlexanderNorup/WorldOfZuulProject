@@ -32,6 +32,15 @@ public class Item {
         return name + ": price: " + price + "; calories: " + calories + "; protein: " + protein + ";";
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Item){
+            return this.name.equals(((Item) obj).getName());
+        }else {
+            return false;
+        }
+    }
+
     public String getName() {
         return name;
     }

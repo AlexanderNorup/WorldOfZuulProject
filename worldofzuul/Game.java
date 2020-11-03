@@ -193,12 +193,16 @@ public class Game {
 
     //TODO: move item from inventory to room
     private void drop(Command command){
+
         //get item from user
-        Item item = null;
+        Item item = player.getItem(command.getSecondWord());
+
         //if item not null, remove item from inventory and add to store
         if(item != null){
-
+            player.removeItem(item);
             currentRoom.addItem(item);
+        }else {
+            System.out.println("'"+command.getSecondWord()+"' not found in inventory");
         }
         //if item null, print "'itemname' not found in inventory"
     }
