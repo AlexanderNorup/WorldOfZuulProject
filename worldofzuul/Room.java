@@ -5,8 +5,8 @@ import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
 
-
 public class Room {
+
     private final String description;
     private final ArrayList<Item> items;
     private final HashMap<String, Room> exits;
@@ -27,12 +27,36 @@ public class Room {
         exits.put(direction, neighbor);
     }
 
+    public void setItems(Item[] items) {
+        this.items.clear();
+        for (Item i: items) {
+            this.items.add(i);
+        }
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
     public String getShortDescription() {
         return description;
     }
 
     public String getLongDescription() {
         return "You are " + description + ".\n" + getItemsString() + ".\n" + getExitString() + ".\n";
+    }
+
+    public String getItemsString() {
+        StringBuilder str = new StringBuilder();
+        for (Item i: items) {
+            str.append(i.getName());
+            str.append(", ");
+        }
+
+        //Removes the last comma and space
+        str.delete(str.length()-2, str.length());
+
+        return str.toString();
     }
 
     private String getExitString() {
