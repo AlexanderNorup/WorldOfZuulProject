@@ -3,11 +3,15 @@ package worldofzuul;
 public class Game {
     private Parser parser;
     private Room currentRoom;
+    private Player player;
 
 
     public Game() {
         createRooms();
         parser = new Parser();
+        player = new Player();
+        player.setPlayerType();
+
     }
 
 

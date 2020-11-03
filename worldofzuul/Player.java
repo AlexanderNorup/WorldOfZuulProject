@@ -70,4 +70,9 @@ public class Player {
         return "Total Price: " + totalPrice + " | " + "Total Calories: " + totalCalories + " | " + "Total Protein: " + totalProtein;
     }
 
+    public void setPlayerType(PlayerType type){
+            this.type = type;
+
+    }
+
 }
