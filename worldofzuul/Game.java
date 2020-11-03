@@ -26,10 +26,10 @@ public class Game {
         aisle3 = new Room("in the 3rd aisle", false);
         dairy = new Room("in the dairy section", false, ItemGenerator.getDairyItems());
         bakery = new Room("at the bakery", false, ItemGenerator.getBakeryItems());
-        frozen = new Room("in the frozen section", false, ItemGenerator.getFrozenItems());
-        tinnedGoods = new Room("in the tinned goods section", false, ItemGenerator.getTinnedGoodsItems());
-        produce = new Room("at the produce section",false, ItemGenerator.getProduceItems());
-        butcher = new Room("at the butcher", false, ItemGenerator.getButcherItems());
+        frozen = new Room("in the frozen section. \nTo your west is aisle 2", false, ItemGenerator.getFrozenItems());
+        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", false, ItemGenerator.getTinnedGoodsItems());
+        produce = new Room("at the produce section. \nTo your west is the 3. aisle",false, ItemGenerator.getProduceItems());
+        butcher = new Room("at the butcher. \nTo your east is the 3. aisle", false, ItemGenerator.getButcherItems());
         cashier = new Room("at the cashier", true);
 
         outside.setExit("south", aisle1);
