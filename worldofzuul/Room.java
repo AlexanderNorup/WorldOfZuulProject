@@ -1,37 +1,39 @@
 package worldofzuul;
 
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 public class Room {
 
     private final String description;
     private final ArrayList<Item> items;
     private final HashMap<String, Room> exits;
+    private final boolean canCheckout;
 
-    public Room(String description) {
+    public Room(String description, boolean canCheckout) {
         this.description = description;
         this.items = new ArrayList<>();
         this.exits = new HashMap<>();
+        this.canCheckout = canCheckout;
     }
     
-    public Room(String description, ArrayList<Item> items) {
+    public Room(String description, boolean canCheckout,ArrayList<Item> items) {
         this.description = description;
         this.items = items;
         this.exits = new HashMap<>();
+        this.canCheckout = canCheckout;
     }
 
     public void setExit(String direction, Room neighbor) {
         exits.put(direction, neighbor);
     }
 
+    public boolean canCheckout(){ //boolean to verify if it's possible to checkout in the current room.
+        return canCheckout;
+    }
+
     public void setItems(Item[] items) {
         this.items.clear();
-        for (Item i: items) {
-            this.items.add(i);
-        }
+        this.items.addAll(Arrays.asList(items));
     }
 
     public ArrayList<Item> getItems() {
@@ -46,24 +48,11 @@ public class Room {
         return "You are " + description + ".\n" + getItemsString() + ".\n" + getExitString() + ".\n";
     }
 
-    public String getItemsString() {
-        StringBuilder str = new StringBuilder();
-        for (Item i: items) {
-            str.append(i.getName());
-            str.append(", ");
-        }
-
-        //Removes the last comma and space
-        str.delete(str.length()-2, str.length());
-
-        return str.toString();
-    }
-
     private String getExitString() {
         StringBuilder returnString = new StringBuilder("Exits:");
         Set<String> keys = exits.keySet();
         for (String exit : keys) {
-            returnString.append(" "+exit);
+            returnString.append(" ").append(exit);
         }
         return returnString.toString();
     }
@@ -89,11 +78,14 @@ public class Room {
     public void removeItem(Item item){items.remove(item);}
 
     public String getItemsString(){
+        if(items.size() == 0){  // If the size of the list with items in the current room is 0,
+            return "";          // the 'Available products' string will not be printed
+        }
         StringBuilder itemsString = new StringBuilder();
         
         itemsString.append("Available products: ");
         for(Item item : items){
-            itemsString.append("- "+item.getName() + "\n");
+            itemsString.append("- ").append(item.getName()).append("\n");
         }
         return itemsString.toString();
     }

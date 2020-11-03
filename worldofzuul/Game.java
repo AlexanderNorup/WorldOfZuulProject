@@ -5,43 +5,57 @@ import java.util.ArrayList;
 public class Game {
     private final Parser parser;
     private Room currentRoom;
+    private Player player;
+    private ArrayList<GameResult> finishedGames;
 
     public Game() {
         createRooms();
         parser = new Parser();
+        player = new Player();
+        finishedGames = new ArrayList<>();
     }
 
     //TODO: Create descriptive directions, add back command
     private void createRooms() {
-        Room outside,ile1,ile2,ile3, cashier,butcher,produce,frozen,dairy,bakery,tinnedGoods;
+        Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
 
-        outside = new Room("outside the main entrance of the store", new ArrayList<>());
-        ile1 = new Room("in 1st ile", new ArrayList<>());
-        ile2 = new Room("in 2nd ile", new ArrayList<>());
-        ile3 = new Room("in 3rd ile", new ArrayList<>());
-        cashier = new Room("at the cashier", new ArrayList<>());
-        butcher = new Room("at the butcher", new ArrayList<>());
-        produce = new Room("at the produce section", new ArrayList<>());
-        frozen = new Room("in the frozen section", new ArrayList<>());
-        dairy = new Room("in the dairy section", new ArrayList<>());
-        bakery = new Room("ad the bakery", new ArrayList<>());
-        tinnedGoods = new Room("in the tinned goods ile", new ArrayList<>());
+        outside = new Room("outside the main entrance of the store", false);
+        aisle1 = new Room("in the 1st aisle", false );
+        aisle2 = new Room("in the 2nd aisle", false);
+        aisle3 = new Room("in the 3rd aisle", false);
+        dairy = new Room("in the dairy section", false, ItemGenerator.getDairyItems());
+        bakery = new Room("at the bakery", false, ItemGenerator.getBakeryItems());
+        frozen = new Room("in the frozen section", false, ItemGenerator.getFrozenItems());
+        tinnedGoods = new Room("in the tinned goods section", false, ItemGenerator.getTinnedGoodsItems());
+        produce = new Room("at the produce section",false, ItemGenerator.getProduceItems());
+        butcher = new Room("at the butcher", false, ItemGenerator.getButcherItems());
+        cashier = new Room("at the cashier", true);
 
-        outside.setExit("north", ile1);
+        outside.setExit("south", aisle1);
 
-        ile1.setExit("north", ile2);
-        ile1.setExit("east", tinnedGoods);
-        ile1.setExit("west", frozen);
+        aisle1.setExit("east", dairy);
+        dairy.setExit("west", aisle1);
+        aisle1.setExit("west", bakery);
+        bakery.setExit("east", aisle1);
+        aisle1.setExit("south", aisle2);
 
-        ile2.setExit("north", ile3);
-        ile2.setExit("east", dairy);
-        ile2.setExit("west", bakery);
+        aisle2.setExit("north", aisle1);
+        aisle2.setExit("east", frozen);
+        frozen.setExit("west", aisle2);
+        aisle2.setExit("west", tinnedGoods);
+        tinnedGoods.setExit("east", aisle2);
+        aisle2.setExit("south", aisle3);
 
-        ile3.setExit("north", cashier);
-        ile3.setExit("east", butcher);
-        ile3.setExit("west", produce);
+        aisle3.setExit("north", aisle2);
+        aisle3.setExit("east", produce);
+        produce.setExit("west", aisle3);
+        aisle3.setExit("west", butcher);
+        butcher.setExit("east", aisle3);
+        aisle3.setExit("south", cashier);
 
-        currentRoom = outside;
+        cashier.setExit("north", aisle3);
+
+        currentRoom = outside; //this sets the starting position to "outside"
     }
 
     public void play() {
@@ -78,12 +92,26 @@ public class Game {
             case INSPECT -> inspect(command);
             case DROP -> drop(command);
             case TAKE -> take(command);
-            case CHECK_SECTION -> System.out.println(currentRoom.getItemsString());
-            //case CHECK_INVENTORY -> ;
+            case CHECK -> check(command);
+            case CHECKOUT -> checkout();
+
             default -> System.out.println("processCommand -> unregistered command!");
         }
 
         return wantToQuit;
+    }
+
+    private void checkout(){
+        if (!currentRoom.canCheckout()){ //checks if it is possible to checkout in the current room.
+            System.out.println("You can't checkout here, go to the cashier.");
+            return;
+        }
+        GameResult result = player.getGameResult();
+        finishedGames.add(result); //adds the game result of the currently played game to an arraylist of results.
+        System.out.println("You went to the register and checked out.");
+        System.out.println(player.getSummedValues()); //prints the values for the current shopping trip, price, calories & protein
+        System.out.println("The day is over and you go back home to sleep.");
+        resetGame(); //resets the game and starts anew.
     }
 
     private void printHelp() {
@@ -92,6 +120,14 @@ public class Game {
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
+    }
+
+    private void resetGame(){
+        player.deleteInventory(); // deletes all items in the inventory
+        createRooms(); //creates the rooms again and fills them with items
+        System.out.println(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + "." );
+        System.out.println("It is a new day, you wake up and go to the store.");
+        System.out.println(currentRoom.getLongDescription());
     }
 
     private void goRoom(Command command) {
@@ -109,6 +145,23 @@ public class Game {
         } else {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
+        }
+    }
+
+    //checks if there is a second word when calling the check command and if it is either section or inventory.
+    private void check(Command command) {
+        if (!command.hasSecondWord() || !command.getSecondWord().equalsIgnoreCase("section") ||
+!command.getSecondWord().equalsIgnoreCase("inventory") ){
+            System.out.println("Check what? (Section or Inventory)");
+            return;
+        }
+        String checker = command.getSecondWord();
+
+        if(checker.equalsIgnoreCase("section")){ //checks if the second word is section
+            System.out.println(currentRoom.getItemsString()); //prints items from the current room
+        }
+        else if(checker.equalsIgnoreCase("inventory")){ //checks if the second word is inventory
+            System.out.println(player.getInventoryString()); //prints items from player inventory
         }
     }
 
@@ -141,7 +194,12 @@ public class Game {
     //TODO: move item from inventory to room
     private void drop(Command command){
         //get item from user
+        Item item = null;
         //if item not null, remove item from inventory and add to store
+        if(item != null){
+
+            currentRoom.addItem(item);
+        }
         //if item null, print "'itemname' not found in inventory"
     }
 }
