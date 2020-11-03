@@ -15,19 +15,19 @@ public class Game {
 
     //TODO: Create descriptive directions, add back command
     private void createRooms() {
-        Room outside,ile1,ile2,ile3, cashier,butcher,produce,frozen,dairy,bakery,tinnedGoods;
+        Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
 
         outside = new Room("outside the main entrance of the store", new ArrayList<>());
         ile1 = new Room("in 1st ile");
         ile2 = new Room("in 2nd ile");
         ile3 = new Room("in 3rd ile");
-        cashier = new Room("at the cashier");
         butcher = new Room("at the butcher", ItemGenerator.getButcherItems());
         produce = new Room("at the produce section", ItemGenerator.getProduceItems());
         frozen = new Room("in the frozen section", ItemGenerator.getFrozenItems());
         dairy = new Room("in the dairy section", ItemGenerator.getDairyItems());
         bakery = new Room("ad the bakery", ItemGenerator.getBakeryItems());
         tinnedGoods = new Room("in the tinned goods ile", ItemGenerator.getTinnedGoodsItems());
+        cashier = new Room("at the cashier");
 
         outside.setExit("north", ile1);
 
@@ -43,7 +43,29 @@ public class Game {
         ile3.setExit("east", butcher);
         ile3.setExit("west", produce);
 
-        currentRoom = outside;
+        outside.setExit("south", aisle1);
+
+        aisle1.setExit("east", dairy);
+        dairy.setExit("west", aisle1);
+        aisle1.setExit("west", bakery);
+        bakery.setExit("east", aisle1);
+        aisle1.setExit("south", aisle2);
+
+        aisle2.setExit("north", aisle1);
+        aisle2.setExit("east", frozen);
+        frozen.setExit("west", aisle2);
+        aisle2.setExit("west", tinnedGoods);
+        tinnedGoods.setExit("east", aisle2);
+        aisle2.setExit("south", aisle3);
+
+        aisle3.setExit("north", aisle2);
+        aisle3.setExit("east", produce);
+        produce.setExit("west", aisle3);
+        aisle3.setExit("west", butcher);
+        butcher.setExit("east", aisle3);
+        aisle3.setExit("south", cashier);
+
+        currentRoom = outside; //this sets the starting position to "outside"
     }
 
     public void play() {
