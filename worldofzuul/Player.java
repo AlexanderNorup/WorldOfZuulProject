@@ -5,15 +5,16 @@ import java.util.ArrayList;
 public class Player {
 
     private ArrayList<Item> inventory;
-    private Playertype type;
+    private PlayerType type;
 
-    public Player(ArrayList<Item> inventory) {
-        this.inventory = inventory;
+    public Player() {
+        this.inventory = new ArrayList<>();
     }
 
     public boolean addItem(Item item){
         inventory.add(item);
-
+        return true;
+        //TODO: Discuss weather or not this method should return a boolean.
     }
 
     public void removeItem(Item item){
@@ -21,16 +22,52 @@ public class Player {
     }
 
     public String getItemValuesString(String itemName){
-        if(itemName.equals(Item item.getname))
+        //We could do this as a lambda. But it's way better.
+        //Item item = inventory.stream().filter(itemTemp -> itemTemp.getName().equals(itemName)).findFirst().orElse(null);
 
-        System.out.println(item);
+        Item item = null;
+        for(Item i: inventory){
+            if(itemName.equalsIgnoreCase(i.getName())){
+                item=i;
+                break;
+            }
+        }
 
+        return item != null ? item.toString() : "";
     }
 
     public String getInventoryString(){
-        for(int i=0;i<inventory.size(); i++){
-            System.out.println(inventory(item.getName));
+
+        StringBuilder inventoryString = new StringBuilder();
+
+        for (Item item: inventory){
+           inventoryString.append("- ").append(item.getName()).append("\n");
         }
 
+        return inventoryString.toString();
     }
+
+    public GameResult getGameResult(){
+        double totalC02 = 0.0;
+        for(Item item: inventory) {
+            totalC02 += item.getCo2();
+        }
+
+        return new GameResult(totalC02, type.getHappiness(inventory), type);
+    }
+
+    public String getSummedValues(){
+        double totalPrice = 0.0;
+        double totalCalories = 0.0;
+        double totalProtein = 0.0;
+
+        for(Item item: inventory){
+            totalPrice += item.getPrice();
+            totalCalories += item.getCalories();
+            totalProtein += item.getProtein();
+        }
+
+        return "Total Price: " + totalPrice + " | " + "Total Calories: " + totalCalories + " | " + "Total Protein: " + totalProtein;
+    }
+
 }
