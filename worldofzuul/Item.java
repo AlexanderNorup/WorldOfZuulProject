@@ -1,6 +1,7 @@
 package worldofzuul;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Item {
     private String name;
@@ -8,7 +9,7 @@ public class Item {
     private double co2;
     private double protein;
     private double calories;
-    private ArrayList<Extra> extra;
+    private Extra[] extra;
 
     public static void main(String[] args) {
         Item beef = new Item("Beef", 19.95, 10, 20, 150, new Extra[]{});
@@ -21,9 +22,7 @@ public class Item {
         this.co2 = co2;
         this.protein = protein;
         this.calories = calories;
-        for (Extra e : extra) {
-            this.extra.add(e);
-        }
+        this.extra = extra;
     }
 
     @Override
@@ -61,7 +60,7 @@ public class Item {
         return calories;
     }
 
-    public ArrayList<Extra> getExtra() {
+    public Extra[] getExtra() {
         return extra;
     }
 }
