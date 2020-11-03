@@ -9,11 +9,18 @@ import java.util.Iterator;
 public class Room {
     private final String description;
     private final ArrayList<Item> items;
-    private final HashMap<String, Room> exits = new HashMap<>();
+    private final HashMap<String, Room> exits;
 
+    public Room(String description) {
+        this.description = description;
+        this.items = new ArrayList<>();
+        this.exits = new HashMap<>();
+    }
+    
     public Room(String description, ArrayList<Item> items) {
         this.description = description;
         this.items = items;
+        this.exits = new HashMap<>();
     }
 
     public void setExit(String direction, Room neighbor) {
@@ -59,6 +66,7 @@ public class Room {
 
     public String getItemsString(){
         StringBuilder itemsString = new StringBuilder();
+        
         itemsString.append("Available products: ");
         for(Item item : items){
             itemsString.append("- "+item.getName() + "\n");
