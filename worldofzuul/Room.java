@@ -79,7 +79,7 @@ public class Room {
 
     public String getItemsString(){
         if(items.size() == 0){  // If the size of the list with items in the current room is 0,
-            return "";          // the 'Available products' string will not be printed
+            return null;          // the 'Available products' string will not be printed
         }
         StringBuilder itemsString = new StringBuilder();
         

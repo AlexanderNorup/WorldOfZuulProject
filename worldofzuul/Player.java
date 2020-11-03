@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Player {
 
     private final ArrayList<Item> inventory;
-    private PlayerType type;
+    private final PlayerType type;
 
     public Player() {
         this.inventory = new ArrayList<>();
@@ -54,14 +54,16 @@ public class Player {
     }
 
     public String getInventoryString(){
-
-        StringBuilder inventoryString = new StringBuilder();
-
-        for (Item item: inventory){
-           inventoryString.append("- ").append(item.getName()).append("\n");
+        if(inventory.size() == 0){  // If the size of the list with items in the inventory is 0,
+            return null;          // the 'Available products' string will not be printed
         }
+        StringBuilder itemsString = new StringBuilder();
 
-        return inventoryString.toString();
+        itemsString.append("Available products: ");
+        for(Item item : inventory){
+            itemsString.append("- ").append(item.getName()).append("\n");
+        }
+        return itemsString.toString();
     }
 
     public GameResult getGameResult(){
@@ -85,6 +87,11 @@ public class Player {
         }
 
         return "Total Price: " + totalPrice + " | " + "Total Calories: " + totalCalories + " | " + "Total Protein: " + totalProtein;
+    }
+
+    public void setPlayerType(PlayerType type){
+            this.type = type;
+
     }
 
 }

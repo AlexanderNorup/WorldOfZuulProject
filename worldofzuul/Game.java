@@ -5,13 +5,14 @@ import java.util.ArrayList;
 public class Game {
     private final Parser parser;
     private Room currentRoom;
-    private Player player;
-    private ArrayList<GameResult> finishedGames;
+    private final Player player;
+    private final ArrayList<GameResult> finishedGames;
 
     public Game() {
         createRooms();
         parser = new Parser();
         player = new Player();
+        player.setPlayerType(ItemGenerator.randomPlayerType());
         finishedGames = new ArrayList<>();
     }
 
@@ -150,18 +151,19 @@ public class Game {
 
     //checks if there is a second word when calling the check command and if it is either section or inventory.
     private void check(Command command) {
-        if (!command.hasSecondWord() || !command.getSecondWord().equalsIgnoreCase("section") ||
-!command.getSecondWord().equalsIgnoreCase("inventory") ){
+        String word = command.getSecondWord();
+        if (word == null || !word.equalsIgnoreCase("section") && !word.equalsIgnoreCase("inventory") ){
             System.out.println("Check what? (Section or Inventory)");
             return;
         }
-        String checker = command.getSecondWord();
 
-        if(checker.equalsIgnoreCase("section")){ //checks if the second word is section
-            System.out.println(currentRoom.getItemsString()); //prints items from the current room
+        if(word.equalsIgnoreCase("section")){ //checks if the second word is section
+            String string = currentRoom.getItemsString();
+            System.out.println(string != null ? string : "no products in section"); //prints items from the current room
         }
-        else if(checker.equalsIgnoreCase("inventory")){ //checks if the second word is inventory
-            System.out.println(player.getInventoryString()); //prints items from player inventory
+        else if(word.equalsIgnoreCase("inventory")){ //checks if the second word is inventory
+            String string = player.getInventoryString();
+            System.out.println(string != null ? string : "no products in inventory"); //prints items from player inventory
         }
     }
 
@@ -185,7 +187,7 @@ public class Game {
         Item item = currentRoom.getItem(command.getSecondWord());
         if(item != null){
             currentRoom.removeItem(item);
-            //add item to inventory
+            player.addItem(item);
         }else {
             System.out.println("'" + command.getSecondWord() + "' not found in store");
         }
