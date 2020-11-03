@@ -58,7 +58,7 @@ public class Room {
         return item;
     }
 
-    public void setItem(Item item){
+    public void addItem(Item item){
         items.add(item);
     }
 
