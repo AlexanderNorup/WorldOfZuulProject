@@ -202,7 +202,7 @@ public class Game {
             player.removeItem(item);
             currentRoom.addItem(item);
         }else {
-            System.out.println("'itemname' not found in inventory");
+            System.out.println("'"+command.getSecondWord()+"' not found in inventory");
         }
         //if item null, print "'itemname' not found in inventory"
     }

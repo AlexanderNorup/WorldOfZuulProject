@@ -21,7 +21,8 @@ public class Player {
     public Item getItem(String string){
         Item item = null;
         for(Item currentItem : inventory){
-            if (currentItem.getName().equals(string)){
+            if (currentItem.getName().equalsIgnoreCase(string)){
+
                 item = currentItem;
             }
         }
