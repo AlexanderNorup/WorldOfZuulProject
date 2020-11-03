@@ -7,14 +7,58 @@ public class ItemGenerator {
 
     public static ArrayList<Item> getButcherItems(){
         ArrayList<Item> items = new ArrayList<>();
-        items.add(new Item("200gr Ground Beef",20,2.4,20,332,new Extra[]{}));
+        //Not organic
+        items.add(new Item("200g Salmon",35,0.6,40,416.6,new Extra[]{}));
+        items.add(new Item("1300g Whole Chicken",50,5,350,2400,new Extra[]{}));
+        items.add(new Item("250g 2 Lamb Chops",50,5.25,62.5,735,new Extra[]{}));
+        items.add(new Item("500g Pork Rib",50,3,135,1200,new Extra[]{}));
+        items.add(new Item("100g Salami",10,0.7,22,335,new Extra[]{}));
+        items.add(new Item("100g Roast Beef",12,0.7,29,170,new Extra[]{}));
+        items.add(new Item("250g Chicken Breast",25,0.75,68,600,new Extra[]{}));
+        items.add(new Item("500g Ground Beef",30,13,70,1660,new Extra[]{}));
+
+        //Organic (organic price = non organic price * 1.2)
+        items.add(new Item("200g Salmon",35 * 1.2,0.6,40,416.6,new Extra[]{Extra.ORGANIC}));
+        items.add(new Item("1300g Whole Chicken",50 * 1.2,5,350,2400,new Extra[]{Extra.ORGANIC}));
+        items.add(new Item("250g 2 Lamb Chops",50 * 1.2,5.25,62.5,735,new Extra[]{Extra.ORGANIC}));
+        items.add(new Item("500g Pork Rib",50 * 1.2,3,135,1200,new Extra[]{Extra.ORGANIC}));
+        items.add(new Item("100g Salami",10 * 1.2,0.7,22,335,new Extra[]{Extra.ORGANIC}));
+        items.add(new Item("100g Roast Beef",12 * 1.2,0.7,29,170,new Extra[]{Extra.ORGANIC}));
+        items.add(new Item("250g Chicken Breast",25 * 1.2,0.75,68,600,new Extra[]{Extra.ORGANIC}));
+        items.add(new Item("500g Ground Beef",30 * 1.2,13,70,1660,new Extra[]{Extra.ORGANIC}));
 
         return items;
     }
 
     public static ArrayList<Item> getProduceItems(){
         ArrayList<Item> items = new ArrayList<>();
-        items.add(new Item("200gr Broccoli",3,0.2,20,35,new Extra[]{Extra.VEGAN}));
+        //Not organic
+        items.add(new Item("500g Potatoes Imported",8,0.1,10,385,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("500g Potatoes Danish",12,0.05,10,385,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("500g Apples Danish",5,0.1,1.5,260,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("400g 1 Cucumber Imported",6,0.56,2.5,60,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("400g 1 Cucumber Danish",8,0.4,2.5,60,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("250g Salad Imported",10,1,2.25,35,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("250g Salad Danish",12,0.5,2.25,35,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("200g Mango",12,2.2,1.6,120,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("100g Blueberries",25,0.1,0.7,58,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("400g Tomatoes Imported",10,2,3.6,72,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("400g Tomatoes Danish",18,1.6,3.6,72,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("1000g Cabbage",4,0.4,13,246,new Extra[]{Extra.VEGAN}));
+
+        //Organic (organic price = non organic price * 1.2)
+        items.add(new Item("500g Potatoes Imported",8 * 1.2,0.1,10,385,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+        items.add(new Item("500g Potatoes Danish",12 * 1.2,0.05,10,385,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+        items.add(new Item("500g Apples Danish",5 * 1.2,0.1,1.5,260,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+        items.add(new Item("400g 1 Cucumber Imported",6 * 1.2,0.56,2.5,60,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+        items.add(new Item("400g 1 Cucumber Danish",8 * 1.2,0.4,2.5,60,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+        items.add(new Item("250g Salad Imported",10 * 1.2,1,2.25,35,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+        items.add(new Item("250g Salad Danish",12 * 1.2,0.5,2.25,35,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+        items.add(new Item("200g Mango",12 * 1.2,2.2,1.6,120,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+        items.add(new Item("100g Blueberries",25 * 1.2,0.1,0.7,58,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+        items.add(new Item("400g Tomatoes Imported",10 * 1.2,2,3.6,72,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+        items.add(new Item("400g Tomatoes Danish",18 * 1.2,1.6,3.6,72,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+        items.add(new Item("1000g Cabbage",4 * 1.2,0.4,13,246,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
 
         return items;
     }
