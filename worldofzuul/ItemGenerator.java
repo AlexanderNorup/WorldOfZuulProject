@@ -21,6 +21,7 @@ public class ItemGenerator {
         items.add(new Item("500g Ground Beef",30,13,70,1660,new Extra[]{}));
 
         //Organic (organic price = non organic price * 1.2)
+
         items.add(new Item("200g Salmon",35 * organicFactor,0.6,40,416.6,new Extra[]{Extra.ORGANIC}));
         items.add(new Item("1300g Whole Chicken",50 * organicFactor,5,350,2400,new Extra[]{Extra.ORGANIC}));
         items.add(new Item("250g 2 Lamb Chops",50 * organicFactor,5.25,62.5,735,new Extra[]{Extra.ORGANIC}));
@@ -29,7 +30,6 @@ public class ItemGenerator {
         items.add(new Item("100g Roast Beef",12 * organicFactor,0.7,29,170,new Extra[]{Extra.ORGANIC}));
         items.add(new Item("250g Chicken Breast",25 * organicFactor,0.75,68,600,new Extra[]{Extra.ORGANIC}));
         items.add(new Item("500g Ground Beef",30 * organicFactor,13,70,1660,new Extra[]{Extra.ORGANIC}));
-
 
         return items;
     }
@@ -148,6 +148,27 @@ public class ItemGenerator {
         items.add(new Item("250g Organic Canned Corn",5 * organicFactor,1.5,8,250,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
 
         return items;
+    }
+
+    public static ArrayList<Item> createOrganics(ArrayList<Item> items) {
+        ArrayList<Item> organicItems = new ArrayList<>();
+        double organicFactor = 1.2;
+        for (Item item : items) {
+            Extra[] organicExtras = new Extra[item.getExtra().length + 1];
+            for (int i = 0; i < item.getExtra().length; i++) {
+                organicExtras[i] = item.getExtra()[i];
+            }
+            organicExtras[organicExtras.length - 1] = Extra.ORGANIC;
+
+            organicItems.add(new Item(
+                    item.getName() + " Organic",
+                    item.getPrice() * organicFactor,
+                    item.getCo2(),
+                    item.getProtein(),
+                    item.getCalories(),
+                    organicExtras));
+        }
+        return organicItems;
     }
 
     public static PlayerType getStudentPlayerType(){
