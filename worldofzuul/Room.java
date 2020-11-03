@@ -1,9 +1,6 @@
 package worldofzuul;
 
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 public class Room {
 
@@ -29,9 +26,7 @@ public class Room {
 
     public void setItems(Item[] items) {
         this.items.clear();
-        for (Item i: items) {
-            this.items.add(i);
-        }
+        this.items.addAll(Arrays.asList(items));
     }
 
     public ArrayList<Item> getItems() {
@@ -50,7 +45,7 @@ public class Room {
         StringBuilder returnString = new StringBuilder("Exits:");
         Set<String> keys = exits.keySet();
         for (String exit : keys) {
-            returnString.append(" "+exit);
+            returnString.append(" ").append(exit);
         }
         return returnString.toString();
     }
@@ -80,7 +75,7 @@ public class Room {
         
         itemsString.append("Available products: ");
         for(Item item : items){
-            itemsString.append("- "+item.getName() + "\n");
+            itemsString.append("- ").append(item.getName()).append("\n");
         }
         return itemsString.toString();
     }

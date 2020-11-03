@@ -10,6 +10,7 @@ public class Game {
     public Game() {
         createRooms();
         parser = new Parser();
+
     }
 
     //TODO: Create descriptive directions, add back command
@@ -80,6 +81,7 @@ public class Game {
             case DROP -> drop(command);
             case TAKE -> take(command);
             case CHECK -> check(command);
+
             default -> System.out.println("processCommand -> unregistered command!");
         }
 
@@ -158,7 +160,12 @@ public class Game {
     //TODO: move item from inventory to room
     private void drop(Command command){
         //get item from user
+        Item item = null;
         //if item not null, remove item from inventory and add to store
+        if(item != null){
+
+            currentRoom.addItem(item);
+        }
         //if item null, print "'itemname' not found in inventory"
     }
 }
