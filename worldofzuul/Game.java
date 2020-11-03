@@ -18,16 +18,16 @@ public class Game {
         Room outside,ile1,ile2,ile3, cashier,butcher,produce,frozen,dairy,bakery,tinnedGoods;
 
         outside = new Room("outside the main entrance of the store", new ArrayList<>());
-        ile1 = new Room("in 1st ile", new ArrayList<>());
-        ile2 = new Room("in 2nd ile", new ArrayList<>());
-        ile3 = new Room("in 3rd ile", new ArrayList<>());
-        cashier = new Room("at the cashier", new ArrayList<>());
-        butcher = new Room("at the butcher", new ArrayList<>());
-        produce = new Room("at the produce section", new ArrayList<>());
-        frozen = new Room("in the frozen section", new ArrayList<>());
-        dairy = new Room("in the dairy section", new ArrayList<>());
-        bakery = new Room("ad the bakery", new ArrayList<>());
-        tinnedGoods = new Room("in the tinned goods ile", new ArrayList<>());
+        ile1 = new Room("in 1st ile");
+        ile2 = new Room("in 2nd ile");
+        ile3 = new Room("in 3rd ile");
+        cashier = new Room("at the cashier");
+        butcher = new Room("at the butcher", ItemGenerator.getButcherItems());
+        produce = new Room("at the produce section", ItemGenerator.getProduceItems());
+        frozen = new Room("in the frozen section", ItemGenerator.getFrozenItems());
+        dairy = new Room("in the dairy section", ItemGenerator.getDairyItems());
+        bakery = new Room("ad the bakery", ItemGenerator.getBakeryItems());
+        tinnedGoods = new Room("in the tinned goods ile", ItemGenerator.getTinnedGoodsItems());
 
         outside.setExit("north", ile1);
 
