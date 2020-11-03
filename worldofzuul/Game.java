@@ -186,7 +186,6 @@ public class Game {
     private void take(Command command){
         Item item = currentRoom.getItem(command.getSecondWord());
         if(item != null){
-            currentRoom.removeItem(item);
             player.addItem(item);
         }else {
             System.out.println("'" + command.getSecondWord() + "' not found in store");
@@ -202,7 +201,6 @@ public class Game {
         //if item not null, remove item from inventory and add to store
         if(item != null){
             player.removeItem(item);
-            currentRoom.addItem(item);
         }else {
             System.out.println("'"+command.getSecondWord()+"' not found in inventory");
         }
