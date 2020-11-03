@@ -30,6 +30,7 @@ public class ItemGenerator {
         items.add(new Item("250g Chicken Breast",25 * organicFactor,0.75,68,600,new Extra[]{Extra.ORGANIC}));
         items.add(new Item("500g Ground Beef",30 * organicFactor,13,70,1660,new Extra[]{Extra.ORGANIC}));
 
+
         return items;
     }
 
@@ -62,6 +63,7 @@ public class ItemGenerator {
         items.add(new Item("400g Tomatoes Imported",10 * organicFactor,2,3.6,72,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
         items.add(new Item("400g Tomatoes Danish",18 * organicFactor,1.6,3.6,72,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
         items.add(new Item("1000g Cabbage",4 * organicFactor,0.4,13,246,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
+
 
         return items;
     }
