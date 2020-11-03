@@ -9,6 +9,7 @@ public class Player {
 
     public Player() {
         this.inventory = new ArrayList<>();
+        this.type = new PlayerType("TestGuy", 2000, 1500, 5000);
     }
 
     public boolean addItem(Item item){
@@ -34,6 +35,12 @@ public class Player {
         }
 
         return item != null ? item.toString() : "";
+    }
+
+    public void deleteInventory(){
+        for (Item item: inventory) {
+            removeItem(item); //removes all items in inventory
+        }
     }
 
     public String getInventoryString(){
