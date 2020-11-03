@@ -79,7 +79,7 @@ public class ItemGenerator {
 
     public static ArrayList<Item> getBakeryItems(){
         ArrayList<Item> items = new ArrayList<>();
-        items.add(new Item("200gr Ground Beef",13,1.5,8.8,274,new Extra[]{Extra.GLUTEN, Extra.CONTAINS_LACTOSE}));
+        items.add(new Item("200gr Ground Beef",13,1.5,8.8,274,new Extra[]{Extra.CONTAINS_GLUTEN, Extra.CONTAINS_LACTOSE}));
 
         return items;
     }
