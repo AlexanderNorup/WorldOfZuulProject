@@ -19,18 +19,20 @@ public class Game {
     private void createRooms() {
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
 
-        outside = new Room("outside the main entrance of the store", false);
-        aisle1 = new Room("in the 1st aisle. \nTo your east is the dairy, to your west is the bakery, " +
-                "in the south is the 2nd aisle", false );
-        aisle2 = new Room("in the 2nd aisle", false);
-        aisle3 = new Room("in the 3rd aisle", false);
-        dairy = new Room("in the dairy section", false, ItemGenerator.getDairyItems());
-        bakery = new Room("at the bakery", false, ItemGenerator.getBakeryItems());
+        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", false);
+        aisle1 = new Room("in the 1st aisle. \nTo your east is the dairy section, to your west is the bakery, " +
+                "to your south is the 2nd aisle", false );
+        aisle2 = new Room("in the 2nd aisle. \nTo your east is the frozen section, to your west is the " +
+                "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", false);
+        aisle3 = new Room("in the 3rd aisle. \nTo your east is the produce section, to your west is the " +
+                "butcher, to your north is the 2nd aisle, to your south is the cashier", false);
+        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", false, ItemGenerator.getDairyItems());
+        bakery = new Room("at the bakery\nTo your east is the 1st aisle", false, ItemGenerator.getBakeryItems());
         frozen = new Room("in the frozen section", false, ItemGenerator.getFrozenItems());
         tinnedGoods = new Room("in the tinned goods section", false, ItemGenerator.getTinnedGoodsItems());
         produce = new Room("at the produce section",false, ItemGenerator.getProduceItems());
         butcher = new Room("at the butcher", false, ItemGenerator.getButcherItems());
-        cashier = new Room("at the cashier.\n Use command 'checkout' to check out and finish the game ", true);
+        cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", true);
 
         outside.setExit("south", aisle1);
         aisle1.setExit("east", dairy);
