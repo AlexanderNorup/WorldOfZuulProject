@@ -11,8 +11,7 @@ public class Game {
     public Game() {
         createRooms();
         parser = new Parser();
-        player = new Player();
-        player.setPlayerType(ItemGenerator.randomPlayerType());
+        player = new Player(ItemGenerator.randomPlayerType());
         finishedGames = new ArrayList<>();
     }
 
@@ -21,7 +20,8 @@ public class Game {
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
 
         outside = new Room("outside the main entrance of the store", false);
-        aisle1 = new Room("in the 1st aisle", false );
+        aisle1 = new Room("in the 1st aisle. \nTo your east is the dairy, to your west is the bakery, " +
+                "in the south is the 2nd aisle", false );
         aisle2 = new Room("in the 2nd aisle", false);
         aisle3 = new Room("in the 3rd aisle", false);
         dairy = new Room("in the dairy section", false, ItemGenerator.getDairyItems());
@@ -30,10 +30,9 @@ public class Game {
         tinnedGoods = new Room("in the tinned goods section", false, ItemGenerator.getTinnedGoodsItems());
         produce = new Room("at the produce section",false, ItemGenerator.getProduceItems());
         butcher = new Room("at the butcher", false, ItemGenerator.getButcherItems());
-        cashier = new Room("at the cashier", true);
+        cashier = new Room("at the cashier.\n Use command 'checkout' to check out and finish the game ", true);
 
         outside.setExit("south", aisle1);
-
         aisle1.setExit("east", dairy);
         dairy.setExit("west", aisle1);
         aisle1.setExit("west", bakery);
@@ -61,13 +60,23 @@ public class Game {
 
     public void play() {
         printWelcome();
-
+        printPlayer();
         boolean finished = false;
         while (!finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
         System.out.println("Thank you for playing.  Good bye.");
+    }
+
+    public void printPlayer(){
+        System.out.println("You are playing as a " + player.getPlayerType().getName());
+        System.out.println("| Your budget is " + player.getPlayerType().getBudgetMax() + " dkk." + "  ||  " +
+                "Your minimum calorie goal is " + player.getPlayerType().getCalorieMin() + "  ||  " +
+                "Your minimum protein goal is " + player.getPlayerType().getProteinMin() + " |");
+        //System.out.println("Your budget is " + player.getPlayerType().getBudgetMax() + " dkk.");
+        //System.out.println("Your minimum calorie goal is " + player.getPlayerType().getCalorieMin());
+        //System.out.println("Your minimum protein goal is " + player.getPlayerType().getProteinMin());
     }
 
     private void printWelcome() {
@@ -127,8 +136,11 @@ public class Game {
         player.deleteInventory(); // deletes all items in the inventory
         createRooms(); //creates the rooms again and fills them with items
         System.out.println(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + "." );
+        player.setPlayerType((ItemGenerator.randomPlayerType()));
         System.out.println("It is a new day, you wake up and go to the store.");
+        printPlayer();
         System.out.println(currentRoom.getLongDescription());
+
     }
 
     private void goRoom(Command command) {

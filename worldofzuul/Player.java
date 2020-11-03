@@ -7,9 +7,9 @@ public class Player {
     private final ArrayList<Item> inventory;
     private PlayerType type;
 
-    public Player() {
+    public Player(PlayerType playerType) {
         this.inventory = new ArrayList<>();
-        this.type = new PlayerType("TestGuy", 2000, 1500, 5000);
+        this.type = playerType;
     }
 
     public void addItem(Item item){
@@ -90,7 +90,10 @@ public class Player {
 
     public void setPlayerType(PlayerType type){
             this.type = type;
+    }
 
+    public PlayerType getPlayerType(){
+        return this.type;
     }
 
 }
