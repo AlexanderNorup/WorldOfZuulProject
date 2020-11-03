@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class Player {
 
     private final ArrayList<Item> inventory;
-    private final PlayerType type;
+    private PlayerType type;
 
-    public Player() {
+    public Player(PlayerType playerType) {
         this.inventory = new ArrayList<>();
-        this.type = new PlayerType("TestGuy", 2000, 1500, 5000);
+        this.type = playerType;
     }
 
     public boolean addItem(Item item){
@@ -91,7 +91,10 @@ public class Player {
 
     public void setPlayerType(PlayerType type){
             this.type = type;
+    }
 
+    public PlayerType getPlayerType(){
+        return this.type;
     }
 
 }
