@@ -135,7 +135,7 @@ public class Game {
     }
 
     private void resetGame(){
-        ReactToResults();
+        reactToResults();
         player.deleteInventory(); // deletes all items in the inventory
         createRooms(); //creates the rooms again and fills them with items
         System.out.println(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + "." );
@@ -146,7 +146,7 @@ public class Game {
 
     }
 
-    private void ReactToResults(){
+    private void reactToResults(){
         int happiness = 0;
         double co2 = 0;
         for(GameResult finishedGame : finishedGames){
