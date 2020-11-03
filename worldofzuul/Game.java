@@ -157,10 +157,12 @@ public class Game {
         }
 
         if(word.equalsIgnoreCase("section")){ //checks if the second word is section
-            System.out.println(currentRoom.getItemsString()); //prints items from the current room
+            String string = currentRoom.getItemsString();
+            System.out.println(string != null ? string : "no products in section"); //prints items from the current room
         }
         else if(word.equalsIgnoreCase("inventory")){ //checks if the second word is inventory
-            System.out.println(player.getInventoryString()); //prints items from player inventory
+            String string = player.getInventoryString();
+            System.out.println(string != null ? string : "no products in inventory"); //prints items from player inventory
         }
     }
 
@@ -184,7 +186,7 @@ public class Game {
         Item item = currentRoom.getItem(command.getSecondWord());
         if(item != null){
             currentRoom.removeItem(item);
-            //add item to inventory
+            player.addItem(item);
         }else {
             System.out.println("'" + command.getSecondWord() + "' not found in store");
         }
