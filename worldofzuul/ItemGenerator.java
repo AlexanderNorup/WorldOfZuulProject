@@ -84,8 +84,8 @@ public class ItemGenerator {
         items.add(new Item("Frozen Organic Pizza",24 * organicFactor,5,42,833,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN, Extra.CONTAINS_SOY, Extra.ORGANIC}));
         items.add(new Item("250g Organic Spinach",6 * organicFactor,0.3,7,57,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
         items.add(new Item("300g Organic frozen berries",14 * organicFactor,0.3,2.5,180,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
-        items.add(new Item("200g Organic Shrimp",35 * organicFactor,0.6,48,200,new Extra[]{, Extra.ORGANIC}));
-        items.add(new Item("250g Organic Clam",42 * organicFactor,0.7,32,185,new Extra[]{, Extra.ORGANIC}));
+        items.add(new Item("200g Organic Shrimp",35 * organicFactor,0.6,48,200,new Extra[]{Extra.ORGANIC}));
+        items.add(new Item("250g Organic Clam",42 * organicFactor,0.7,32,185,new Extra[]{Extra.ORGANIC}));
         return items;
     }
 
@@ -105,7 +105,7 @@ public class ItemGenerator {
         items.add(new Item("1L Organic Yogurt",15 * organicFactor,1.1,38,630,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.ORGANIC}));
         items.add(new Item("200g Organic Cheese",26 * organicFactor,2,50,660,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.ORGANIC}));
         items.add(new Item("200g Organic Butter",10 * organicFactor,2,1,1450,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.ORGANIC}));
-        items.add(new Item("10 Organic eggs",22 * organicFactor,1,68,750,new Extra[]{, Extra.ORGANIC}));
+        items.add(new Item("10 Organic eggs",22 * organicFactor,1,68,750,new Extra[]{Extra.ORGANIC}));
         items.add(new Item("200g Organic Margarine",8 * organicFactor,0.3,0,1450,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
 
         return items;
@@ -140,7 +140,7 @@ public class ItemGenerator {
         items.add(new Item("250g Organic Kidney Beans",5 * organicFactor,0.2,20,250,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
         items.add(new Item("500g Organic Rice",10 * organicFactor,1,29,1800,new Extra[]{Extra.VEGAN, Extra.CONTAINS_GLUTEN, Extra.ORGANIC}));
         items.add(new Item("500g Organic Pasta",12 * organicFactor,0.4,25,640,new Extra[]{Extra.VEGAN, Extra.CONTAINS_GLUTEN, Extra.ORGANIC}));
-        items.add(new Item("100g Organic Canned Tuna",15 * organicFactor,0.3,25,112,new Extra[]{, Extra.ORGANIC}));
+        items.add(new Item("100g Organic Canned Tuna",15 * organicFactor,0.3,25,112,new Extra[]{Extra.ORGANIC}));
         items.add(new Item("100g Organic Almonds",15 * organicFactor,0.2,21,600,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
         items.add(new Item("500g Organic Oatmeal",5 * organicFactor,0.3,65,1850,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
         items.add(new Item("250g Organic Canned Corn",5 * organicFactor,1.5,8,250,new Extra[]{Extra.VEGAN, Extra.ORGANIC}));
