@@ -12,6 +12,7 @@ public class Game {
         createRooms();
         parser = new Parser();
         player = new Player();
+        player.setPlayerType(ItemGenerator.randomPlayerType());
         finishedGames = new ArrayList<>();
     }
 
