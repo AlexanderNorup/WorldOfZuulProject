@@ -9,6 +9,7 @@ public class Game {
     public Game() {
         createRooms();
         parser = new Parser();
+
     }
 
     //TODO: Create descriptive directions, add back command

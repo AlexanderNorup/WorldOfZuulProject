@@ -69,13 +69,4 @@ public class Room {
     }
 
     public void removeItem(Item item){items.remove(item);}
-
-    public String getItemsString(){
-        StringBuilder itemsString = new StringBuilder();
-        itemsString.append("Available products: ");
-        for(Item item : items){
-            itemsString.append("- "+item.getName() + "\n");
-        }
-        return itemsString.toString();
-    }
 }
