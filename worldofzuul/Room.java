@@ -51,7 +51,7 @@ public class Room {
     public Item getItem(String name){
         Item item = null;
         for(Item currentItem : items){
-            if(currentItem.getName().equals(name)){
+            if(currentItem.getName().equalsIgnoreCase(name)){
                 item = currentItem;
             }
         }
