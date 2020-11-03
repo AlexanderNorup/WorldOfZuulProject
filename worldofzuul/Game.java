@@ -114,9 +114,9 @@ public class Game {
 
     //checks if there is a second word when calling the check command and if it is either section or inventory.
     private void check(Command command) {
-        if (!command.hasSecondWord() && !command.getSecondWord().equalsIgnoreCase("section")
-                || !command.hasSecondWord() && !command.getSecondWord().equalsIgnoreCase("inventory") ){
-            System.out.println("Check what?");
+        if (!command.hasSecondWord() || !command.getSecondWord().equalsIgnoreCase("section") ||
+!command.getSecondWord().equalsIgnoreCase("inventory") ){
+            System.out.println("Check what? (Section or Inventory)");
             return;
         }
         String checker = command.getSecondWord();
