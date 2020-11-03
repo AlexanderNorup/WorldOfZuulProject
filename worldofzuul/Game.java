@@ -96,19 +96,20 @@ public class Game {
     }
 
     private void goRoom(Command command) {
-        if(command.getSecondWord() != null){
-            String direction = command.getSecondWord();
-            Room nextRoom = currentRoom.getExit(direction);
-
-            if(nextRoom != null){
-                currentRoom = nextRoom;
-                System.out.println(currentRoom.getLongDescription());
-            }else {
-                System.out.println("There is no door!");
-            }
-
-        }else {
+        if (!command.hasSecondWord()) {
             System.out.println("Go where?");
+            return;
+        }
+
+        String direction = command.getSecondWord();
+
+        Room nextRoom = currentRoom.getExit(direction);
+
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        } else {
+            currentRoom = nextRoom;
+            System.out.println(currentRoom.getLongDescription());
         }
     }
 
