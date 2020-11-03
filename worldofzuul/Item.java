@@ -10,12 +10,7 @@ public class Item {
     private double protein;
     private double calories;
     private Extra[] extra;
-
-    public static void main(String[] args) {
-        Item beef = new Item("Beef", 19.95, 10, 20, 150, new Extra[]{});
-        System.out.println(beef);
-    }
-
+    
     public Item(String name, double price, double co2, double protein, double calories, Extra[] extra) {
         this.name = name;
         this.price = price;

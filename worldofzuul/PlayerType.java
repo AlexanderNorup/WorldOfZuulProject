@@ -22,6 +22,22 @@ public class PlayerType {
         this.budgetMax = budgetMax;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public double getProteinMin() {
+        return proteinMin;
+    }
+
+    public double getCalorieMin() {
+        return calorieMin;
+    }
+
+    public double getBudgetMax() {
+        return budgetMax;
+    }
+
     public void setProteinFactor(double proteinFactor) {
         this.proteinFactor = proteinFactor;
     }
