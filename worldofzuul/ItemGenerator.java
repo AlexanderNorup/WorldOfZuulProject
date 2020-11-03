@@ -63,7 +63,7 @@ public class ItemGenerator {
         return new PlayerType("Snob",45,2400,1000);
     }
 
-    public static PlayerType RandomPlayerType(){
+    public static PlayerType randomPlayerType(){
         PlayerType type = null;
         switch (new Random().nextInt(4)){
             case 0 -> type = getStudentPlayerType();
