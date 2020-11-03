@@ -45,4 +45,20 @@ public class ItemGenerator {
 
         return items;
     }
+
+    public PlayerType getStudentPlayerType(){
+        return new PlayerType("Student",45,2200,400);
+    }
+
+    public PlayerType getBodybuilderPlayerType(){
+        return new PlayerType("Bodybuilder",200,3000,600);
+    }
+
+    public PlayerType getPickyPlayerType(){
+        return new PlayerType("Picky",45,2400,600);
+    }
+
+    public PlayerType getSnobPlayerType(){
+        return new PlayerType("Snob",45,2400,1000);
+    }
 }
