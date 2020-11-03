@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Player {
 
     private final ArrayList<Item> inventory;
-    private PlayerType type;
+    private final PlayerType type;
 
     public Player() {
         this.inventory = new ArrayList<>();

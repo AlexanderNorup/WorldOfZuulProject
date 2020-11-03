@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Game {
     private final Parser parser;
     private Room currentRoom;
-    private Player player;
-    private ArrayList<GameResult> finishedGames;
+    private final Player player;
+    private final ArrayList<GameResult> finishedGames;
 
     public Game() {
         createRooms();
