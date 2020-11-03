@@ -1,52 +1,75 @@
 package worldofzuul;
 
+import java.util.ArrayList;
+
 public class Game {
-    private Parser parser;
+    private final Parser parser;
     private Room currentRoom;
     private Player player;
-
 
     public Game() {
         createRooms();
         parser = new Parser();
-        player = new Player();
-        player.setPlayerType();
 
     }
 
-
+    //TODO: Create descriptive directions, add back command
     private void createRooms() {
-        Room outside, theatre, pub, lab, office, tennis;
+        Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
 
-        outside = new Room("outside the main entrance of the university");
-        theatre = new Room("in a lecture theatre");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
-        tennis = new Room("in the computing admin office");
-        
-        outside.setExit("east", theatre);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        outside = new Room("outside the main entrance of the store", new ArrayList<>());
+        ile1 = new Room("in 1st ile");
+        ile2 = new Room("in 2nd ile");
+        ile3 = new Room("in 3rd ile");
+        butcher = new Room("at the butcher", ItemGenerator.getButcherItems());
+        produce = new Room("at the produce section", ItemGenerator.getProduceItems());
+        frozen = new Room("in the frozen section", ItemGenerator.getFrozenItems());
+        dairy = new Room("in the dairy section", ItemGenerator.getDairyItems());
+        bakery = new Room("ad the bakery", ItemGenerator.getBakeryItems());
+        tinnedGoods = new Room("in the tinned goods ile", ItemGenerator.getTinnedGoodsItems());
+        cashier = new Room("at the cashier");
 
-        theatre.setExit("west", outside);
+        outside.setExit("north", ile1);
 
-        pub.setExit("east", outside);
+        ile1.setExit("north", ile2);
+        ile1.setExit("east", tinnedGoods);
+        ile1.setExit("west", frozen);
 
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
+        ile2.setExit("north", ile3);
+        ile2.setExit("east", dairy);
+        ile2.setExit("west", bakery);
 
-        office.setExit("west", lab);
-        office.setExit("south", tennis);
+        ile3.setExit("north", cashier);
+        ile3.setExit("east", butcher);
+        ile3.setExit("west", produce);
 
-        tennis.setExit("north", office);
+        outside.setExit("south", aisle1);
 
-        currentRoom = outside;
+        aisle1.setExit("east", dairy);
+        dairy.setExit("west", aisle1);
+        aisle1.setExit("west", bakery);
+        bakery.setExit("east", aisle1);
+        aisle1.setExit("south", aisle2);
+
+        aisle2.setExit("north", aisle1);
+        aisle2.setExit("east", frozen);
+        frozen.setExit("west", aisle2);
+        aisle2.setExit("west", tinnedGoods);
+        tinnedGoods.setExit("east", aisle2);
+        aisle2.setExit("south", aisle3);
+
+        aisle3.setExit("north", aisle2);
+        aisle3.setExit("east", produce);
+        produce.setExit("west", aisle3);
+        aisle3.setExit("west", butcher);
+        butcher.setExit("east", aisle3);
+        aisle3.setExit("south", cashier);
+
+        currentRoom = outside; //this sets the starting position to "outside"
     }
 
     public void play() {
         printWelcome();
-
 
         boolean finished = false;
         while (!finished) {
@@ -65,6 +88,7 @@ public class Game {
         System.out.println(currentRoom.getLongDescription());
     }
 
+    //TODO: add Check inventory method
     private boolean processCommand(Command command) {
         boolean wantToQuit = false;
 
@@ -75,6 +99,11 @@ public class Game {
             case HELP -> printHelp();
             case QUIT -> wantToQuit = quit(command);
             case UNKNOWN -> System.out.println("I don't know what you mean");
+            case INSPECT -> inspect(command);
+            case DROP -> drop(command);
+            case TAKE -> take(command);
+            case CHECK -> check(command);
+
             default -> System.out.println("processCommand -> unregistered command!");
         }
 
@@ -83,7 +112,7 @@ public class Game {
 
     private void printHelp() {
         System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("around at the store.");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
@@ -107,6 +136,23 @@ public class Game {
         }
     }
 
+    //checks if there is a second word when calling the check command and if it is either section or inventory.
+    private void check(Command command) {
+        if (!command.hasSecondWord() || !command.getSecondWord().equalsIgnoreCase("section") ||
+!command.getSecondWord().equalsIgnoreCase("inventory") ){
+            System.out.println("Check what? (Section or Inventory)");
+            return;
+        }
+        String checker = command.getSecondWord();
+
+        if(checker.equalsIgnoreCase("section")){ //checks if the second word is section
+            System.out.println(currentRoom.getItemsString()); //prints items from the current room
+        }
+        else if(checker.equalsIgnoreCase("inventory")){ //checks if the second word is inventory
+            System.out.println(player.getInventoryString()); //prints items from player inventory
+        }
+    }
+
     private boolean quit(Command command) {
         if (command.hasSecondWord()) {
             System.out.println("Quit what?");
@@ -114,5 +160,34 @@ public class Game {
         } else {
             return true;
         }
+    }
+
+    //TODO:Check both Player and Room for item
+    private void inspect(Command command){
+        Item item = currentRoom.getItem(command.getSecondWord());
+        System.out.println(item != null ? item.toString() : "item not found");
+    }
+
+    //TODO: add item to inventory
+    private void take(Command command){
+        Item item = currentRoom.getItem(command.getSecondWord());
+        if(item != null){
+            currentRoom.removeItem(item);
+            //add item to inventory
+        }else {
+            System.out.println("'" + command.getSecondWord() + "' not found in store");
+        }
+    }
+
+    //TODO: move item from inventory to room
+    private void drop(Command command){
+        //get item from user
+        Item item = null;
+        //if item not null, remove item from inventory and add to store
+        if(item != null){
+
+            currentRoom.addItem(item);
+        }
+        //if item null, print "'itemname' not found in inventory"
     }
 }

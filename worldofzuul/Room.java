@@ -1,21 +1,36 @@
 package worldofzuul;
 
-import java.util.Set;
-import java.util.HashMap;
-import java.util.Iterator;
-
+import java.util.*;
 
 public class Room {
-    private String description;
-    private HashMap<String, Room> exits;
+
+    private final String description;
+    private final ArrayList<Item> items;
+    private final HashMap<String, Room> exits;
 
     public Room(String description) {
         this.description = description;
-        exits = new HashMap<String, Room>();
+        this.items = new ArrayList<>();
+        this.exits = new HashMap<>();
+    }
+    
+    public Room(String description, ArrayList<Item> items) {
+        this.description = description;
+        this.items = items;
+        this.exits = new HashMap<>();
     }
 
     public void setExit(String direction, Room neighbor) {
         exits.put(direction, neighbor);
+    }
+
+    public void setItems(Item[] items) {
+        this.items.clear();
+        this.items.addAll(Arrays.asList(items));
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
     }
 
     public String getShortDescription() {
@@ -23,20 +38,45 @@ public class Room {
     }
 
     public String getLongDescription() {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are " + description + ".\n" + getItemsString() + ".\n" + getExitString() + ".\n";
     }
 
     private String getExitString() {
-        String returnString = "Exits:";
+        StringBuilder returnString = new StringBuilder("Exits:");
         Set<String> keys = exits.keySet();
         for (String exit : keys) {
-            returnString += " " + exit;
+            returnString.append(" ").append(exit);
         }
-        return returnString;
+        return returnString.toString();
     }
 
     public Room getExit(String direction) {
         return exits.get(direction);
     }
-}
 
+    public Item getItem(String name){
+        Item item = null;
+        for(Item currentItem : items){
+            if(currentItem.getName().equalsIgnoreCase(name)){
+                item = currentItem;
+            }
+        }
+        return item;
+    }
+
+    public void addItem(Item item){
+        items.add(item);
+    }
+
+    public void removeItem(Item item){items.remove(item);}
+
+    public String getItemsString(){
+        StringBuilder itemsString = new StringBuilder();
+        
+        itemsString.append("Available products: ");
+        for(Item item : items){
+            itemsString.append("- ").append(item.getName()).append("\n");
+        }
+        return itemsString.toString();
+    }
+}

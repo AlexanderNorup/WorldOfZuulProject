@@ -14,7 +14,7 @@ public class Player {
     public boolean addItem(Item item){
         inventory.add(item);
         return true;
-        //TODO: Discuss weather or not this method should return a boolean.
+        //TODO: Discuss whether or not this method should return a boolean.
     }
 
     public void removeItem(Item item){

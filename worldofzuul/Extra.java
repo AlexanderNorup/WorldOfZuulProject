@@ -1,7 +1,7 @@
 package worldofzuul;
 
 public enum Extra {
-    VEGAN("Vegan"), LACTOSE_FREE("Lactose Free"), CONTAINS_PEANUTS("Contains Peanuts"),
+    VEGAN("Vegan"), CONTAINS_LACTOSE("Contains Lactose"), CONTAINS_PEANUTS("Contains Peanuts"),
     ORGANIC("Organic"), GLUTEN("Gluten"), CONTAINS_SOY("Contains Soy");
 
     private String extraWord;
