@@ -46,19 +46,6 @@ public class Room {
         return "You are " + description + ".\n" + getItemsString() + ".\n" + getExitString() + ".\n";
     }
 
-    public String getItemsString() {
-        StringBuilder str = new StringBuilder();
-        for (Item i: items) {
-            str.append(i.getName());
-            str.append(", ");
-        }
-
-        //Removes the last comma and space
-        str.delete(str.length()-2, str.length());
-
-        return str.toString();
-    }
-
     private String getExitString() {
         StringBuilder returnString = new StringBuilder("Exits:");
         Set<String> keys = exits.keySet();
