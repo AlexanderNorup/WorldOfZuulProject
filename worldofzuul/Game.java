@@ -17,17 +17,31 @@ public class Game {
     private void createRooms() {
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
 
-        outside = new Room("outside the main entrance of the store");
-        aisle1 = new Room("in the 1st aisle");
-        aisle2 = new Room("in the 2nd aisle");
-        aisle3 = new Room("in the 3rd aisle");
-        dairy = new Room("in the dairy section", new ArrayList<>());
-        bakery = new Room("at the bakery", new ArrayList<>());
-        frozen = new Room("in the frozen section", new ArrayList<>());
-        tinnedGoods = new Room("in the tinned goods section", new ArrayList<>());
-        produce = new Room("at the produce section", new ArrayList<>());
-        butcher = new Room("at the butcher", new ArrayList<>());
-        cashier = new Room("at the cashier", new ArrayList<>());
+        outside = new Room("outside the main entrance of the store", new ArrayList<>());
+        ile1 = new Room("in 1st ile");
+        ile2 = new Room("in 2nd ile");
+        ile3 = new Room("in 3rd ile");
+        butcher = new Room("at the butcher", ItemGenerator.getButcherItems());
+        produce = new Room("at the produce section", ItemGenerator.getProduceItems());
+        frozen = new Room("in the frozen section", ItemGenerator.getFrozenItems());
+        dairy = new Room("in the dairy section", ItemGenerator.getDairyItems());
+        bakery = new Room("ad the bakery", ItemGenerator.getBakeryItems());
+        tinnedGoods = new Room("in the tinned goods ile", ItemGenerator.getTinnedGoodsItems());
+        cashier = new Room("at the cashier");
+
+        outside.setExit("north", ile1);
+
+        ile1.setExit("north", ile2);
+        ile1.setExit("east", tinnedGoods);
+        ile1.setExit("west", frozen);
+
+        ile2.setExit("north", ile3);
+        ile2.setExit("east", dairy);
+        ile2.setExit("west", bakery);
+
+        ile3.setExit("north", cashier);
+        ile3.setExit("east", butcher);
+        ile3.setExit("west", produce);
 
         outside.setExit("south", aisle1);
 
