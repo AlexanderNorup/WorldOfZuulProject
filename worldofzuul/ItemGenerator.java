@@ -1,6 +1,7 @@
 package worldofzuul;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ItemGenerator {
 
@@ -60,5 +61,16 @@ public class ItemGenerator {
 
     public static PlayerType getSnobPlayerType(){
         return new PlayerType("Snob",45,2400,1000);
+    }
+
+    public static PlayerType RandomPlayerType(){
+        PlayerType type = null;
+        switch (new Random().nextInt(4)){
+            case 0 -> type = getStudentPlayerType();
+            case 1 -> type = getBodybuilderPlayerType();
+            case 2 -> type = getPickyPlayerType();
+            case 3 -> type = getSnobPlayerType();
+        }
+        return type;
     }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Player {
 
-    private ArrayList<Item> inventory;
+    private final ArrayList<Item> inventory;
     private PlayerType type;
 
     public Player() {
@@ -16,6 +16,17 @@ public class Player {
         inventory.add(item);
         return true;
         //TODO: Discuss whether or not this method should return a boolean.
+    }
+
+    public Item getItem(String string){
+        Item item = null;
+        for(Item currentItem : inventory){
+            if (currentItem.getName().equalsIgnoreCase(string)){
+
+                item = currentItem;
+            }
+        }
+        return item;
     }
 
     public void removeItem(Item item){
