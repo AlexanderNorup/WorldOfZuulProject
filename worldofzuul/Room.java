@@ -7,21 +7,28 @@ public class Room {
     private final String description;
     private final ArrayList<Item> items;
     private final HashMap<String, Room> exits;
+    private final boolean canCheckout;
 
-    public Room(String description) {
+    public Room(String description, boolean canCheckout) {
         this.description = description;
         this.items = new ArrayList<>();
         this.exits = new HashMap<>();
+        this.canCheckout = canCheckout;
     }
     
-    public Room(String description, ArrayList<Item> items) {
+    public Room(String description, boolean canCheckout,ArrayList<Item> items) {
         this.description = description;
         this.items = items;
         this.exits = new HashMap<>();
+        this.canCheckout = canCheckout;
     }
 
     public void setExit(String direction, Room neighbor) {
         exits.put(direction, neighbor);
+    }
+
+    public boolean canCheckout(){ //boolean to verify if it's possible to checkout in the current room.
+        return canCheckout;
     }
 
     public void setItems(Item[] items) {
@@ -71,6 +78,9 @@ public class Room {
     public void removeItem(Item item){items.remove(item);}
 
     public String getItemsString(){
+        if(items.size() == 0){  // If the size of the list with items in the current room is 0,
+            return "";          // the 'Available products' string will not be printed
+        }
         StringBuilder itemsString = new StringBuilder();
         
         itemsString.append("Available products: ");

@@ -6,42 +6,30 @@ public class Game {
     private final Parser parser;
     private Room currentRoom;
     private Player player;
+    private ArrayList<GameResult> finishedGames;
 
     public Game() {
         createRooms();
         parser = new Parser();
-
+        player = new Player();
+        finishedGames = new ArrayList<>();
     }
 
     //TODO: Create descriptive directions, add back command
     private void createRooms() {
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
 
-        outside = new Room("outside the main entrance of the store", new ArrayList<>());
-        aisle1 = new Room("in 1st ile");
-        aisle2 = new Room("in 2nd ile");
-        aisle3 = new Room("in 3rd ile");
-        butcher = new Room("at the butcher", ItemGenerator.getButcherItems());
-        produce = new Room("at the produce section", ItemGenerator.getProduceItems());
-        frozen = new Room("in the frozen section", ItemGenerator.getFrozenItems());
-        dairy = new Room("in the dairy section", ItemGenerator.getDairyItems());
-        bakery = new Room("ad the bakery", ItemGenerator.getBakeryItems());
-        tinnedGoods = new Room("in the tinned goods ile", ItemGenerator.getTinnedGoodsItems());
-        cashier = new Room("at the cashier");
-
-        outside.setExit("north", aisle1);
-
-        aisle1.setExit("north", aisle2);
-        aisle1.setExit("east", tinnedGoods);
-        aisle1.setExit("west", frozen);
-
-        aisle2.setExit("north", aisle3);
-        aisle2.setExit("east", dairy);
-        aisle2.setExit("west", bakery);
-
-        aisle3.setExit("north", cashier);
-        aisle3.setExit("east", butcher);
-        aisle3.setExit("west", produce);
+        outside = new Room("outside the main entrance of the store", false);
+        aisle1 = new Room("in the 1st aisle", false );
+        aisle2 = new Room("in the 2nd aisle", false);
+        aisle3 = new Room("in the 3rd aisle", false);
+        dairy = new Room("in the dairy section", false, ItemGenerator.getDairyItems());
+        bakery = new Room("at the bakery", false, ItemGenerator.getBakeryItems());
+        frozen = new Room("in the frozen section", false, ItemGenerator.getFrozenItems());
+        tinnedGoods = new Room("in the tinned goods section", false, ItemGenerator.getTinnedGoodsItems());
+        produce = new Room("at the produce section",false, ItemGenerator.getProduceItems());
+        butcher = new Room("at the butcher", false, ItemGenerator.getButcherItems());
+        cashier = new Room("at the cashier", true);
 
         outside.setExit("south", aisle1);
 
@@ -64,6 +52,8 @@ public class Game {
         aisle3.setExit("west", butcher);
         butcher.setExit("east", aisle3);
         aisle3.setExit("south", cashier);
+
+        cashier.setExit("north", aisle3);
 
         currentRoom = outside; //this sets the starting position to "outside"
     }
@@ -103,11 +93,25 @@ public class Game {
             case DROP -> drop(command);
             case TAKE -> take(command);
             case CHECK -> check(command);
+            case CHECKOUT -> checkout();
 
             default -> System.out.println("processCommand -> unregistered command!");
         }
 
         return wantToQuit;
+    }
+
+    private void checkout(){
+        if (!currentRoom.canCheckout()){ //checks if it is possible to checkout in the current room.
+            System.out.println("You can't checkout here, go to the cashier.");
+            return;
+        }
+        GameResult result = player.getGameResult();
+        finishedGames.add(result); //adds the game result of the currently played game to an arraylist of results.
+        System.out.println("You went to the register and checked out.");
+        System.out.println(player.getSummedValues()); //prints the values for the current shopping trip, price, calories & protein
+        System.out.println("The day is over and you go back home to sleep.");
+        resetGame(); //resets the game and starts anew.
     }
 
     private void printHelp() {
@@ -116,6 +120,14 @@ public class Game {
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
+    }
+
+    private void resetGame(){
+        player.deleteInventory(); // deletes all items in the inventory
+        createRooms(); //creates the rooms again and fills them with items
+        System.out.println(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + "." );
+        System.out.println("It is a new day, you wake up and go to the store.");
+        System.out.println(currentRoom.getLongDescription());
     }
 
     private void goRoom(Command command) {
@@ -192,5 +204,6 @@ public class Game {
         }else {
             System.out.println("'itemname' not found in inventory");
         }
+        //if item null, print "'itemname' not found in inventory"
     }
 }
