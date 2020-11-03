@@ -50,7 +50,7 @@ public class ItemGenerator {
         ArrayList<Item> items = new ArrayList<>();
 
         //Non-organic items
-        items.add(new Item("200gr Edamame",10,0.5,22,242,new Extra[]{Extra.VEGAN}));
+        items.add(new Item("200g Edamame",10,0.5,22,242,new Extra[]{Extra.VEGAN}));
         items.add(new Item("Ready-made Meal",39,6,25,473,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_SOY}));
         items.add(new Item("Frozen Pizza",24,5,42,833,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN, Extra.CONTAINS_SOY}));
         items.add(new Item("250g Spinach",6,0.3,7,57,new Extra[]{Extra.VEGAN}));
@@ -82,7 +82,6 @@ public class ItemGenerator {
 
     public static ArrayList<Item> getBakeryItems(){
         ArrayList<Item> items = new ArrayList<>();
-        items.add(new Item("200gr Ground Beef",13,1.5,8.8,274,new Extra[]{Extra.CONTAINS_GLUTEN, Extra.CONTAINS_LACTOSE}));
         items.add(new Item("500g White Bread",18,0.3,45,1323,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
         items.add(new Item("500g Wholegrain Bread",24,0.3,65,1235,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
         items.add(new Item("200g Pastry",15,0.3,3,800,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
