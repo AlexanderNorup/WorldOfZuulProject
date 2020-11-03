@@ -23,13 +23,13 @@ public class Game {
         aisle1 = new Room("in the 1st aisle", false );
         aisle2 = new Room("in the 2nd aisle", false);
         aisle3 = new Room("in the 3rd aisle", false);
-        dairy = new Room("in the dairy section", false, new ArrayList<>());
-        bakery = new Room("at the bakery", false, new ArrayList<>());
-        frozen = new Room("in the frozen section", false, new ArrayList<>());
-        tinnedGoods = new Room("in the tinned goods section", false, new ArrayList<>());
-        produce = new Room("at the produce section",false, new ArrayList<>());
-        butcher = new Room("at the butcher", false, new ArrayList<>());
-        cashier = new Room("at the cashier", true, new ArrayList<>());
+        dairy = new Room("in the dairy section", false, ItemGenerator.getDairyItems());
+        bakery = new Room("at the bakery", false, ItemGenerator.getBakeryItems());
+        frozen = new Room("in the frozen section", false, ItemGenerator.getFrozenItems());
+        tinnedGoods = new Room("in the tinned goods section", false, ItemGenerator.getTinnedGoodsItems());
+        produce = new Room("at the produce section",false, ItemGenerator.getProduceItems());
+        butcher = new Room("at the butcher", false, ItemGenerator.getButcherItems());
+        cashier = new Room("at the cashier", true);
 
         outside.setExit("south", aisle1);
 
