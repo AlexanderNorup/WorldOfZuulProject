@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Game {
     private final Parser parser;
     private Room currentRoom;
+    private Player player;
 
     public Game() {
         createRooms();
@@ -78,8 +79,7 @@ public class Game {
             case INSPECT -> inspect(command);
             case DROP -> drop(command);
             case TAKE -> take(command);
-            case CHECK_SECTION -> System.out.println(currentRoom.getItemsString());
-            //case CHECK_INVENTORY -> ;
+            case CHECK -> check(command);
             default -> System.out.println("processCommand -> unregistered command!");
         }
 
@@ -109,6 +109,23 @@ public class Game {
         } else {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
+        }
+    }
+
+    //checks if there is a second word when calling the check command and if it is either section or inventory.
+    private void check(Command command) {
+        if (!command.hasSecondWord() || !command.getSecondWord().equalsIgnoreCase("section") ||
+!command.getSecondWord().equalsIgnoreCase("inventory") ){
+            System.out.println("Check what? (Section or Inventory)");
+            return;
+        }
+        String checker = command.getSecondWord();
+
+        if(checker.equalsIgnoreCase("section")){ //checks if the second word is section
+            System.out.println(currentRoom.getItemsString()); //prints items from the current room
+        }
+        else if(checker.equalsIgnoreCase("inventory")){ //checks if the second word is inventory
+            System.out.println(player.getInventoryString()); //prints items from player inventory
         }
     }
 
