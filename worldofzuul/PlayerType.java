@@ -5,29 +5,24 @@ import java.util.ArrayList;
 public class PlayerType {
 
     private String name;
-    private double proteinFactor;
-    private double budgetFactor;
-    private double proteinMin;
+    private double proteinGoal;
     private double calorieMin;
+    private double calorieGoal;
     private double budgetMax;
+    private double budgetFactor;
     private double pickiness;
     private ArrayList<Item> faveItems;
     private ArrayList<Item> hateItems;
     private ArrayList<Extra> thingsThatMatter;
 
-    public PlayerType(String name, double proteinMin, double calorieMin, double budgetMax) {
+    public PlayerType(String name) {
         this.name = name;
-        this.proteinMin = proteinMin;
-        this.calorieMin = calorieMin;
-        this.budgetMax = budgetMax;
+        this.faveItems = new ArrayList<>();
+        this.hateItems = new ArrayList<>();
     }
 
     public String getName() {
         return name;
-    }
-
-    public double getProteinMin() {
-        return proteinMin;
     }
 
     public double getCalorieMin() {
@@ -38,9 +33,7 @@ public class PlayerType {
         return budgetMax;
     }
 
-    public void setProteinFactor(double proteinFactor) {
-        this.proteinFactor = proteinFactor;
-    }
+    public void setProteinFactor(double proteinGoal) { this.proteinGoal = proteinGoal; }
 
     public void setBudgetFactor(double budgetFactor) {
         this.budgetFactor = budgetFactor;
@@ -65,27 +58,43 @@ public class PlayerType {
     //calculate happiness
     //TODO finish
     public double getHappiness(ArrayList<Item> items){
-        double happiness = 1;
+        double happiness = 0;
 
         double totalPrice = 0.0;
         double totalCalories = 0.0;
         double totalProtein = 0.0;
         int itemsSatisfaction = 0;
+        ArrayList<Item> varietyList = new ArrayList<>();
+        double variety = 10;
 
         for (Item item : items) {
+
+            // Sums values
             totalPrice += item.getPrice();
             totalCalories += item.getCalories();
             totalProtein += item.getProtein();
-            if (faveItems.contains(item)){
+
+            // Calculates satisfaction based on favorite and hated items
+            if (faveItems.contains(item)) {
                 itemsSatisfaction -= 1;
             }
             if (hateItems.contains(item)) {
                 itemsSatisfaction -= 2;
             }
+
+            // calculates variety
+            if (varietyList.contains(item)) {
+                variety /= 1.5;
+            } else {
+                varietyList.add(item);
+            }
         }
 
-        if (totalCalories>calorieMin) happiness *= 2;
-        if (totalProtein>proteinMin) happiness *=2;
+        // will add happiness if over proteinMin and subtract happiness if under proteinMin
+        happiness += ((totalProtein/proteinGoal)-1)*30;
+        happiness += ((totalCalories/calorieGoal)-1)*30;
+        happiness += itemsSatisfaction*pickiness;
+        happiness += (variety-5);
 
         return 0;
     }

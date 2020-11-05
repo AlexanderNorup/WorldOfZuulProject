@@ -131,19 +131,19 @@ public class ItemGenerator {
     }
 
     public static PlayerType getStudentPlayerType(){
-        return new PlayerType("Student",45,2200,400);
+        return new PlayerType("Student");
     }
 
     public static PlayerType getBodybuilderPlayerType(){
-        return new PlayerType("Bodybuilder",200,3000,600);
+        return new PlayerType("Bodybuilder");
     }
 
     public static PlayerType getPickyPlayerType(){
-        return new PlayerType("Picky",45,2400,600);
+        return new PlayerType("Picky");
     }
 
     public static PlayerType getSnobPlayerType(){
-        return new PlayerType("Snob",45,2400,1000);
+        return new PlayerType("Snob");
     }
 
     public static PlayerType randomPlayerType(){
