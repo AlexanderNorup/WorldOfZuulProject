@@ -45,6 +45,10 @@ public class PlayerType {
         this.calorieMin = calorieMin;
     }
 
+    public void setOther(int calorieGoal){
+        this.calorieGoal = calorieGoal;
+    }
+
     //set factors to determin happiness caluclation for playertype
     public void setFactors(int proteinFactor, int budgetFactor, int pickynessFactor){
         int equalizer = 100/(proteinFactor + budgetFactor + pickynessFactor);
@@ -107,9 +111,9 @@ public class PlayerType {
 
         //Calculate budget happiness ( max 80)
         if(totalPrice < budgetMax*0.8){
-            happiness += 80 * (1 - totalPrice/budgetMax*0.8);
+            happiness += 80 * (1 - totalPrice/budgetMax*0.8) * budgetFactor;
         }else {
-            happiness -= 80 * totalPrice/budgetMax*0.8;
+            happiness -= 80 * totalPrice/budgetMax*0.8 * budgetFactor;
         }
 
         //Calculate protein happiness (max +80)
