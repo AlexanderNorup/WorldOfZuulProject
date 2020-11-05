@@ -12,15 +12,15 @@ public class Player {
         this.type = playerType;
     }
 
-    public void addItem(Item item){
+    public void addItem(Item item) {
         inventory.add(item);
         //TODO: Discuss whether or not this method should return a boolean.
     }
 
-    public Item getItem(String string){
+    public Item getItem(String string) {
         Item item = null;
-        for(Item currentItem : inventory){
-            if (currentItem.getName().equalsIgnoreCase(string)){
+        for (Item currentItem : inventory) {
+            if (currentItem.getName().equalsIgnoreCase(string)) {
 
                 item = currentItem;
             }
@@ -28,18 +28,18 @@ public class Player {
         return item;
     }
 
-    public void removeItem(Item item){
+    public void removeItem(Item item) {
         inventory.remove(item);
     }
 
-    public String getItemValuesString(String itemName){
+    public String getItemValuesString(String itemName) {
         //We could do this as a lambda. But it's way better.
         //Item item = inventory.stream().filter(itemTemp -> itemTemp.getName().equals(itemName)).findFirst().orElse(null);
 
         Item item = null;
-        for(Item i: inventory){
-            if(itemName.equalsIgnoreCase(i.getName())){
-                item=i;
+        for (Item i : inventory) {
+            if (itemName.equalsIgnoreCase(i.getName())) {
+                item = i;
                 break;
             }
         }
@@ -47,39 +47,34 @@ public class Player {
         return item != null ? item.toString() : "";
     }
 
-    public void deleteInventory(){
-       inventory.clear();
+    public void deleteInventory() {
+        inventory.clear();
 
     }
 
-    public String getInventoryString(){
-        if(inventory.size() == 0){  // If the size of the list with items in the inventory is 0,
+    public String getInventoryString() {
+        if (inventory.size() == 0) {  // If the size of the list with items in the inventory is 0,
             return null;          // the 'Available products' string will not be printed
         }
-        StringBuilder itemsString = new StringBuilder();
 
-        itemsString.append("Available products: \n");
-        for(Item item : inventory){
-            itemsString.append("- ").append(item.getName()).append("\n");
-        }
-        return itemsString.toString();
+        return "Products in inventory: \n" + Item.getListString(inventory);
     }
 
-    public GameResult getGameResult(){
+    public GameResult getGameResult() {
         double totalC02 = 0.0;
-        for(Item item: inventory) {
+        for (Item item : inventory) {
             totalC02 += item.getCo2();
         }
 
         return new GameResult(totalC02, type.getHappiness(inventory), type);
     }
 
-    public String getSummedValues(){
+    public String getSummedValues() {
         double totalPrice = 0.0;
         double totalCalories = 0.0;
         double totalProtein = 0.0;
 
-        for(Item item: inventory){
+        for (Item item : inventory) {
             totalPrice += item.getPrice();
             totalCalories += item.getCalories();
             totalProtein += item.getProtein();
@@ -88,11 +83,11 @@ public class Player {
         return "Total Price: " + totalPrice + " | " + "Total Calories: " + totalCalories + " | " + "Total Protein: " + totalProtein;
     }
 
-    public void setPlayerType(PlayerType type){
-            this.type = type;
+    public void setPlayerType(PlayerType type) {
+        this.type = type;
     }
 
-    public PlayerType getPlayerType(){
+    public PlayerType getPlayerType() {
         return this.type;
     }
 
