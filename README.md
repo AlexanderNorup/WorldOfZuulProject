@@ -4,9 +4,9 @@
 ## Getting Started
 To be able to run the program you have to clone the repostitory to your IDE.
 
-´´´
+```
 <b> https://github.com/AlexanderNorup/WorldOfZuulProject.git <\b>
-´´´
+```
 
 ## Authors
 * [Alexander Norup](https://github.com/AlexanderNorup)
