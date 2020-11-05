@@ -14,6 +14,11 @@ public enum Category {
         this.categoryWord = categoryWord;
     }
 
+    /**
+     * overrides toString to return String variable categoryWord
+     * when used on objects of Category types
+     * @return categoryWord
+     */
     @Override
     public String toString() {
         return categoryWord;

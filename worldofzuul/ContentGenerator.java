@@ -12,6 +12,11 @@ public class ContentGenerator {
     // Number with which to multiply price when product is organic
     private static final double organicFactor = 1.2;
 
+    /**
+     *
+     * @return returns the Arraylist variable items with
+     * item objects in it. This is a list of butcher items.
+     */
     public static ArrayList<Item> getButcherItems(){
         ArrayList<Item> items = new ArrayList<>();
         //Not organic
@@ -29,6 +34,11 @@ public class ContentGenerator {
         return items;
     }
 
+    /**
+     *
+     * @return returns a Arraylist of non organic item objects and organic.
+     * This is a list of produce items.
+     */
     public static ArrayList<Item> getProduceItems(){
         ArrayList<Item> items = new ArrayList<>();
         //Not organic
@@ -50,6 +60,11 @@ public class ContentGenerator {
         return items;
     }
 
+    /**
+     *
+     * @return returns a Arraylist of non organic item objects and organic.
+     * this is a list of frozen items.
+     */
     public static ArrayList<Item> getFrozenItems(){
         ArrayList<Item> items = new ArrayList<>();
 
@@ -84,6 +99,11 @@ public class ContentGenerator {
         return items;
     }
 
+    /**
+     *
+     * @return returns a Arraylist of item objects.
+     * this is a list of bakery items.
+     */
     public static ArrayList<Item> getBakeryItems(){
         ArrayList<Item> items = new ArrayList<>();
         items.add(new Item("500g White Bread",18,0.3,45,1323,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
@@ -93,7 +113,11 @@ public class ContentGenerator {
 
         return items;
     }
-
+    /**
+     *
+     * @return returns a Arraylist of non organic item objects and organic.
+     * this is a list of tinned good items.
+     */
     public static ArrayList<Item> getTinnedGoodsItems(){
         ArrayList<Item> items = new ArrayList<>();
 
@@ -113,6 +137,12 @@ public class ContentGenerator {
         return items;
     }
 
+    /**
+     *
+     * @param items
+     * @return returns a new list with all the same objects as the passed
+     * ArrayList, but turned organic.
+     */
     public static ArrayList<Item> createOrganics(ArrayList<Item> items) {
         ArrayList<Item> organicItems = new ArrayList<>();
         double organicFactor = 1.2;
@@ -150,6 +180,11 @@ public class ContentGenerator {
         return new PlayerType("Snob",null);
     }
 
+    /**
+     *
+     * @return returns a random playerType with the use of switch
+     * statements
+     */
     public static PlayerType randomPlayerType(){
         PlayerType type = null;
         switch (new Random().nextInt(4)){
