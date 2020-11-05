@@ -23,6 +23,7 @@ public class PlayerType {
 
     public PlayerType(String name, String description) {
         this.name = name;
+        this.description = description;
         this.faveItems = new ArrayList<>();
         this.hateItems = new ArrayList<>();
         thingsThatMatter = new ArrayList<>();
@@ -49,7 +50,7 @@ public class PlayerType {
         this.calorieMin = calorieMin;
     }
 
-    public void setOther(int calorieGoal){
+    public void setCalorieGoal(int calorieGoal){
         this.calorieGoal = calorieGoal;
     }
 
@@ -121,7 +122,7 @@ public class PlayerType {
         }
 
         //Calculate protein happiness (max +80)
-        double minimumProtein = calorieGoal * 0.15 / 4;
+        /*double minimumProtein = calorieGoal * 0.15 / 4;
         double proteinGoal = calorieGoal * 0.15 / 4;
         int tempHappiness = 0;
 
@@ -130,28 +131,42 @@ public class PlayerType {
         }else {
             tempHappiness -= 80 * (1 - (totalProtein)/(minimumProtein)) * proteinFactor;
         }
-        happiness += Math.max(tempHappiness, 80);
+        happiness += this.capValue(tempHappiness, 80);*/
 
 
 
         //calculate pickyness
-        double temp1 = (double) faveItemsBought / (double) faveItems.size();
-        double temp2 = (double) hateItemsBaught / (double) hateItems.size();
-        double temp3 = (temp1+(percentItemsContainingExtras/(double) items.size()))/2;
+        if(!faveItems.isEmpty() && !hateItems.isEmpty()) {
+            double temp1 = (double) faveItemsBought / (double) faveItems.size();
+            double temp2 = (double) hateItemsBaught / (double) hateItems.size();
+            double temp3 = (temp1 + (percentItemsContainingExtras / (double) items.size())) / 2;
 
-        happiness += 80 * temp3 * pickynessfactor;
-        happiness += 80 * temp2 * pickynessfactor;
+            happiness += 80 * temp3 * pickynessfactor;
+            happiness += 80 * temp2 * pickynessfactor;
+        }
 
         //generic happiness
         //Calorie, variaty
         happiness -= (1 - (totalCalories - calorieMin) / (calorieGoal - calorieMin)) * 10;
 
         if(variety > 5){
-            happiness += Math.max((variety - 5) * 2,10);
+            happiness += this.capValue((variety - 5) * 2,10);
         }else {
             happiness -= (variety - 5) * 2;
         }
 
         return happiness;
     }
+
+    /**
+     * Returns the value if it's lower than the cap.
+     * Otherwises returns the cap
+     * @param value The value to the test
+     * @param cap The maximum value
+     * @return the cap, if the value is higher than the cap
+     */
+    private double capValue(double value, double cap){
+        return Math.min(value, cap);
+    }
+
 }
