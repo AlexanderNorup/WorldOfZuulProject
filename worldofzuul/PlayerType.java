@@ -25,6 +25,7 @@ public class PlayerType {
         this.name = name;
         this.faveItems = new ArrayList<>();
         this.hateItems = new ArrayList<>();
+        thingsThatMatter = new ArrayList<>();
     }
 
     public String getName() {
@@ -46,6 +47,10 @@ public class PlayerType {
     public void setlimitations(int budgetMax, int calorieMin){
         this.budgetMax = budgetMax;
         this.calorieMin = calorieMin;
+    }
+
+    public void setOther(int calorieGoal){
+        this.calorieGoal = calorieGoal;
     }
 
     //set factors to determin happiness caluclation for playertype
@@ -76,7 +81,6 @@ public class PlayerType {
         double totalPrice = 0.0;
         double totalCalories = 0.0;
         double totalProtein = 0.0;
-        int itemsSatisfaction = 0;
         int faveItemsBought = 0;
         int hateItemsBaught = 0;
         int percentItemsContainingExtras = 0;
@@ -91,10 +95,10 @@ public class PlayerType {
             totalProtein += item.getProtein();
 
             // Calculates satisfaction based on favorite and hated items
-            if (faveItems.contains(item)) {
+            if (faveItems.contains(item) && !itemTypeList.contains(item)) {
                 faveItemsBought += 1;
             }
-            if (hateItems.contains(item)) {
+            if (hateItems.contains(item) && !itemTypeList.contains(item)) {
                 hateItemsBaught += 1;
             }
 
@@ -111,9 +115,9 @@ public class PlayerType {
 
         //Calculate budget happiness ( max 80)
         if(totalPrice < budgetMax*0.8){
-            happiness += 80 * (1 - totalPrice/budgetMax*0.8);
+            happiness += 80 * (1 - totalPrice/budgetMax*0.8) * budgetFactor;
         }else {
-            happiness -= 80 * totalPrice/budgetMax*0.8;
+            happiness -= 80 * totalPrice/budgetMax*0.8 * budgetFactor;
         }
 
         //Calculate protein happiness (max +80)
@@ -122,9 +126,9 @@ public class PlayerType {
         int tempHappiness = 0;
 
         if(totalProtein > minimumProtein){
-            tempHappiness += 80 * (totalProtein-minimumProtein)/(proteinGoal-minimumProtein);
+            tempHappiness += 80 * (totalProtein-minimumProtein)/(proteinGoal-minimumProtein) * proteinFactor;
         }else {
-            tempHappiness -= 80 * (1 - (totalProtein)/(minimumProtein));
+            tempHappiness -= 80 * (1 - (totalProtein)/(minimumProtein)) * proteinFactor;
         }
         happiness += Math.max(tempHappiness, 80);
 
@@ -150,7 +154,4 @@ public class PlayerType {
 
         return happiness;
     }
-
-
-
 }

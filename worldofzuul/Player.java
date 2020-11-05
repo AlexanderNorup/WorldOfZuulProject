@@ -101,7 +101,7 @@ public class Player {
             totalProtein += item.getProtein();
         }
 
-        return "Total Price: " + totalPrice + " | " + "Total Calories: " + totalCalories + " | " + "Total Protein: " + totalProtein;
+        return "Happiness: " + type.getHappiness(inventory) + "Total Price: " + totalPrice + " | " + "Total Calories: " + totalCalories + " | " + "Total Protein: " + totalProtein;
     }
 
     public void setPlayerType(PlayerType type) {
@@ -109,7 +109,7 @@ public class Player {
     }
 
     public PlayerType getPlayerType() {
-        return this.type;
+        return type;
     }
 
     public boolean underBudget(){
