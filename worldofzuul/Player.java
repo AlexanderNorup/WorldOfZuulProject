@@ -112,4 +112,23 @@ public class Player {
         return this.type;
     }
 
+    public boolean underBudget(){
+        double totalPrice = 0.0;
+
+        for (Item item : inventory) {
+            totalPrice += item.getPrice();
+        }
+
+        return totalPrice <= type.getBudgetMax();
+    }
+
+    public boolean overMinCalories(){
+        double totalCalories = 0.0;
+
+        for (Item item : inventory) {
+            totalCalories += item.getCalories();
+        }
+
+        return totalCalories >= type.getCalorieMin();
+    }
 }

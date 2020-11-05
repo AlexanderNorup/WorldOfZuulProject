@@ -2,14 +2,14 @@
 
 
 ## Getting Started
-To be able to run the program you have to clone the repostitory to your IDE.
+To be able to run the game you have to clone the repository to your IDE.
 
 ```
 https://github.com/AlexanderNorup/WorldOfZuulProject.git
 ```
 
 ## Authors
-* [Alexander Norup](https://github.com/AlexanderNorup)
+* [Alexander V. Nørup](https://github.com/AlexanderNorup)
 
 * [Jonas Solhaug Kaad](https://github.com/JonasKaad)
 

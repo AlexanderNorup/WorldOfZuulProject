@@ -94,12 +94,7 @@ public class Game {
      */
     public void printPlayer(){
         System.out.println("You are playing as a " + player.getPlayerType().getName());
-        System.out.println("| Your budget is " + player.getPlayerType().getBudgetMax() + " dkk." + "  ||  " +
-                "Your minimum calorie goal is " + player.getPlayerType().getCalorieMin() + "  ||  " +
-                "Your minimum protein goal is " + player.getPlayerType().getProteinMin() + " |");
-        //System.out.println("Your budget is " + player.getPlayerType().getBudgetMax() + " dkk.");
-        //System.out.println("Your minimum calorie goal is " + player.getPlayerType().getCalorieMin());
-        //System.out.println("Your minimum protein goal is " + player.getPlayerType().getProteinMin());
+        System.out.println(player.getPlayerType().getDescription());
     }
 
     private void printWelcome() {
@@ -149,6 +144,15 @@ public class Game {
             System.out.println("You can't checkout here, go to the cashier.");
             return;
         }
+        if(!player.underBudget()){
+            System.out.println("You are over budget. Drop some items (use \"drop\" command)");
+            return;
+        }
+        if(!player.overMinCalories()){
+            System.out.println("You are under your calorie requirements. Pick up some items (use \"take\" command)");
+            return;
+        }
+
         GameResult result = player.getGameResult();
         finishedGames.add(result); //adds the game result of the currently played game to an arraylist of results.
         System.out.println("You went to the register and checked out.");
