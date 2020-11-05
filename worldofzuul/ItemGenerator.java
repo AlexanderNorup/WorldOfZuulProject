@@ -131,7 +131,12 @@ public class ItemGenerator {
     }
 
     public static PlayerType getStudentPlayerType(){
-        return new PlayerType("Student", null);
+        PlayerType type = new PlayerType("Student", null);
+        type.setFactors(1,7,2);
+        type.setlimitations(50,1000);
+        type.addThingsThatMatter(Extra.ORGANIC);
+        return type;
+
     }
 
     public static PlayerType getBodybuilderPlayerType(){
