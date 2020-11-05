@@ -15,7 +15,7 @@ public class Game {
         finishedGames = new ArrayList<>();
     }
 
-    //TODO: Create descriptive directions, add back command
+    //TODO: add back command?
     private void createRooms() {
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
 
@@ -90,7 +90,6 @@ public class Game {
         System.out.println(currentRoom.getLongDescription());
     }
 
-    //TODO: add Check inventory method
     private boolean processCommand(Command command) {
         boolean wantToQuit = false;
 
@@ -121,7 +120,7 @@ public class Game {
         GameResult result = player.getGameResult();
         finishedGames.add(result); //adds the game result of the currently played game to an arraylist of results.
         System.out.println("You went to the register and checked out.");
-        System.out.println(player.getSummedValues()); //prints the values for the current shopping trip, price, calories & protein
+        System.out.println(player.getSummedValuesString()); //prints the values for the current shopping trip, price, calories & protein
         System.out.println("The day is over and you go back home to sleep.");
         resetGame(); //resets the game and starts anew.
     }
@@ -198,6 +197,7 @@ public class Game {
     }
 
     //checks if there is a second word when calling the check command and if it is either section or inventory.
+    //TODO print total value
     private void check(Command command) {
         String word = command.getSecondWord();
         if (word == null || !word.equalsIgnoreCase("section") && !word.equalsIgnoreCase("inventory") ){
@@ -230,17 +230,16 @@ public class Game {
         System.out.println(item != null ? item.toString() : "item not found");
     }
 
-    //TODO: add item to inventory
     private void take(Command command){
         Item item = currentRoom.getItem(command.getSecondWord());
         if(item != null){
             player.addItem(item);
+            System.out.println("You picked up " + item.getName());
         }else {
             System.out.println("'" + command.getSecondWord() + "' not found in store");
         }
     }
 
-    //TODO: move item from inventory to room
     private void drop(Command command){
 
         //get item from user
@@ -249,6 +248,7 @@ public class Game {
         //if item not null, remove item from inventory and add to store
         if(item != null){
             player.removeItem(item);
+            System.out.println("You dropped " + item.getName());
         }else {
             System.out.println("'"+command.getSecondWord()+"' not found in inventory");
         }

@@ -23,7 +23,6 @@ public class Item {
 
     @Override
     public String toString() {
-        //TODO should print extras as well
         StringBuilder extrasString = new StringBuilder();
         for (Extra extra: extra){
             extrasString.append(extra.toString());
@@ -78,5 +77,13 @@ public class Item {
                     .append("\n");
         }
         return itemsString.toString();
+    }
+
+    public static Double getListValue(ArrayList<Item> list) {
+        double totalValue = 0.0;
+        for (Item item : list) {
+            totalValue += item.getPrice();
+        }
+        return totalValue;
     }
 }

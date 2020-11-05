@@ -57,7 +57,7 @@ public class Player {
             return null;          // the 'Available products' string will not be printed
         }
 
-        return "Products in inventory: \n" + Item.getListString(inventory);
+        return "Products in inventory: \n" + Item.getListString(inventory) + "Total value of inventory: kr " + Item.getListValue(inventory);
     }
 
     public GameResult getGameResult() {
@@ -69,7 +69,7 @@ public class Player {
         return new GameResult(totalC02, type.getHappiness(inventory), type);
     }
 
-    public String getSummedValues() {
+    public String getSummedValuesString() {
         double totalPrice = 0.0;
         double totalCalories = 0.0;
         double totalProtein = 0.0;
