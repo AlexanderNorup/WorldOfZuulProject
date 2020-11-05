@@ -2,6 +2,15 @@ package worldofzuul;
 
 import java.util.ArrayList;
 
+
+/**
+ * The main class of the game
+ * Processes the commands from the parser and takes care of all writing to the screen
+ * This keeps track of the current room, the player and a list of finished games intended
+ * for calculating a total score across multiple games.
+ * There is a method for each command the user can enter
+ * They are all called from the processCommand function
+ */
 public class Game {
     private final Parser parser;
     private Room currentRoom;
@@ -11,10 +20,15 @@ public class Game {
     public Game() {
         createRooms();
         parser = new Parser();
-        player = new Player(ItemGenerator.randomPlayerType());
+        player = new Player(ContentGenerator.randomPlayerType());
         finishedGames = new ArrayList<>();
     }
 
+    /**
+     * Creates all the rooms in the shopping mall and connects them with setExit
+     * Also populates some of the rooms with items
+     * Sets the current room
+     */
     //TODO: add back command?
     private void createRooms() {
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
@@ -26,12 +40,12 @@ public class Game {
                 "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", false);
         aisle3 = new Room("in the 3rd aisle. \nTo your east is the produce section, to your west is the " +
                 "butcher, to your north is the 2nd aisle, to your south is the cashier", false);
-        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", false, ItemGenerator.getDairyItems());
-        bakery = new Room("at the bakery\nTo your east is the 1st aisle", false, ItemGenerator.getBakeryItems());
-        frozen = new Room("in the frozen section. \nTo your west is aisle 2", false, ItemGenerator.getFrozenItems());
-        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", false, ItemGenerator.getTinnedGoodsItems());
-        produce = new Room("at the produce section. \nTo your west is the 3. aisle",false, ItemGenerator.getProduceItems());
-        butcher = new Room("at the butcher. \nTo your east is the 3. aisle", false, ItemGenerator.getButcherItems());
+        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", false, ContentGenerator.getDairyItems());
+        bakery = new Room("at the bakery\nTo your east is the 1st aisle", false, ContentGenerator.getBakeryItems());
+        frozen = new Room("in the frozen section. \nTo your west is aisle 2", false, ContentGenerator.getFrozenItems());
+        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", false, ContentGenerator.getTinnedGoodsItems());
+        produce = new Room("at the produce section. \nTo your west is the 3. aisle",false, ContentGenerator.getProduceItems());
+        butcher = new Room("at the butcher. \nTo your east is the 3. aisle", false, ContentGenerator.getButcherItems());
         cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", true);
 
         outside.setExit("south", aisle1);
@@ -60,6 +74,10 @@ public class Game {
         currentRoom = outside; //this sets the starting position to "outside"
     }
 
+    /**
+     * Print welcome message and runs an "infinite" while loop
+     * continuously getting new commands and processing them.
+     */
     public void play() {
         printWelcome();
         printPlayer();
@@ -71,6 +89,9 @@ public class Game {
         System.out.println("Thank you for playing.  Good bye.");
     }
 
+    /**
+     * prints the properties of the playerType
+     */
     public void printPlayer(){
         System.out.println("You are playing as a " + player.getPlayerType().getName());
         System.out.println(player.getPlayerType().getDescription());
@@ -85,6 +106,12 @@ public class Game {
         System.out.println(currentRoom.getLongDescription());
     }
 
+    /**
+     * Extracts the CommandWord from the Command
+     * calls the appropriate  method for processing the command
+     * @param command Command to be processed
+     * @return false if the CommandWord is quit. True otherwise
+     */
     private boolean processCommand(Command command) {
         boolean wantToQuit = false;
 
@@ -107,6 +134,11 @@ public class Game {
         return wantToQuit;
     }
 
+    /**
+     * Checks out IF the player is at the cash register and the player has reached their
+     * calorie goal without using up their budget
+     * if everything is alright adds a new gameResult to the list of results and restarts the game
+     */
     private void checkout(){
         if (!currentRoom.canCheckout()){ //checks if it is possible to checkout in the current room.
             System.out.println("You can't checkout here, go to the cashier.");
@@ -182,18 +214,27 @@ public class Game {
         }
     }
 
+    /**
+     * Takes care of resetting player and rooms and prints stuff to the user
+     */
     private void resetGame(){
         reactToResults();
         player.deleteInventory(); // deletes all items in the inventory
         createRooms(); //creates the rooms again and fills them with items
         System.out.println(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + "." );
-        player.setPlayerType((ItemGenerator.randomPlayerType()));
+        player.setPlayerType((ContentGenerator.randomPlayerType()));
         System.out.println("It is a new day, you wake up and go to the store.");
         printPlayer();
         System.out.println(currentRoom.getLongDescription());
 
     }
 
+    /**
+     * Prints messages depending on co2 and happiness
+     * the more co2 the player has emitted, the hotter the world will become
+     * the more negative the players happiness, the more unhappy the player will be
+     * This will be reflected in the printed messages
+     */
     private void reactToResults(){
         int happiness = 0;
         double co2 = 0;
@@ -227,6 +268,9 @@ public class Game {
         }
     }
 
+    /**
+     * @param command Command with a second word which is the name of the room to go to
+     */
     private void goRoom(Command command) {
         if (!command.hasSecondWord()) {
             System.out.println("Go where?");
@@ -245,8 +289,12 @@ public class Game {
         }
     }
 
+    /**
+     * Prints the items in the inventory or current room (if any)
+     * Prints "no products in section/inventory" otherwise
+     * @param command Command. Second word should be "inventory" or "section"
+     */
     //checks if there is a second word when calling the check command and if it is either section or inventory.
-    //TODO print total value
     private void check(Command command) {
         String word = command.getSecondWord();
         if (word == null || !word.equalsIgnoreCase("section") && !word.equalsIgnoreCase("inventory") ){
@@ -268,6 +316,11 @@ public class Game {
         }
     }
 
+    /**
+     * Ends the game if the command has no second word
+     * @param command
+     * @return whether the game is to be ended
+     */
     private boolean quit(Command command) {
         if (command.hasSecondWord()) {
             System.out.println("Quit what?");
@@ -277,12 +330,20 @@ public class Game {
         }
     }
 
+    /**
+     * prints information about the specified item
+     * @param command second word should be the name of the item the player wants to inspect
+     */
     //TODO:Check both Player and Room for item
     private void inspect(Command command){
         Item item = currentRoom.getItem(command.getSecondWord());
         System.out.println(item != null ? item.toString() : "item not found");
     }
 
+    /**
+     * Adds an item from the room to the players inventory
+     * @param command second word should be the name of the item the player wants to pick up
+     */
     private void take(Command command){
         Item item = currentRoom.getItem(command.getSecondWord());
         if(item != null){
@@ -293,6 +354,10 @@ public class Game {
         }
     }
 
+    /**
+     * Removes an item from the players inventory
+     * @param command second word should be the name of the item the player wants to remove
+     */
     private void drop(Command command){
 
         //get item from user

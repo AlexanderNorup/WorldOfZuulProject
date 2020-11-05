@@ -1,5 +1,9 @@
 package worldofzuul;
 
+/**
+ * Enum for properties that only apply to relatively few items
+ * Each item has a list of "Extras" for example an item can be organic and contain lactose
+ */
 public enum Extra {
     VEGAN("Vegan"),
     CONTAINS_LACTOSE("Contains Lactose"),

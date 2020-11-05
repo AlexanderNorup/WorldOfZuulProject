@@ -3,7 +3,11 @@ package worldofzuul;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ItemGenerator {
+/**
+ * Creates the Arraylist of items for each room as well as
+ * the differenct player types
+ */
+public class ContentGenerator {
 
     // Number with which to multiply price when product is organic
     private static final double organicFactor = 1.2;
