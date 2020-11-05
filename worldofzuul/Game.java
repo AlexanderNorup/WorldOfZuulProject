@@ -20,7 +20,7 @@ public class Game {
     public Game() {
         createRooms();
         parser = new Parser();
-        player = new Player(ContentGenerator.randomPlayerType());
+        player = new Player(ContentGenerator.getStudentPlayerType());
         finishedGames = new ArrayList<>();
     }
 
@@ -204,8 +204,7 @@ public class Game {
         else {
             System.out.println("You are out shopping as a " + player.getPlayerType().getName());
             System.out.println("| Your budget is " + player.getPlayerType().getBudgetMax() + " dkk." + "  ||  " +
-                    "Your minimum calorie goal is " + player.getPlayerType().getCalorieMin() + "  ||  " +
-                    "Your minimum protein goal is " + player.getPlayerType().getProteinMin() + " |");
+                    "Your minimum calorie goal is " + player.getPlayerType().getCalorieMin() + "  |");
             System.out.println();
             System.out.println("Your command words are:");
             parser.showCommands();
@@ -222,7 +221,7 @@ public class Game {
         player.deleteInventory(); // deletes all items in the inventory
         createRooms(); //creates the rooms again and fills them with items
         System.out.println(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + "." );
-        player.setPlayerType((ContentGenerator.randomPlayerType()));
+        player.setPlayerType((ContentGenerator.getStudentPlayerType()));
         System.out.println("It is a new day, you wake up and go to the store.");
         printPlayer();
         System.out.println(currentRoom.getLongDescription());
@@ -318,7 +317,7 @@ public class Game {
 
     /**
      * Ends the game if the command has no second word
-     * @param command
+     * @param command Used to make sure there isn't a second word.
      * @return whether the game is to be ended
      */
     private boolean quit(Command command) {

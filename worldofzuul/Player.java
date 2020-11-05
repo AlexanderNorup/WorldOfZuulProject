@@ -1,6 +1,7 @@
 package worldofzuul;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Intended to be instantiated once. keeps various data about the player
@@ -101,7 +102,7 @@ public class Player {
             totalProtein += item.getProtein();
         }
 
-        return "Total Price: " + totalPrice + " | " + "Total Calories: " + totalCalories + " | " + "Total Protein: " + totalProtein;
+        return "Happiness: " + String.format(Locale.US, "%7.2f",  type.getHappiness(inventory)) + " | Total Price: " + totalPrice + " | " + "Total Calories: " + totalCalories + " | " + "Total Protein: " + totalProtein;
     }
 
     public void setPlayerType(PlayerType type) {
@@ -109,7 +110,7 @@ public class Player {
     }
 
     public PlayerType getPlayerType() {
-        return this.type;
+        return type;
     }
 
     public boolean underBudget(){

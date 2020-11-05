@@ -135,19 +135,26 @@ public class ContentGenerator {
     }
 
     public static PlayerType getStudentPlayerType(){
-        return new PlayerType("Student", null);
+        PlayerType type = new PlayerType("Student", "The student is poor. You need to minimize the amount of money you use.\n" +
+                "You need around 2200 calories per day, and the student cares about the enviroment. Focus on organic items, and please try not to make the world explode.");
+        type.setFactors(1,7,2);
+        type.setlimitations(50,1000);
+        type.setCalorieGoal(2200);
+        type.addThingsThatMatter(Extra.ORGANIC);
+        return type;
+
     }
 
     public static PlayerType getBodybuilderPlayerType(){
-        return new PlayerType("Bodybuilder",null);
+        return new PlayerType("Bodybuilder","The body builder needs loads of protein!");
     }
 
     public static PlayerType getPickyPlayerType(){
-        return new PlayerType("Picky",null);
+        return new PlayerType("Picky","The picky player type has a lot of money, but he is very Picky and needs the optimal amount of calories.");
     }
 
     public static PlayerType getSnobPlayerType(){
-        return new PlayerType("Snob",null);
+        return new PlayerType("Snob","You just hate people");
     }
 
     public static PlayerType randomPlayerType(){
