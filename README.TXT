@@ -1,28 +1,13 @@
-Project: zuul-with-enums-v2
-Authors: Michael Kolling and David J. Barnes
-
-This project is part of the material for the book 
-
-   
-Objects First with Java - A Practical Introduction using BlueJ
-   
-Third edition
-   David J. Barnes and Michael Kolling
-   Pearson Education, 2006
-   
-
-This project is a simple framework for an adventure game. 
-In this version,
-it has a few rooms and the ability for a player to walk between these rooms.
-
-That's all.
-
-To start this application, create an instance of class "Game" and call its
-"play" method.
+# 1. Semesterprojekt - World of Zuul
 
 
-This project was written to illustrate the use of enums to support
-language independence of the game logic.
+# Getting Started
 
 
-Read chapter 7 of the book to get a detailed description of the project.
+# Authors
+[Alexander Norup](https://github.com/AlexanderNorup)
+[Jonas Solhaug Kaad](https://github.com/JonasKaad)
+[Magnus Kjær Sørensen](https://github.com/magnuskjaer)
+[Fuad H. Farah](https://github.com/fuad0019)
+[Troels Kaldau](https://github.com/TKalo)
+[Sebastian Christensen Mondrup](https://github.com/SebMon)
