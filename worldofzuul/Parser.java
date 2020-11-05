@@ -15,6 +15,11 @@ public class Parser {
         reader = new Scanner(System.in);
     }
 
+    /**
+     * Gets a line of text from the user through a scanner
+     * Splits the line into a commandWord and a string with the rest of the text
+     * @return The line of text the user has just entered represented as a Command
+     */
     public Command getCommand() {
         String inputLine;
         String word1;

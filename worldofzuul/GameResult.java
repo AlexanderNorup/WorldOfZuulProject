@@ -2,7 +2,7 @@ package worldofzuul;
 
 /**
  * A simple class for storing the result of one game
- * contains co2, happiness and playertype of the concerned game
+ * contains co2, happiness and playerType of the concerned game
  */
 public class GameResult {
 

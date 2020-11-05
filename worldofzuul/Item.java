@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Class for creating objects repressenting an item
+ * Class for creating objects representing an item
  * Contains getters and overridden toString and equals methods
  * Has two static methods which take an ArrayList as parameter for getting a
  * String of the items in the list or getting the total price of the items in the list
@@ -26,7 +26,9 @@ public class Item {
         this.extra = extra;
     }
 
-
+    /**
+     * @return item name, price, calories, protein and any extras
+     */
     @Override
     public String toString() {
         StringBuilder extrasString = new StringBuilder();
@@ -39,6 +41,10 @@ public class Item {
         return name + ": price: kr " + price + "; calories: " + calories + " kcal; protein: " + protein + " g;" + "\n" + extrasString.toString();
     }
 
+    /**
+     * @param obj
+     * @return True if the items has the same name; false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Item){
@@ -72,6 +78,10 @@ public class Item {
         return extra;
     }
 
+    /**
+     * @param list List of items
+     * @return string representation of the item list. including prices and names
+     */
     public static String getListString(ArrayList<Item> list){
         StringBuilder itemsString = new StringBuilder();
         for (Item item : list) {
@@ -85,6 +95,10 @@ public class Item {
         return itemsString.toString();
     }
 
+    /**
+     * @param list list of items
+     * @return summed prices of all the items
+     */
     public static Double getListValue(ArrayList<Item> list) {
         double totalValue = 0.0;
         for (Item item : list) {
