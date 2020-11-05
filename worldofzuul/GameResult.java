@@ -12,4 +12,11 @@ public class GameResult {
         this.playerType = playerType;
     }
 
+    public double getCo2() {
+        return co2;
+    }
+
+    public double getHappiness() {
+        return happiness;
+    }
 }
