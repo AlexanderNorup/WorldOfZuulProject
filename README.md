@@ -9,7 +9,7 @@ https://github.com/AlexanderNorup/WorldOfZuulProject.git
 ```
 
 ## Authors
-* [Alexander Norup](https://github.com/AlexanderNorup)
+* [Alexander V. Nørup](https://github.com/AlexanderNorup)
 
 * [Jonas Solhaug Kaad](https://github.com/JonasKaad)
 
