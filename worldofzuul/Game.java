@@ -119,7 +119,7 @@ public class Game {
 
         switch (commandWord) {
             case GO -> goRoom(command);
-            case HELP -> printHelp();
+            case HELP -> printHelp(command);
             case QUIT -> wantToQuit = quit(command);
             case UNKNOWN -> System.out.println("I don't know what you mean");
             case INSPECT -> inspect(command);
@@ -161,12 +161,57 @@ public class Game {
         resetGame(); //resets the game and starts anew.
     }
 
-    private void printHelp() {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the store.");
-        System.out.println();
-        System.out.println("Your command words are:");
-        parser.showCommands();
+    private void printHelp(Command command) {
+        if (command.hasSecondWord()) { //if there's a second word when you type 'help' it enters the switch statement
+            String com = command.getSecondWord(); //sets the second word of the command to be a string.
+            switch (com){ //switch statement to print out advice on how to use commands.
+                case "drop":
+                    System.out.println("Type 'drop' and then the full name of the item you want to drop from " +
+                            "your inventory, i.e 'drop 500g Ground Meat'.");
+                    break;
+                case "help":
+                    System.out.println("Prints out your current character and available commands.");
+                    break;
+                case "take":
+                    System.out.println("Type 'take' and then the full name of the item you want to take, " +
+                            "i.e. 'take 500g Ground Meat'.");
+                    break;
+                case "go":
+                    System.out.println("Type 'go' and then the direction you want to head towards, i.e. 'go east'.");
+                    break;
+                case "inspect":
+                    System.out.println("Type 'inspect' and then the full name of the item you want to inspect and " +
+                            "know more about, i.e. 'inspect 500g Ground Meat'.");
+                    break;
+                case "quit":
+                    System.out.println("Quits and ends the game.");
+                    break;
+                case "check":
+                    System.out.println("Type 'check' and then 'inventory' or 'section' to get a list of items " +
+                            "in either your inventory or the current room, i.e. 'check section'.");
+                    break;
+                case "checkout":
+                    System.out.println("Type 'checkout' to finish your current shopping trip, only possible " +
+                            "to do in the cashier room.");
+                    break;
+                case "me":
+                    System.out.println("Sorry, there's no help for you, you are stuck in here forever.");
+                    break;
+                default:
+                    System.out.println("Help with what command?");
+            }
+        }
+        else {
+            System.out.println("You are out shopping as a " + player.getPlayerType().getName());
+            System.out.println("| Your budget is " + player.getPlayerType().getBudgetMax() + " dkk." + "  ||  " +
+                    "Your minimum calorie goal is " + player.getPlayerType().getCalorieMin() + "  ||  " +
+                    "Your minimum protein goal is " + player.getPlayerType().getProteinMin() + " |");
+            System.out.println();
+            System.out.println("Your command words are:");
+            parser.showCommands();
+            System.out.println("Tip: You can type 'help' and then the command you want to know more about. " +
+                    "('help command')");
+        }
     }
 
     /**
@@ -259,11 +304,15 @@ public class Game {
 
         if(word.equalsIgnoreCase("section")){ //checks if the second word is section
             String string = currentRoom.getItemsString();
-            System.out.println(string != null ? string : "no products in section"); //prints items from the current room
+            if (currentRoom.getItemsString() == null && !currentRoom.canCheckout()){ //checks if the room is an aisle
+                System.out.println("This is an aisle you idiot! There are no products here!");
+            }
+            else
+            System.out.println(string != null ? string : "No products in section"); //prints items from the current room
         }
         else if(word.equalsIgnoreCase("inventory")){ //checks if the second word is inventory
             String string = player.getInventoryString();
-            System.out.println(string != null ? string : "no products in inventory"); //prints items from player inventory
+            System.out.println(string != null ? string : "No items in inventory"); //prints items from player inventory
         }
     }
 
