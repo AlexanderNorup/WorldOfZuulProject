@@ -23,8 +23,14 @@ public class Item {
 
     @Override
     public String toString() {
-        //TODO should print extras as well
-        return name + ": price: " + price + "; calories: " + calories + "; protein: " + protein + ";";
+        StringBuilder extrasString = new StringBuilder();
+        for (Extra extra: extra){
+            extrasString.append(extra.toString());
+            extrasString.append(", ");
+        }
+        extrasString.delete(extrasString.length()-2, extrasString.length());
+
+        return name + ": price: kr " + price + "; calories: " + calories + " kcal; protein: " + protein + " g;" + "\n" + extrasString.toString();
     }
 
     @Override
@@ -58,5 +64,26 @@ public class Item {
 
     public Extra[] getExtra() {
         return extra;
+    }
+
+    public static String getListString(ArrayList<Item> list){
+        StringBuilder itemsString = new StringBuilder();
+        for (Item item : list) {
+            itemsString.append("- ")
+                    .append("kr ")
+                    .append(String.format("%6.2f", item.getPrice()))
+                    .append("   ")
+                    .append(item.getName())
+                    .append("\n");
+        }
+        return itemsString.toString();
+    }
+
+    public static Double getListValue(ArrayList<Item> list) {
+        double totalValue = 0.0;
+        for (Item item : list) {
+            totalValue += item.getPrice();
+        }
+        return totalValue;
     }
 }

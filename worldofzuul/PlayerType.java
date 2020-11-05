@@ -63,7 +63,29 @@ public class PlayerType {
     }
 
     //calculate happiness
+    //TODO finish
     public double getHappiness(ArrayList<Item> items){
+        double happiness = 1;
+
+        double totalPrice = 0.0;
+        double totalCalories = 0.0;
+        double totalProtein = 0.0;
+        int itemsSatisfaction = 0;
+
+        for (Item item : items) {
+            totalPrice += item.getPrice();
+            totalCalories += item.getCalories();
+            totalProtein += item.getProtein();
+            if (faveItems.contains(item)){
+                itemsSatisfaction -= 1;
+            }
+            if (hateItems.contains(item)) {
+                itemsSatisfaction -= 2;
+            }
+        }
+
+        if (totalCalories>calorieMin) happiness *= 2;
+        if (totalProtein>proteinMin) happiness *=2;
 
         return 0;
     }

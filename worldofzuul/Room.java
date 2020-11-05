@@ -46,7 +46,7 @@ public class Room {
 
     public String getLongDescription() {
         String itemString = getItemsString();
-        itemString = itemString == null ? "" : itemString + ".\n";
+        itemString = itemString == null ? "" : itemString + "\n";
         return "You are " + description + ".\n" + itemString + getExitString() + ".\n";
     }
 
@@ -83,12 +83,7 @@ public class Room {
         if(items.size() == 0){  // If the size of the list with items in the current room is 0,
             return null;          // the 'Available products' string will not be printed
         }
-        StringBuilder itemsString = new StringBuilder();
-        
-        itemsString.append("Available products: ");
-        for(Item item : items){
-            itemsString.append("- ").append(item.getName()).append("\n");
-        }
-        return itemsString.toString();
+
+        return "Available products: \n" + Item.getListString(items);
     }
 }
