@@ -2,6 +2,15 @@ package worldofzuul;
 
 import java.util.ArrayList;
 
+
+/**
+ * The main class of the game
+ * Processes the commands from the parser and takes care of all writing to the screen
+ * This keeps track of the current room, the player and a list of finished games intended
+ * for calculating a total score across multiple games.
+ * There is a method for each command the user can enter
+ * They are all called from the processCommand function
+ */
 public class Game {
     private final Parser parser;
     private Room currentRoom;
@@ -11,7 +20,7 @@ public class Game {
     public Game() {
         createRooms();
         parser = new Parser();
-        player = new Player(ItemGenerator.randomPlayerType());
+        player = new Player(ContentGenerator.randomPlayerType());
         finishedGames = new ArrayList<>();
     }
 
@@ -26,12 +35,12 @@ public class Game {
                 "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", false);
         aisle3 = new Room("in the 3rd aisle. \nTo your east is the produce section, to your west is the " +
                 "butcher, to your north is the 2nd aisle, to your south is the cashier", false);
-        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", false, ItemGenerator.getDairyItems());
-        bakery = new Room("at the bakery\nTo your east is the 1st aisle", false, ItemGenerator.getBakeryItems());
-        frozen = new Room("in the frozen section. \nTo your west is aisle 2", false, ItemGenerator.getFrozenItems());
-        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", false, ItemGenerator.getTinnedGoodsItems());
-        produce = new Room("at the produce section. \nTo your west is the 3. aisle",false, ItemGenerator.getProduceItems());
-        butcher = new Room("at the butcher. \nTo your east is the 3. aisle", false, ItemGenerator.getButcherItems());
+        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", false, ContentGenerator.getDairyItems());
+        bakery = new Room("at the bakery\nTo your east is the 1st aisle", false, ContentGenerator.getBakeryItems());
+        frozen = new Room("in the frozen section. \nTo your west is aisle 2", false, ContentGenerator.getFrozenItems());
+        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", false, ContentGenerator.getTinnedGoodsItems());
+        produce = new Room("at the produce section. \nTo your west is the 3. aisle",false, ContentGenerator.getProduceItems());
+        butcher = new Room("at the butcher. \nTo your east is the 3. aisle", false, ContentGenerator.getButcherItems());
         cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", true);
 
         outside.setExit("south", aisle1);
@@ -138,7 +147,7 @@ public class Game {
         player.deleteInventory(); // deletes all items in the inventory
         createRooms(); //creates the rooms again and fills them with items
         System.out.println(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + "." );
-        player.setPlayerType((ItemGenerator.randomPlayerType()));
+        player.setPlayerType((ContentGenerator.randomPlayerType()));
         System.out.println("It is a new day, you wake up and go to the store.");
         printPlayer();
         System.out.println(currentRoom.getLongDescription());
@@ -197,7 +206,6 @@ public class Game {
     }
 
     //checks if there is a second word when calling the check command and if it is either section or inventory.
-    //TODO print total value
     private void check(Command command) {
         String word = command.getSecondWord();
         if (word == null || !word.equalsIgnoreCase("section") && !word.equalsIgnoreCase("inventory") ){

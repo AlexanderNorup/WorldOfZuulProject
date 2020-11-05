@@ -2,6 +2,10 @@ package worldofzuul;
 
 import java.util.ArrayList;
 
+/**
+ * Keeps all the properties for a playerType (Student, Bodybuilder etc)
+ * Calculates the players happiness based on the bought items
+ */
 public class PlayerType {
 
     private String name;

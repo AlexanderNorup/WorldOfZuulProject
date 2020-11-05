@@ -2,6 +2,11 @@ package worldofzuul;
 
 import java.util.ArrayList;
 
+/**
+ * Intended to be instantiated once. keeps various data about the player
+ * responsible for keeping track of inventory
+ * This is also the class responsible for communicating with the playerType class
+ */
 public class Player {
 
     private final ArrayList<Item> inventory;

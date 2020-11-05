@@ -3,6 +3,9 @@ package worldofzuul;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+/**
+ * Is responsible for getting input from the user and splitting it into a command word and a string of extra text
+ */
 public class Parser {
     private final CommandWords commands;
     private final Scanner reader;

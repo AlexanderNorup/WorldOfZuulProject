@@ -3,6 +3,12 @@ package worldofzuul;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Class for creating objects repressenting an item
+ * Contains getters and overridden toString and equals methods
+ * Has two static methods which take an ArrayList as parameter for getting a
+ * String of the items in the list or getting the total price of the items in the list
+ */
 public class Item {
     private String name;
     private double price;

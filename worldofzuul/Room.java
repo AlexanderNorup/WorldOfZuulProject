@@ -2,6 +2,10 @@ package worldofzuul;
 
 import java.util.*;
 
+/**
+ * Has a description of itself and keeps track of the items in the room (if any) as well as which rooms
+ * can be accessed in which direction (North, South, East, West) from this room
+ */
 public class Room {
 
     private final String description;
