@@ -129,7 +129,7 @@ public class PlayerType {
         //calculate pickyness
         double temp1 = (double) faveItemsBought / (double) faveItems.size();
         double temp2 = (double) hateItemsBaught / (double) hateItems.size();
-        double temp3 = (temp1+percentItemsContainingExtras)/2;
+        double temp3 = (temp1+(percentItemsContainingExtras/(double) items.size()))/2;
 
         happiness += 80 * temp3 * pickynessfactor;
         happiness += 80 * temp2 * pickynessfactor;
