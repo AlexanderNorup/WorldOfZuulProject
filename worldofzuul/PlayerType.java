@@ -12,7 +12,7 @@ public class PlayerType {
     private double calorieGoal;
     private double proteinFactor;
     private double budgetFactor;
-    private double pickynessfactor;
+    private double pickynessFactor;
     private final ArrayList<Item> faveItemTypes;
     private final ArrayList<Item> hateItemTypes;
     private final ArrayList<Extra> thingsThatMatter;
@@ -50,10 +50,10 @@ public class PlayerType {
 
     //set factors to determin happiness caluclation for playertype
     public void setFactors(int proteinFactor, int budgetFactor, int pickynessFactor){
-        int equalizer = 100/(proteinFactor + budgetFactor + pickynessFactor);
+        double equalizer = 1/(double) (proteinFactor + budgetFactor + pickynessFactor);
         this.proteinFactor = proteinFactor * equalizer;
         this.budgetFactor = budgetFactor * equalizer;
-        this.pickynessfactor = pickynessFactor * equalizer;
+        this.pickynessFactor = pickynessFactor * equalizer;
     }
 
     public void addFaveItems(Item faveItem) {
@@ -121,7 +121,7 @@ public class PlayerType {
         //If happiness is above 80% of max budget, subtract happiness (max 80).
         //the higher the budget usm abd the higher the budget factor, the more happiness subtracted
         else {
-            happiness -= 80 * totalPrice/budgetMax*0.8 * budgetFactor;
+            happiness -= 80 * (totalPrice/budgetMax*0.8 - 1) * budgetFactor;
         }
 
 
@@ -131,6 +131,7 @@ public class PlayerType {
         double proteinMin = calorieMin * 0.15 / 4;
         double proteinGoal = calorieGoal * 0.30 / 4;
         int tempHappiness = 0;
+
 
         //if protein above protein goal, add 80 points times protein/proteinGoal times protein factor
         //if protein below protein goal, subtract 80 points times (calculation) times protein factor
@@ -143,26 +144,51 @@ public class PlayerType {
             tempHappiness -= 80;
         }
         //returns the smallest number, ensuring that
+
         happiness += Math.min(tempHappiness, 80) * proteinFactor;
 
 
 
         //PICKINESS
-        double percentageFaveItemTypesBought = (double) faveItemsBought / (double) faveItemTypes.size();
-        double percentageHateItemTypesBought = (double) hateItemsBought / (double) hateItemTypes.size();
-        double percentItemsContainingExtras = (double) itemsContainingExtras / (double) items.size();
+        double percentageFaveItemTypesBought = faveItemTypes.size() != 0 ? (double) faveItemsBought / (double) faveItemTypes.size() : 0.5;
+        double percentageHateItemTypesBought = hateItemTypes.size() != 0 ? (double) hateItemsBought / (double) hateItemTypes.size() : 0.5;
+        double percentItemsContainingExtras = thingsThatMatter.size() != 0 ? (double) itemsContainingExtras / (double) items.size() : 0.5;
 
-        //add the positives (faveItems and containingExtras) and subtract the negative (hateItems)
-        double preferencesFollowed = (percentageFaveItemTypesBought+percentItemsContainingExtras-percentageHateItemTypesBought)/2;
-        //if result is 0, subtract 80 from happiness, if return is 100, add 80 to happiness
-        happiness += 80 * ((preferencesFollowed - 50) * 2)/100 * pickynessfactor;
+        happiness += 40 * ((percentageFaveItemTypesBought - 0.5) * 2) * pickynessFactor;
+        happiness += 40 * ((percentItemsContainingExtras - 0.5) * 2) * pickynessFactor;
+        happiness -= 80 * ((percentageHateItemTypesBought - 0.5) * 2) * pickynessFactor;
+
 
         //GENERIC
         //if calories are at calorie min, subtract 10, if calories are at or above calorie goal, subtract 0.
         happiness -= Math.max((1 - (totalCalories - calorieMin) / (calorieGoal - calorieMin)) * 10,0);
 
+
         //if variaty is 1, subtract 20 points from happiness, if variaty is 12, add 20 points to happiness
-        happiness += Math.min(20 * ((variety-6)/6),20);
+        happiness += Math.min(20 * ((variety-6)/5),20);
+
+        System.out.println("\n\n\n");
+        System.out.println("HAPPINESS CALCULATION:");
+        System.out.println("budgetFactor: " + budgetFactor);
+        System.out.println("proteinFactor: " + proteinFactor);
+        System.out.println("PickinessFactor: " + pickynessFactor);
+        System.out.println("Price: " + totalPrice);
+        System.out.println("calories: " + totalCalories);
+        System.out.println("protein: " + totalProtein);
+        System.out.println("faveItems: " + faveItemsBought);
+        System.out.println("hateItems: " + hateItemsBought);
+        System.out.println("extras: " + itemsContainingExtras);
+        System.out.println("proteinMin: " + proteinMin);
+        System.out.println("proteinGoal: " + proteinGoal);
+        System.out.println("protein tempHappiness: " + tempHappiness);
+        System.out.println("protein happiness: " + Math.min(tempHappiness, 80) * proteinFactor);
+        System.out.println("percentageFaveItemTypesBought: " + 40 * ((percentageFaveItemTypesBought - 0.5) * 2) * pickynessFactor);
+        System.out.println("percentItemsContainingExtras: " + 40 * ((percentItemsContainingExtras - 0.5) * 2) * pickynessFactor);
+        System.out.println("percentageHateItemTypesBought: " + -80 * ((percentageHateItemTypesBought - 0.5) * 2) * pickynessFactor);
+        System.out.println("Calorie happiness: " + Math.max((1 - (totalCalories - calorieMin) / (calorieGoal - calorieMin)) * 10,0));
+        System.out.println("variaty happiness: " + Math.min(20 * ((variety-6)/5),20));
+        System.out.println("Happiness: " +happiness);
+        System.out.println("\n\n\n");
 
         return happiness;
     }
