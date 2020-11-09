@@ -113,11 +113,8 @@ public class ItemGenerator {
         ArrayList<Item> organicItems = new ArrayList<>();
         double organicFactor = 1.2;
         for (Item item : items) {
-            Extra[] organicExtras = new Extra[item.getExtra().length + 1];
-            for (int i = 0; i < item.getExtra().length; i++) {
-                organicExtras[i] = item.getExtra()[i];
-            }
-            organicExtras[organicExtras.length - 1] = Extra.ORGANIC;
+            ArrayList<Extra> organicExtras = item.getExtra();
+            organicExtras.add(Extra.ORGANIC);
 
             organicItems.add(new Item(
                     item.getName() + " Organic",
@@ -137,7 +134,6 @@ public class ItemGenerator {
         type.setOther(2200);
         type.addThingsThatMatter(Extra.ORGANIC);
         return type;
-
     }
 
     public static PlayerType getBodybuilderPlayerType(){

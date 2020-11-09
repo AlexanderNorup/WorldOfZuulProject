@@ -147,7 +147,6 @@ public class Game {
         System.out.println("It is a new day, you wake up and go to the store.");
         printPlayer();
         System.out.println(currentRoom.getLongDescription());
-
     }
 
     private void reactToResults(){
