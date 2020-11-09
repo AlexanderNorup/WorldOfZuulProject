@@ -130,8 +130,7 @@ public class ItemGenerator {
     public static PlayerType getStudentPlayerType(){
         PlayerType type = new PlayerType("Student", null);
         type.setFactors(1,7,2);
-        type.setlimitations(50,1000);
-        type.setOther(2200);
+        type.setValues(50,1000,2200);
         type.addThingsThatMatter(Extra.ORGANIC);
         return type;
     }
