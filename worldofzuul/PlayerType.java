@@ -3,6 +3,10 @@ package worldofzuul;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Keeps all the properties for a playerType (Student, Bodybuilder etc)
+ * Calculates the players happiness based on the bought items
+ */
 public class PlayerType {
 
     private final String name;
@@ -45,6 +49,9 @@ public class PlayerType {
     public void setValues(int budgetMax, int calorieMin, int calorieGoal){
         this.budgetMax = budgetMax;
         this.calorieMin = calorieMin;
+    }
+
+    public void setOther(int calorieGoal){
         this.calorieGoal = calorieGoal;
     }
 
@@ -81,7 +88,6 @@ public class PlayerType {
         int itemsContainingExtras = 0;
         double variety = 0;
         ArrayList<Item> itemTypeList = new ArrayList<>();
-
 
         for (Item item : items) {
 
@@ -158,6 +164,9 @@ public class PlayerType {
         happiness += 40 * ((percentItemsContainingExtras - 0.5) * 2) * pickynessFactor;
         happiness -= 80 * ((percentageHateItemTypesBought - 0.5) * 2) * pickynessFactor;
 
+        //generic happiness
+        //Calorie, variaty
+        happiness -= (1 - (totalCalories - calorieMin) / (calorieGoal - calorieMin)) * 10;
 
         //GENERIC
         //if calories are at calorie min, subtract 10, if calories are at or above calorie goal, subtract 0.

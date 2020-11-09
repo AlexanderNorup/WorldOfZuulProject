@@ -3,11 +3,20 @@ package worldofzuul;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ItemGenerator {
+/**
+ * Creates the Arraylist of items for each room as well as
+ * the differenct player types
+ */
+public class ContentGenerator {
 
     // Number with which to multiply price when product is organic
     private static final double organicFactor = 1.2;
 
+    /**
+     *
+     * @return returns the Arraylist variable items with
+     * item objects in it. This is a list of butcher items.
+     */
     public static ArrayList<Item> getButcherItems(){
         ArrayList<Item> items = new ArrayList<>();
         //Not organic
@@ -25,6 +34,11 @@ public class ItemGenerator {
         return items;
     }
 
+    /**
+     *
+     * @return returns a Arraylist of non organic item objects and organic.
+     * This is a list of produce items.
+     */
     public static ArrayList<Item> getProduceItems(){
         ArrayList<Item> items = new ArrayList<>();
         //Not organic
@@ -46,6 +60,11 @@ public class ItemGenerator {
         return items;
     }
 
+    /**
+     *
+     * @return returns a Arraylist of non organic item objects and organic.
+     * this is a list of frozen items.
+     */
     public static ArrayList<Item> getFrozenItems(){
         ArrayList<Item> items = new ArrayList<>();
 
@@ -80,6 +99,11 @@ public class ItemGenerator {
         return items;
     }
 
+    /**
+     *
+     * @return returns a Arraylist of item objects.
+     * this is a list of bakery items.
+     */
     public static ArrayList<Item> getBakeryItems(){
         ArrayList<Item> items = new ArrayList<>();
         items.add(new Item("500g White Bread",18,0.3,45,1323,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
@@ -89,7 +113,11 @@ public class ItemGenerator {
 
         return items;
     }
-
+    /**
+     *
+     * @return returns a Arraylist of non organic item objects and organic.
+     * this is a list of tinned good items.
+     */
     public static ArrayList<Item> getTinnedGoodsItems(){
         ArrayList<Item> items = new ArrayList<>();
 
@@ -109,6 +137,12 @@ public class ItemGenerator {
         return items;
     }
 
+    /**
+     *
+     * @param items
+     * @return returns a new list with all the same objects as the passed
+     * ArrayList, but turned organic.
+     */
     public static ArrayList<Item> createOrganics(ArrayList<Item> items) {
         ArrayList<Item> organicItems = new ArrayList<>();
         double organicFactor = 1.2;
@@ -128,25 +162,32 @@ public class ItemGenerator {
     }
 
     public static PlayerType getStudentPlayerType(){
-        PlayerType type = new PlayerType("Student", null);
+        PlayerType type = new PlayerType("Student", "The student is poor. You need to minimize the amount of money you use.\n" +
+                "You need around 2200 calories per day, and the student cares about the enviroment. Focus on organic items, and please try not to make the world explode.");
         type.setFactors(1,7,2);
         type.setValues(50,1000,2200);
         type.addThingsThatMatter(Extra.ORGANIC);
         return type;
+
     }
 
     public static PlayerType getBodybuilderPlayerType(){
-        return new PlayerType("Bodybuilder",null);
+        return new PlayerType("Bodybuilder","The body builder needs loads of protein!");
     }
 
     public static PlayerType getPickyPlayerType(){
-        return new PlayerType("Picky",null);
+        return new PlayerType("Picky","The picky player type has a lot of money, but he is very Picky and needs the optimal amount of calories.");
     }
 
     public static PlayerType getSnobPlayerType(){
-        return new PlayerType("Snob",null);
+        return new PlayerType("Snob","You just hate people");
     }
 
+    /**
+     *
+     * @return returns a random playerType with the use of switch
+     * statements
+     */
     public static PlayerType randomPlayerType(){
         PlayerType type = null;
         switch (new Random().nextInt(4)){
