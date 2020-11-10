@@ -2,6 +2,7 @@ package worldofzuul;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Class for creating objects representing an item
@@ -10,20 +11,24 @@ import java.util.Arrays;
  * String of the items in the list or getting the total price of the items in the list
  */
 public class Item {
-    private String name;
-    private double price;
-    private double co2;
-    private double protein;
-    private double calories;
-    private Extra[] extra;
+    private final String name;
+    private final double price;
+    private final double co2;
+    private final double protein;
+    private final double calories;
+    private final ArrayList<Extra> extra;
     
-    public Item(String name, double price, double co2, double protein, double calories, Extra[] extra) {
+    public Item(String name, double price, double co2, double protein, double calories, List<Extra> extra) {
         this.name = name;
         this.price = price;
         this.co2 = co2;
         this.protein = protein;
         this.calories = calories;
-        this.extra = extra;
+        this.extra = new ArrayList<>(extra);
+    }
+
+    public Item(String name, double price, double co2, double protein, double calories, Extra[] extra) {
+        this(name,price,co2,protein,calories,Arrays.asList(extra));
     }
 
     /**
@@ -74,7 +79,7 @@ public class Item {
         return calories;
     }
 
-    public Extra[] getExtra() {
+    public ArrayList<Extra> getExtra() {
         return extra;
     }
 

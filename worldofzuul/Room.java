@@ -1,6 +1,9 @@
 package worldofzuul;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Has a description of itself and keeps track of the items in the room (if any) as well as which rooms
