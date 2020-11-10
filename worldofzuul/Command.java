@@ -40,6 +40,11 @@ public class Command {
         return (commandWord == CommandWord.UNKNOWN);
     }
 
+    /**
+     * chechs whether there is a second word
+     * @return <CODE>true </CODE>if secondword is not null
+     * <CODE>false </CODE>if secondword is null.
+     */
     public boolean hasSecondWord() {
         return (secondWord != null);
     }
