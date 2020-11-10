@@ -24,7 +24,7 @@ public class Item {
         this.co2 = co2;
         this.protein = protein;
         this.calories = calories;
-        this.extra = (ArrayList<Extra>) extra;
+        this.extra = new ArrayList<>(extra);
     }
 
     public Item(String name, double price, double co2, double protein, double calories, Extra[] extra) {

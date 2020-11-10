@@ -241,6 +241,8 @@ public class Game {
             co2 += finishedGame.getCo2();
         }
 
+        System.out.println("CO2: " + co2);
+
         if (co2 < 100) {
             System.out.println("you notice your armpits are more stained than usual");
         }else if(co2 < 200){
@@ -253,13 +255,15 @@ public class Game {
             System.out.println("the store is on fire");
         }
 
-        if (happiness < 100) {
+        if (happiness >= 0) {
+            System.out.println("you're ok...");
+        }else if ( happiness > -50){
             System.out.println("you notice that you've started snapping at your friends");
-        }else if(happiness < 200){
+        }else if(happiness > -100){
             System.out.println("you don't want to eat, even when your hungry");
-        }else if(happiness < 300){
+        }else if(happiness > -150){
             System.out.println("you're wondering if theres a point to anything");
-        }else if(happiness < 400){
+        }else if(happiness > -200){
             System.out.println("you've joined a fascist movement");
         }else {
             System.out.println("you have successfully toppled the government, gasoline is the only currency");
