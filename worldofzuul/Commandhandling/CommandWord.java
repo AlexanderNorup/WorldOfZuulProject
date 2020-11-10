@@ -1,4 +1,4 @@
-package worldofzuul;
+package worldofzuul.Commandhandling;
 
 /**
  * Contains the valid command type and their corresponding String value.
