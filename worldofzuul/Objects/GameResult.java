@@ -1,4 +1,6 @@
-package worldofzuul;
+package worldofzuul.Objects;
+
+import worldofzuul.PlayerType;
 
 /**
  * A simple class for storing the result of one game

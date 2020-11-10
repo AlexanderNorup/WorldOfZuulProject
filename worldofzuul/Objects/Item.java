@@ -1,4 +1,4 @@
-package worldofzuul;
+package worldofzuul.Objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;

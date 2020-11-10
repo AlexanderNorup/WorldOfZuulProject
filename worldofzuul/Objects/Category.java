@@ -1,4 +1,4 @@
-package worldofzuul;
+package worldofzuul.Objects;
 
 /**
  * ISN'T IN USE RIGHT NOW
