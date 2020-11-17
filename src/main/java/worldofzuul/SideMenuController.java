@@ -25,6 +25,11 @@ public class SideMenuController {
     @FXML
     public ListView<Item> SideMenuListView;
 
+    SideMenuController(){
+        Repository repository = Repository.getRepository();
+        SideMenuTitleLabel.setText(repository.getSideMenuTitle());
+    }
+
     private ObservableList<Item> observableItems;
     public void setSideMenuListView(ArrayList<Item> items){
 
