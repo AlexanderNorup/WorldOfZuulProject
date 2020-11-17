@@ -16,9 +16,10 @@ public class MainGUI extends Application {
         //Pathen til resourcen er relativt fra /src/main/resources/
         Parent root = FXMLLoader.load(MainGUI.class.getResource("/fxml/test.fxml"));
 
-        Scene s = new Scene(root, 300,275);
+        Scene s = new Scene(root, 1197,720);
         primaryStage.setScene(s);
         primaryStage.setTitle("WorldOfZuul Test");
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 }
