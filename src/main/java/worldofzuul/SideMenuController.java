@@ -25,18 +25,10 @@ public class SideMenuController {
     @FXML
     public ListView<Item> SideMenuListView;
 
+    private ObservableList<Item> observableItems;
     SideMenuController(){
         Repository repository = Repository.getRepository();
         SideMenuTitleLabel.setText(repository.getSideMenuTitle());
+        SideMenuListView.getItems().addAll(repository.getSideMenuItems());
     }
-
-    private ObservableList<Item> observableItems;
-    public void setSideMenuListView(ArrayList<Item> items){
-
-        observableItems.addAll(items);
-        SideMenuListView.setItems(observableItems);
-    }
-
-
-
-}
+ }

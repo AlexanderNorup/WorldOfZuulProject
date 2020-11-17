@@ -1,6 +1,10 @@
 package worldofzuul;
 
 
+import worldofzuul.Objects.Item;
+
+import java.util.ArrayList;
+
 public class Repository {
 
     private static Repository repository;
@@ -15,6 +19,15 @@ public class Repository {
     private String SideMenuBudget;
     private String SideMenuCalorie;
     private String SideMenuProtein;
+    private ArrayList<Item> SideMenuItems;
+
+    public ArrayList<Item> getSideMenuItems() {
+        return SideMenuItems;
+    }
+
+    public void setSideMenuItems(ArrayList<Item> sideMenuItems) {
+        SideMenuItems = sideMenuItems;
+    }
 
     public String getSideMenuTitle() {
         return SideMenuTitle;
