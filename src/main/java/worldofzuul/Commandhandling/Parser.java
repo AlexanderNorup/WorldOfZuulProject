@@ -1,7 +1,9 @@
-package worldofzuul;
+package worldofzuul.Commandhandling;
+
+import worldofzuul.Commandhandling.Command;
+import worldofzuul.Commandhandling.CommandWords;
 
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 /**
  * Is responsible for getting input from the user and splitting it into a command word and a string of extra text

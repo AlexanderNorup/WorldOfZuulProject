@@ -1,5 +1,8 @@
 package worldofzuul;
 
+import worldofzuul.Objects.Extra;
+import worldofzuul.Objects.Item;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -147,11 +150,8 @@ public class ContentGenerator {
         ArrayList<Item> organicItems = new ArrayList<>();
         double organicFactor = 1.2;
         for (Item item : items) {
-            Extra[] organicExtras = new Extra[item.getExtra().length + 1];
-            for (int i = 0; i < item.getExtra().length; i++) {
-                organicExtras[i] = item.getExtra()[i];
-            }
-            organicExtras[organicExtras.length - 1] = Extra.ORGANIC;
+            ArrayList<Extra> organicExtras = item.getExtra();
+            organicExtras.add(Extra.ORGANIC);
 
             organicItems.add(new Item(
                     item.getName() + " Organic",
@@ -165,19 +165,37 @@ public class ContentGenerator {
     }
 
     public static PlayerType getStudentPlayerType(){
-        return new PlayerType("Student", null);
+        PlayerType type = new PlayerType("Student", "The student is poor. You need to minimize the amount of money you use.\n" +
+                "You need around 2200 calories per day, and the student cares about the enviroment. Focus on organic items, and please try not to make the world explode.");
+        type.setFactors(1,7,2);
+        type.setValues(50,1000,2200);
+        type.addPositiveExtra(Extra.ORGANIC);
+        return type;
+
     }
 
     public static PlayerType getBodybuilderPlayerType(){
-        return new PlayerType("Bodybuilder",null);
+        PlayerType type = new PlayerType("Bodybuilder","The body builder needs loads of protein!");
+        type.setFactors(1,7,2);
+        type.setValues(50,1000,2200);
+        type.addPositiveExtra(Extra.ORGANIC);
+        return type;
     }
 
     public static PlayerType getPickyPlayerType(){
-        return new PlayerType("Picky",null);
+        PlayerType type = new PlayerType("Picky","The picky player type has a lot of money, but he is very Picky and needs the optimal amount of calories.");
+        type.setFactors(1,7,2);
+        type.setValues(50,1000,2200);
+        type.addPositiveExtra(Extra.ORGANIC);
+        return type;
     }
 
     public static PlayerType getSnobPlayerType(){
-        return new PlayerType("Snob",null);
+        PlayerType type = new PlayerType("Snob","You just hate people");
+        type.setFactors(1,7,2);
+        type.setValues(50,1000,2200);
+        type.addPositiveExtra(Extra.ORGANIC);
+        return type;
     }
 
     /**

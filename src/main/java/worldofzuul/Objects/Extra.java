@@ -1,4 +1,4 @@
-package worldofzuul;
+package worldofzuul.Objects;
 
 /**
  * Enum for properties that only apply to relatively few items
