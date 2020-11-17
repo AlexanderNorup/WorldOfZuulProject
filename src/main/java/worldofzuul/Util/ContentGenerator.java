@@ -1,7 +1,8 @@
-package worldofzuul;
+package worldofzuul.Util;
 
 import worldofzuul.Objects.Extra;
 import worldofzuul.Objects.Item;
+import worldofzuul.PlayerType;
 
 import java.util.ArrayList;
 import java.util.Random;
