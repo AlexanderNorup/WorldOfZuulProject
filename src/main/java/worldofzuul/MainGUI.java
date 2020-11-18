@@ -22,17 +22,13 @@ public class MainGUI extends Application {
         Parent root = FXMLLoader.load(MainGUI.class.getResource("/fxml/mainmenu.fxml"));
         s = new Scene(root, 1197,720);
 
-        String music = "/music/mario.mp3";
-        File file = new File(music);
-        System.out.println(file.exists());
         Media media = new Media(MainGUI.class.getResource("/music/pilfinger.mp3").toString());  //plays music
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
-
+      
         primaryStage.setScene(s);
         primaryStage.setResizable(false);
         primaryStage.setTitle("WorldOfZuul Test");
-
         primaryStage.show();
     }
 }
