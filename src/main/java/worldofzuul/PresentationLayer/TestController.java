@@ -1,4 +1,4 @@
-package worldofzuul;
+package worldofzuul.PresentationLayer;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

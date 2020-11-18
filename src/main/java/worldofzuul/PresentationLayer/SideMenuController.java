@@ -1,10 +1,11 @@
-package worldofzuul;
+package worldofzuul.PresentationLayer;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import worldofzuul.Objects.Item;
+import worldofzuul.Repository;
 
 import java.util.ArrayList;
 
