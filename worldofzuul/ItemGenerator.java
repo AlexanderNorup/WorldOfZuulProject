@@ -133,21 +133,33 @@ public class ItemGenerator {
     public static PlayerType getStudentPlayerType(){
         PlayerType type = new PlayerType("Student", null);
         type.setFactors(1,7,2);
-        type.setValues(50,1000,2200);
+        type.setValues(50,1400,2200);
         type.addThingsThatMatter(Extra.ORGANIC);
         return type;
     }
 
     public static PlayerType getBodybuilderPlayerType(){
-        return new PlayerType("Bodybuilder",null);
+        PlayerType type = new PlayerType("Bodybuilder", null);
+        type.setFactors(6,2,2);
+        type.setValues(60,2000,3000);
+        type.addThingsThatMatter(Extra.ORGANIC);
+        return type;
     }
 
     public static PlayerType getPickyPlayerType(){
-        return new PlayerType("Picky",null);
+        PlayerType type = new PlayerType("PickyPlayer", null);
+        type.setFactors(1,5,5);
+        type.setValues(50,1400,2200);
+        type.addThingsThatMatter(Extra.ORGANIC, Extra.CONTAINS_GLUTEN, Extra.CONTAINS_LACTOSE);
+        return type;
     }
 
     public static PlayerType getSnobPlayerType(){
-        return new PlayerType("Snob",null);
+        PlayerType type = new PlayerType("SnobPlayer", null);
+        type.setFactors(1,2,7);
+        type.setValues(70,1400,2200);
+        type.addThingsThatMatter(Extra.ORGANIC, Extra.CONTAINS_SOY);
+        return type;
     }
 
     public static PlayerType randomPlayerType(){

@@ -56,16 +56,16 @@ public class PlayerType {
         this.pickynessFactor = pickynessFactor * equalizer;
     }
 
-    public void addFaveItems(Item faveItem) {
-        faveItemTypes.add(faveItem);
+    public void addFaveItems(Item... items) {
+        faveItemTypes.addAll(Arrays.asList(items));
     }
 
-    public void addHateItems(Item hateItem) {
-        hateItemTypes.add(hateItem);
+    public void addHateItems(Item... items) {
+        hateItemTypes.addAll(Arrays.asList(items));
     }
 
-    public void addThingsThatMatter(Extra thingThatMatter) {
-        thingsThatMatter.add(thingThatMatter);
+    public void addThingsThatMatter(Extra... things) {
+        thingsThatMatter.addAll(Arrays.asList(things));
     }
 
     //calculate happiness
