@@ -19,8 +19,8 @@ public class MainGUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //Pathen til resourcen er relativt fra /src/main/resources/
-        Parent root = FXMLLoader.load(MainGUI.class.getResource("/fxml/mainmenu.fxml"));
-        s = new Scene(root, 1197,720);
+        Parent mainMenu = FXMLLoader.load(MainGUI.class.getResource("/fxml/mainmenu.fxml"));
+        s = new Scene(mainMenu, 1197,720);
 
         Media media = new Media(MainGUI.class.getResource("/music/pilfinger.mp3").toString());  //plays music
         mediaPlayer = new MediaPlayer(media);
