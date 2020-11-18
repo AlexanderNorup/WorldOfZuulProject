@@ -8,6 +8,6 @@ module worldofzuul {
     requires javafx.fxml;
     requires javafx.media;
 
-    opens worldofzuul to javafx.graphics, javafx.controls, javafx.fxml, javafx.media;
-    exports worldofzuul to javafx.graphics, javafx.controls, javafx.fxml, javafx.media;
+    opens worldofzuul.PresentationLayer to javafx.graphics, javafx.controls, javafx.fxml, javafx.media;
+    exports worldofzuul.PresentationLayer to javafx.graphics, javafx.controls, javafx.fxml, javafx.media;
 }

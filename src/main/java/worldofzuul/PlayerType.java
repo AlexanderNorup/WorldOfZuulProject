@@ -1,7 +1,7 @@
 package worldofzuul;
 
-import worldofzuul.Objects.Extra;
-import worldofzuul.Objects.Item;
+import worldofzuul.DataLayer.Objects.Extra;
+import worldofzuul.DataLayer.Objects.Item;
 
 import java.util.ArrayList;
 import java.util.Arrays;

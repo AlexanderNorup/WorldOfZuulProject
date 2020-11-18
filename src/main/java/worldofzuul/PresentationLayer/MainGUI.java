@@ -1,4 +1,4 @@
-package worldofzuul;
+package worldofzuul.PresentationLayer;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,9 +8,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.net.URL;
-import java.util.Enumeration;
+
 
 public class MainGUI extends Application {
     Scene s;
