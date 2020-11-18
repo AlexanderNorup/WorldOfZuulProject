@@ -1,7 +1,14 @@
-package worldofzuul;
+package worldofzuul.Objects;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Set;
 
+/**
+ * Has a description of itself and keeps track of the items in the room (if any) as well as which rooms
+ * can be accessed in which direction (North, South, East, West) from this room
+ */
 public class Room {
 
     private final String description;
@@ -44,12 +51,18 @@ public class Room {
         return description;
     }
 
+    /**
+     * @return String "You are #name of room#" followed by a list of items
+     */
     public String getLongDescription() {
         String itemString = getItemsString();
         itemString = itemString == null ? "" : itemString + "\n";
         return "You are " + description + ".\n" + itemString + getExitString() + ".\n";
     }
 
+    /**
+     * @return String in the format "Exits: " followed by the directions in which exits exist (eg. east, south, west)
+     */
     private String getExitString() {
         StringBuilder returnString = new StringBuilder("Exits:");
         Set<String> keys = exits.keySet();
@@ -63,6 +76,10 @@ public class Room {
         return exits.get(direction);
     }
 
+    /**
+     * @param name name of the item
+     * @return the item with the specified name; null if there is no item with the specified name.
+     */
     public Item getItem(String name){
         Item item = null;
         for(Item currentItem : items){
@@ -79,6 +96,9 @@ public class Room {
 
     public void removeItem(Item item){items.remove(item);}
 
+    /**
+     * @return "Available products" followed by a list of items each in the format "kr #price#  #item name#
+     */
     public String getItemsString(){
         if(items.size() == 0){  // If the size of the list with items in the current room is 0,
             return null;          // the 'Available products' string will not be printed

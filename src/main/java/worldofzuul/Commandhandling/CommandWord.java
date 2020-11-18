@@ -1,4 +1,4 @@
-package worldofzuul;
+package worldofzuul.Commandhandling;
 
 /**
  * Contains the valid command type and their corresponding String value.
@@ -15,6 +15,13 @@ public enum CommandWord {
         this.commandString = commandString;
     }
 
+    /**
+     * overrides toString method to return the variable
+     * commandString when used on object of the CommandWord
+     * type.
+     * @return commandString
+     */
+    @Override
     public String toString() {
         return commandString;
     }

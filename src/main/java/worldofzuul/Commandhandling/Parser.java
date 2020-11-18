@@ -1,8 +1,13 @@
-package worldofzuul;
+package worldofzuul.Commandhandling;
+
+import worldofzuul.Commandhandling.Command;
+import worldofzuul.Commandhandling.CommandWords;
 
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
+/**
+ * Is responsible for getting input from the user and splitting it into a command word and a string of extra text
+ */
 public class Parser {
     private final CommandWords commands;
     private final Scanner reader;
@@ -12,6 +17,11 @@ public class Parser {
         reader = new Scanner(System.in);
     }
 
+    /**
+     * Gets a line of text from the user through a scanner
+     * Splits the line into a commandWord and a string with the rest of the text
+     * @return The line of text the user has just entered represented as a Command
+     */
     public Command getCommand() {
         String inputLine;
         String word1;

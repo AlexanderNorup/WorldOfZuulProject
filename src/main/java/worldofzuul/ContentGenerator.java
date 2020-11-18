@@ -1,13 +1,25 @@
 package worldofzuul;
 
+import worldofzuul.Objects.Extra;
+import worldofzuul.Objects.Item;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ItemGenerator {
+/**
+ * Creates the Arraylist of items for each room as well as
+ * the differenct player types
+ */
+public class ContentGenerator {
 
     // Number with which to multiply price when product is organic
     private static final double organicFactor = 1.2;
 
+    /**
+     *
+     * @return returns the Arraylist variable items with
+     * item objects in it. This is a list of butcher items.
+     */
     public static ArrayList<Item> getButcherItems(){
         ArrayList<Item> items = new ArrayList<>();
         //Not organic
@@ -25,6 +37,11 @@ public class ItemGenerator {
         return items;
     }
 
+    /**
+     *
+     * @return returns a Arraylist of non organic item objects and organic.
+     * This is a list of produce items.
+     */
     public static ArrayList<Item> getProduceItems(){
         ArrayList<Item> items = new ArrayList<>();
         //Not organic
@@ -46,6 +63,11 @@ public class ItemGenerator {
         return items;
     }
 
+    /**
+     *
+     * @return returns a Arraylist of non organic item objects and organic.
+     * this is a list of frozen items.
+     */
     public static ArrayList<Item> getFrozenItems(){
         ArrayList<Item> items = new ArrayList<>();
 
@@ -80,6 +102,11 @@ public class ItemGenerator {
         return items;
     }
 
+    /**
+     *
+     * @return returns a Arraylist of item objects.
+     * this is a list of bakery items.
+     */
     public static ArrayList<Item> getBakeryItems(){
         ArrayList<Item> items = new ArrayList<>();
         items.add(new Item("500g White Bread",18,0.3,45,1323,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
@@ -89,7 +116,11 @@ public class ItemGenerator {
 
         return items;
     }
-
+    /**
+     *
+     * @return returns a Arraylist of non organic item objects and organic.
+     * this is a list of tinned good items.
+     */
     public static ArrayList<Item> getTinnedGoodsItems(){
         ArrayList<Item> items = new ArrayList<>();
 
@@ -109,15 +140,18 @@ public class ItemGenerator {
         return items;
     }
 
+    /**
+     *
+     * @param items
+     * @return returns a new list with all the same objects as the passed
+     * ArrayList, but turned organic.
+     */
     public static ArrayList<Item> createOrganics(ArrayList<Item> items) {
         ArrayList<Item> organicItems = new ArrayList<>();
         double organicFactor = 1.2;
         for (Item item : items) {
-            Extra[] organicExtras = new Extra[item.getExtra().length + 1];
-            for (int i = 0; i < item.getExtra().length; i++) {
-                organicExtras[i] = item.getExtra()[i];
-            }
-            organicExtras[organicExtras.length - 1] = Extra.ORGANIC;
+            ArrayList<Extra> organicExtras = item.getExtra();
+            organicExtras.add(Extra.ORGANIC);
 
             organicItems.add(new Item(
                     item.getName() + " Organic",
@@ -131,37 +165,44 @@ public class ItemGenerator {
     }
 
     public static PlayerType getStudentPlayerType(){
-        PlayerType type = new PlayerType("Student", null);
+        PlayerType type = new PlayerType("Student", "The student is poor. You need to minimize the amount of money you use.\n" +
+                "You need around 2200 calories per day, and the student cares about the enviroment. Focus on organic items, and please try not to make the world explode.");
         type.setFactors(1,7,2);
-        type.setValues(50,1400,2200);
-        type.addThingsThatMatter(Extra.ORGANIC);
+        type.setValues(50,1000,2200);
+        type.addPositiveExtra(Extra.ORGANIC);
         return type;
+
     }
 
     public static PlayerType getBodybuilderPlayerType(){
-        PlayerType type = new PlayerType("Bodybuilder", null);
-        type.setFactors(6,2,2);
-        type.setValues(60,2000,3000);
-        type.addThingsThatMatter(Extra.ORGANIC);
+        PlayerType type = new PlayerType("Bodybuilder","The body builder needs loads of protein!");
+        type.setFactors(1,7,2);
+        type.setValues(50,1000,2200);
+        type.addPositiveExtra(Extra.ORGANIC);
         return type;
     }
 
     public static PlayerType getPickyPlayerType(){
-        PlayerType type = new PlayerType("PickyPlayer", null);
-        type.setFactors(1,5,5);
-        type.setValues(50,1400,2200);
-        type.addThingsThatMatter(Extra.ORGANIC, Extra.CONTAINS_GLUTEN, Extra.CONTAINS_LACTOSE);
+        PlayerType type = new PlayerType("Picky","The picky player type has a lot of money, but he is very Picky and needs the optimal amount of calories.");
+        type.setFactors(1,7,2);
+        type.setValues(50,1000,2200);
+        type.addPositiveExtra(Extra.ORGANIC);
         return type;
     }
 
     public static PlayerType getSnobPlayerType(){
-        PlayerType type = new PlayerType("SnobPlayer", null);
-        type.setFactors(1,2,7);
-        type.setValues(70,1400,2200);
-        type.addThingsThatMatter(Extra.ORGANIC, Extra.CONTAINS_SOY);
+        PlayerType type = new PlayerType("Snob","You just hate people");
+        type.setFactors(1,7,2);
+        type.setValues(50,1000,2200);
+        type.addPositiveExtra(Extra.ORGANIC);
         return type;
     }
 
+    /**
+     *
+     * @return returns a random playerType with the use of switch
+     * statements
+     */
     public static PlayerType randomPlayerType(){
         PlayerType type = null;
         switch (new Random().nextInt(4)){

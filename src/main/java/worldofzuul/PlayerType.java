@@ -1,8 +1,15 @@
 package worldofzuul;
 
+import worldofzuul.Objects.Extra;
+import worldofzuul.Objects.Item;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Keeps all the properties for a playerType (Student, Bodybuilder etc)
+ * Calculates the players happiness based on the bought items
+ */
 public class PlayerType {
 
     private final String name;
@@ -15,14 +22,16 @@ public class PlayerType {
     private double pickynessFactor;
     private final ArrayList<Item> faveItemTypes;
     private final ArrayList<Item> hateItemTypes;
-    private final ArrayList<Extra> thingsThatMatter;
+    private final ArrayList<Extra> positiveExtra;
+    private final ArrayList<Extra> negativeExtra;
 
     public PlayerType(String name, String description) {
         this.name = name;
         this.description = description;
         this.faveItemTypes = new ArrayList<>();
         this.hateItemTypes = new ArrayList<>();
-        thingsThatMatter = new ArrayList<>();
+        this.positiveExtra = new ArrayList<>();
+        this.negativeExtra = new ArrayList<>();
     }
 
     public String getName() {
@@ -48,6 +57,10 @@ public class PlayerType {
         this.calorieGoal = calorieGoal;
     }
 
+    public void setOther(int calorieGoal){
+        this.calorieGoal = calorieGoal;
+    }
+
     //set factors to determin happiness caluclation for playertype
     public void setFactors(int proteinFactor, int budgetFactor, int pickynessFactor){
         double equalizer = 1/(double) (proteinFactor + budgetFactor + pickynessFactor);
@@ -64,8 +77,12 @@ public class PlayerType {
         hateItemTypes.addAll(Arrays.asList(items));
     }
 
-    public void addThingsThatMatter(Extra... things) {
-        thingsThatMatter.addAll(Arrays.asList(things));
+    public void addPositiveExtra(Extra thingThatMatter) {
+        positiveExtra.add(thingThatMatter);
+    }
+
+    public void addNegativeExtra(Extra thingThatMatter) {
+        negativeExtra.add(thingThatMatter);
     }
 
     //calculate happiness
@@ -107,21 +124,27 @@ public class PlayerType {
             }
 
             //Count items containing thingsThatMatter (Extras)
-            for(Extra extra : thingsThatMatter){
-                itemsContainingExtras += (Arrays.asList(item.getExtra()).contains(extra) ? 1 : 0) / thingsThatMatter.size();
+            int allExtras = positiveExtra.size() + negativeExtra.size();
+            for(Extra extra : positiveExtra){
+                itemsContainingExtras += (item.getExtra().contains(extra) ? 1 : 0) / allExtras;
+            }
+
+            for(Extra extra : negativeExtra){
+                itemsContainingExtras += (!item.getExtra().contains(extra) ? 1 : 0) / allExtras;
             }
         }
 
         //BUDGET
-        //If happiness is below 80% of max budget, add happiness (max 80).
+        //If totalPrice is below 80% of max budget, add happiness (max 80).
         //the lower the budget is, and the higher the budget factor, the more happiness added.
         if(totalPrice < budgetMax*0.8){
             happiness += 80 * (1 - totalPrice/budgetMax*0.8) * budgetFactor;
         }
         //If happiness is above 80% of max budget, subtract happiness (max 80).
         //the higher the budget usm abd the higher the budget factor, the more happiness subtracted
+
         else {
-            happiness -= 80 * (totalPrice/budgetMax*0.8 - 1) * budgetFactor;
+            happiness -= 80 * (totalPrice-budgetMax*0.8)/(budgetMax*0.2) * budgetFactor;
         }
 
 
@@ -136,28 +159,28 @@ public class PlayerType {
         //if protein above protein goal, add 80 points times protein/proteinGoal times protein factor
         //if protein below protein goal, subtract 80 points times (calculation) times protein factor
         //if protein below minimum protein, subtract 80 points times protein factor
-        if(totalProtein > proteinGoal){
-            tempHappiness += 80 * totalProtein/proteinGoal;
-        }else if (totalProtein < proteinGoal){
+        if(totalProtein >= proteinGoal){
+            tempHappiness += 80 * (totalProtein-proteinGoal)/proteinGoal;
+        }else if (proteinMin < totalProtein && totalProtein < proteinGoal){
             tempHappiness -= 80 * (1 - (totalProtein-proteinMin)/(proteinGoal-proteinMin));
         }else {
             tempHappiness -= 80;
         }
-        //returns the smallest number, ensuring that
+        //returns the smallest number, ensuring that happiness points don't exceed 80.
 
         happiness += Math.min(tempHappiness, 80) * proteinFactor;
 
 
 
         //PICKINESS
-        double percentageFaveItemTypesBought = faveItemTypes.size() != 0 ? (double) faveItemsBought / (double) faveItemTypes.size() : 0.5;
+        int allExtras = positiveExtra.size() + negativeExtra.size();
+        double percentageFaveItemTypesBought = faveItemTypes.size() != 0 ? (double) faveItemsBought / (double) faveItemTypes.size() : 0;
         double percentageHateItemTypesBought = hateItemTypes.size() != 0 ? (double) hateItemsBought / (double) hateItemTypes.size() : 0.5;
-        double percentItemsContainingExtras = thingsThatMatter.size() != 0 ? (double) itemsContainingExtras / (double) items.size() : 0.5;
+        double percentItemsContainingExtras = allExtras != 0 ? (double) itemsContainingExtras / (double) items.size() : 0;
 
-        happiness += 40 * ((percentageFaveItemTypesBought - 0.5) * 2) * pickynessFactor;
+        happiness += 40 * percentageFaveItemTypesBought * pickynessFactor;
         happiness += 40 * ((percentItemsContainingExtras - 0.5) * 2) * pickynessFactor;
-        happiness -= 80 * ((percentageHateItemTypesBought - 0.5) * 2) * pickynessFactor;
-
+        happiness -= 40 * percentageHateItemTypesBought * pickynessFactor;
 
         //GENERIC
         //if calories are at calorie min, subtract 10, if calories are at or above calorie goal, subtract 0.
@@ -165,7 +188,9 @@ public class PlayerType {
 
 
         //if variaty is 1, subtract 20 points from happiness, if variaty is 12, add 20 points to happiness
-        happiness += Math.min(20 * ((variety-6)/5),20);
+        happiness += Math.min(((variety-6) * 4),20);
+
+
 
         System.out.println("\n\n\n");
         System.out.println("HAPPINESS CALCULATION:");

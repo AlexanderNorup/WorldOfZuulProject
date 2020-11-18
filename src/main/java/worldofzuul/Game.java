@@ -1,7 +1,24 @@
 package worldofzuul;
 
+import worldofzuul.Commandhandling.Command;
+import worldofzuul.Commandhandling.CommandWord;
+import worldofzuul.Commandhandling.Parser;
+import worldofzuul.Objects.GameResult;
+import worldofzuul.Objects.Item;
+import worldofzuul.Objects.Player;
+import worldofzuul.Objects.Room;
+
 import java.util.ArrayList;
 
+
+/**
+ * The main class of the game
+ * Processes the commands from the parser and takes care of all writing to the screen
+ * This keeps track of the current room, the player and a list of finished games intended
+ * for calculating a total score across multiple games.
+ * There is a method for each command the user can enter
+ * They are all called from the processCommand function
+ */
 public class Game {
     private final Parser parser;
     private Room currentRoom;
@@ -11,10 +28,15 @@ public class Game {
     public Game() {
         createRooms();
         parser = new Parser();
-        player = new Player(ItemGenerator.randomPlayerType());
+        player = new Player(ContentGenerator.getStudentPlayerType());
         finishedGames = new ArrayList<>();
     }
 
+    /**
+     * Creates all the rooms in the shopping mall and connects them with setExit
+     * Also populates some of the rooms with items
+     * Sets the current room
+     */
     //TODO: add back command?
     private void createRooms() {
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
@@ -26,12 +48,12 @@ public class Game {
                 "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", false);
         aisle3 = new Room("in the 3rd aisle. \nTo your east is the produce section, to your west is the " +
                 "butcher, to your north is the 2nd aisle, to your south is the cashier", false);
-        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", false, ItemGenerator.getDairyItems());
-        bakery = new Room("at the bakery\nTo your east is the 1st aisle", false, ItemGenerator.getBakeryItems());
-        frozen = new Room("in the frozen section. \nTo your west is aisle 2", false, ItemGenerator.getFrozenItems());
-        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", false, ItemGenerator.getTinnedGoodsItems());
-        produce = new Room("at the produce section. \nTo your west is the 3. aisle",false, ItemGenerator.getProduceItems());
-        butcher = new Room("at the butcher. \nTo your east is the 3. aisle", false, ItemGenerator.getButcherItems());
+        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", false, ContentGenerator.getDairyItems());
+        bakery = new Room("at the bakery\nTo your east is the 1st aisle", false, ContentGenerator.getBakeryItems());
+        frozen = new Room("in the frozen section. \nTo your west is aisle 2", false, ContentGenerator.getFrozenItems());
+        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", false, ContentGenerator.getTinnedGoodsItems());
+        produce = new Room("at the produce section. \nTo your west is the 3. aisle",false, ContentGenerator.getProduceItems());
+        butcher = new Room("at the butcher. \nTo your east is the 3. aisle", false, ContentGenerator.getButcherItems());
         cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", true);
 
         outside.setExit("south", aisle1);
@@ -60,6 +82,10 @@ public class Game {
         currentRoom = outside; //this sets the starting position to "outside"
     }
 
+    /**
+     * Print welcome message and runs an "infinite" while loop
+     * continuously getting new commands and processing them.
+     */
     public void play() {
         printWelcome();
         printPlayer();
@@ -71,6 +97,9 @@ public class Game {
         System.out.println("Thank you for playing.  Good bye.");
     }
 
+    /**
+     * prints the properties of the playerType
+     */
     public void printPlayer(){
         System.out.println("You are playing as a " + player.getPlayerType().getName());
         System.out.println(player.getPlayerType().getDescription());
@@ -85,6 +114,12 @@ public class Game {
         System.out.println(currentRoom.getLongDescription());
     }
 
+    /**
+     * Extracts the CommandWord from the Command
+     * calls the appropriate  method for processing the command
+     * @param command Command to be processed
+     * @return false if the CommandWord is quit. True otherwise
+     */
     private boolean processCommand(Command command) {
         boolean wantToQuit = false;
 
@@ -92,7 +127,7 @@ public class Game {
 
         switch (commandWord) {
             case GO -> goRoom(command);
-            case HELP -> printHelp();
+            case HELP -> printHelp(command);
             case QUIT -> wantToQuit = quit(command);
             case UNKNOWN -> System.out.println("I don't know what you mean");
             case INSPECT -> inspect(command);
@@ -107,6 +142,11 @@ public class Game {
         return wantToQuit;
     }
 
+    /**
+     * Checks out IF the player is at the cash register and the player has reached their
+     * calorie goal without using up their budget
+     * if everything is alright adds a new gameResult to the list of results and restarts the game
+     */
     private void checkout(){
         if (!currentRoom.canCheckout()){ //checks if it is possible to checkout in the current room.
             System.out.println("You can't checkout here, go to the cashier.");
@@ -129,26 +169,78 @@ public class Game {
         resetGame(); //resets the game and starts anew.
     }
 
-    private void printHelp() {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the store.");
-        System.out.println();
-        System.out.println("Your command words are:");
-        parser.showCommands();
+    private void printHelp(Command command) {
+        if (command.hasSecondWord()) { //if there's a second word when you type 'help' it enters the switch statement
+            String com = command.getSecondWord(); //sets the second word of the command to be a string.
+            switch (com){ //switch statement to print out advice on how to use commands.
+                case "drop":
+                    System.out.println("Type 'drop' and then the full name of the item you want to drop from " +
+                            "your inventory, i.e 'drop 500g Ground Meat'.");
+                    break;
+                case "help":
+                    System.out.println("Prints out your current character and available commands.");
+                    break;
+                case "take":
+                    System.out.println("Type 'take' and then the full name of the item you want to take, " +
+                            "i.e. 'take 500g Ground Meat'.");
+                    break;
+                case "go":
+                    System.out.println("Type 'go' and then the direction you want to head towards, i.e. 'go east'.");
+                    break;
+                case "inspect":
+                    System.out.println("Type 'inspect' and then the full name of the item you want to inspect and " +
+                            "know more about, i.e. 'inspect 500g Ground Meat'.");
+                    break;
+                case "quit":
+                    System.out.println("Quits and ends the game.");
+                    break;
+                case "check":
+                    System.out.println("Type 'check' and then 'inventory' or 'section' to get a list of items " +
+                            "in either your inventory or the current room, i.e. 'check section'.");
+                    break;
+                case "checkout":
+                    System.out.println("Type 'checkout' to finish your current shopping trip, only possible " +
+                            "to do in the cashier room.");
+                    break;
+                case "me":
+                    System.out.println("Sorry, there's no help for you, you are stuck in here forever.");
+                    break;
+                default:
+                    System.out.println("Help with what command?");
+            }
+        }
+        else {
+            System.out.println("You are out shopping as a " + player.getPlayerType().getName());
+            System.out.println("| Your budget is " + player.getPlayerType().getBudgetMax() + " dkk." + "  ||  " +
+                    "Your minimum calorie goal is " + player.getPlayerType().getCalorieMin() + "  |");
+            System.out.println();
+            System.out.println("Your command words are:");
+            parser.showCommands();
+            System.out.println("Tip: You can type 'help' and then the command you want to know more about. " +
+                    "('help command')");
+        }
     }
 
+    /**
+     * Takes care of resetting player and rooms and prints stuff to the user
+     */
     private void resetGame(){
         reactToResults();
         player.deleteInventory(); // deletes all items in the inventory
         createRooms(); //creates the rooms again and fills them with items
         System.out.println(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + "." );
-        player.setPlayerType((ItemGenerator.randomPlayerType()));
+        player.setPlayerType((ContentGenerator.getStudentPlayerType()));
         System.out.println("It is a new day, you wake up and go to the store.");
         printPlayer();
         System.out.println(currentRoom.getLongDescription());
-
     }
 
+    /**
+     * Prints messages depending on co2 and happiness
+     * the more co2 the player has emitted, the hotter the world will become
+     * the more negative the players happiness, the more unhappy the player will be
+     * This will be reflected in the printed messages
+     */
     private void reactToResults(){
         int happiness = 0;
         double co2 = 0;
@@ -156,6 +248,8 @@ public class Game {
             happiness += finishedGame.getHappiness();
             co2 += finishedGame.getCo2();
         }
+
+        System.out.println("CO2: " + co2);
 
         if (co2 < 100) {
             System.out.println("you notice your armpits are more stained than usual");
@@ -169,19 +263,24 @@ public class Game {
             System.out.println("the store is on fire");
         }
 
-        if (happiness < 100) {
+        if (happiness >= 0) {
+            System.out.println("you're ok...");
+        }else if ( happiness > -50){
             System.out.println("you notice that you've started snapping at your friends");
-        }else if(happiness < 200){
+        }else if(happiness > -100){
             System.out.println("you don't want to eat, even when your hungry");
-        }else if(happiness < 300){
+        }else if(happiness > -150){
             System.out.println("you're wondering if theres a point to anything");
-        }else if(happiness < 400){
+        }else if(happiness > -200){
             System.out.println("you've joined a fascist movement");
         }else {
             System.out.println("you have successfully toppled the government, gasoline is the only currency");
         }
     }
 
+    /**
+     * @param command Command with a second word which is the name of the room to go to
+     */
     private void goRoom(Command command) {
         if (!command.hasSecondWord()) {
             System.out.println("Go where?");
@@ -200,8 +299,12 @@ public class Game {
         }
     }
 
+    /**
+     * Prints the items in the inventory or current room (if any)
+     * Prints "no products in section/inventory" otherwise
+     * @param command Command. Second word should be "inventory" or "section"
+     */
     //checks if there is a second word when calling the check command and if it is either section or inventory.
-    //TODO print total value
     private void check(Command command) {
         String word = command.getSecondWord();
         if (word == null || !word.equalsIgnoreCase("section") && !word.equalsIgnoreCase("inventory") ){
@@ -211,14 +314,23 @@ public class Game {
 
         if(word.equalsIgnoreCase("section")){ //checks if the second word is section
             String string = currentRoom.getItemsString();
-            System.out.println(string != null ? string : "no products in section"); //prints items from the current room
+            if (currentRoom.getItemsString() == null && !currentRoom.canCheckout()){ //checks if the room is an aisle
+                System.out.println("This is an aisle you idiot! There are no products here!");
+            }
+            else
+            System.out.println(string != null ? string : "No products in section"); //prints items from the current room
         }
         else if(word.equalsIgnoreCase("inventory")){ //checks if the second word is inventory
             String string = player.getInventoryString();
-            System.out.println(string != null ? string : "no products in inventory"); //prints items from player inventory
+            System.out.println(string != null ? string : "No items in inventory"); //prints items from player inventory
         }
     }
 
+    /**
+     * Ends the game if the command has no second word
+     * @param command Used to make sure there isn't a second word.
+     * @return whether the game is to be ended
+     */
     private boolean quit(Command command) {
         if (command.hasSecondWord()) {
             System.out.println("Quit what?");
@@ -228,12 +340,20 @@ public class Game {
         }
     }
 
+    /**
+     * prints information about the specified item
+     * @param command second word should be the name of the item the player wants to inspect
+     */
     //TODO:Check both Player and Room for item
     private void inspect(Command command){
         Item item = currentRoom.getItem(command.getSecondWord());
         System.out.println(item != null ? item.toString() : "item not found");
     }
 
+    /**
+     * Adds an item from the room to the players inventory
+     * @param command second word should be the name of the item the player wants to pick up
+     */
     private void take(Command command){
         Item item = currentRoom.getItem(command.getSecondWord());
         if(item != null){
@@ -244,6 +364,10 @@ public class Game {
         }
     }
 
+    /**
+     * Removes an item from the players inventory
+     * @param command second word should be the name of the item the player wants to remove
+     */
     private void drop(Command command){
 
         //get item from user
