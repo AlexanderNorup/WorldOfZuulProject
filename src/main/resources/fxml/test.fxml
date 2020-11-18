@@ -3,13 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<BorderPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="worldofzuul.PresentationLayer.TestController">
-   <center>
-       <VBox prefHeight="200.0" prefWidth="100.0">
-           <Label text="JavaFX Virker (fra resource-mappen)!" />
-           <Label fx:id="clock"  />
-           <Button fx:id="clock_button" onAction="#updateClock" text="Update the clock" />
-       </VBox>
-   </center>
-</BorderPane>
+<VBox fx:id="whatever" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="worldofzuul.TestController">
+   <children>
+      <AnchorPane onKeyPressed="#onKeyPressed" prefHeight="720" prefWidth="1197" fx:id="root" />
+   </children>
+</VBox>
