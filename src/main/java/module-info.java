@@ -6,8 +6,9 @@ module worldofzuul {
     requires javafx.graphics;
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
     requires json;
 
-    opens worldofzuul to javafx.graphics, javafx.controls, javafx.fxml;
-    exports worldofzuul to javafx.graphics, javafx.controls, javafx.fxml;
+    opens worldofzuul to javafx.graphics, javafx.controls, javafx.fxml, javafx.media;
+    exports worldofzuul to javafx.graphics, javafx.controls, javafx.fxml, javafx.media;
 }
