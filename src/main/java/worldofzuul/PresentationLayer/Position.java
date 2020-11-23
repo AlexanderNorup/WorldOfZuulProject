@@ -1,4 +1,4 @@
-package worldofzuul.GUI;
+package worldofzuul.PresentationLayer;
 
 public class Position {
     private int x;

@@ -1,4 +1,4 @@
-package worldofzuul.GUI;
+package worldofzuul.PresentationLayer;
 
 
 import javafx.scene.image.ImageView;

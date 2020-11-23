@@ -2,15 +2,16 @@ package worldofzuul.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import worldofzuul.Objects.GameResult;
+import org.json.JSONObject;
+import worldofzuul.DataLayer.Objects.GameResult;
+import worldofzuul.PlayerType;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
-import org.json.JSONObject;
-import worldofzuul.PlayerType;
 
 /**
  * Class for taking care of reading from and writing to a JSON file

@@ -1,4 +1,4 @@
-package worldofzuul.Objects;
+package worldofzuul.DataLayer.Objects;
 
 /**
  * ISN'T IN USE RIGHT NOW

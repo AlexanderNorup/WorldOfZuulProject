@@ -1,4 +1,4 @@
-package worldofzuul.Objects;
+package worldofzuul.DataLayer.Objects;
 
 import worldofzuul.PlayerType;
 

@@ -41,6 +41,8 @@ repositories {
 }
 
 mainClassName = 'worldofzuul.Main'
+
+
 jar {
     manifest {
         attributes 'Main-Class': 'worldofzuul.Main'

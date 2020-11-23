@@ -1,6 +1,7 @@
 package worldofzuul;
 
 import javafx.application.Application;
+import worldofzuul.PresentationLayer.MainGUI;
 
 import java.util.Arrays;
 
