@@ -1,6 +1,3 @@
 package worldofzuul.PresentationLayer;
 
-public abstract class GridObject {
-
-
-}
+public abstract class GridObject { }

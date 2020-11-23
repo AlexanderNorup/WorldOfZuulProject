@@ -1,25 +1,17 @@
 package worldofzuul.PresentationLayer.Controllers;
 
-import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import worldofzuul.PresentationLayer.*;
-
-import java.io.IOException;
 
 public class GameCanvasController {
 
-    private Grid g;
     private PlayerObject playerObject;
 
     @FXML
@@ -49,7 +41,7 @@ public class GameCanvasController {
                 playerObject.moveRight();
                 break;
             case G:
-                g.setDrawVisibleGrid(!g.isDrawVisibleGrid());
+                playerObject.getActiveGrid().setDrawVisibleGrid(!playerObject.getActiveGrid().isDrawVisibleGrid());
                 break;
             case ESCAPE:
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -71,10 +63,20 @@ public class GameCanvasController {
     @FXML
     public void initialize(){
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
-        g = new Grid(gameCanvas, 14,9);
-        playerObject = new PlayerObject(g, 4,2);
-        g.setGridObject(new Dog(), new Position(0,1));
-        g.setGridObject(new Dog(), new Position(1,4));
+        Grid activeGrid = new Grid(gameCanvas, 14,9,new Image(MainGUI.class.getResource("/backgrounds/pink.png").toString()));
+        playerObject = new PlayerObject(activeGrid, 4,2);
+        activeGrid.setGridObject(new Dog(), new Position(0,1));
+        activeGrid.setGridObject(new Dog(), new Position(1,4));
+
+
+
+        Grid anotherGrid = new Grid(gameCanvas, 9,6, new Image(MainGUI.class.getResource("/backgrounds/orange.png").toString()));
+        anotherGrid.setGridObject(new Dog(), new Position(4,5));
+        anotherGrid.setGridObject(new Warp(activeGrid,new Position(5,6)), new Position(3,4));
+        activeGrid.setGridObject(new Warp(anotherGrid,new Position(0,0)), new Position(5,5));
+        activeGrid.setActive(true); //Starts drawing and animations
+
+
 
         gameCanvas.setFocusTraversable(true); //Makes onKeyPressed() work.
     }
