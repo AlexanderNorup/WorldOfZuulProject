@@ -7,6 +7,7 @@ import worldofzuul.Objects.GameResult;
 import worldofzuul.Objects.Item;
 import worldofzuul.Objects.Player;
 import worldofzuul.Objects.Room;
+import worldofzuul.Util.ContentGenerator;
 
 import java.util.ArrayList;
 

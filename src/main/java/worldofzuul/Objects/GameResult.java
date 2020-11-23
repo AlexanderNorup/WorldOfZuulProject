@@ -25,4 +25,6 @@ public class GameResult {
     public double getHappiness() {
         return happiness;
     }
+
+    public PlayerType getPlayerType() { return playerType; }
 }
