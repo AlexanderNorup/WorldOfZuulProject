@@ -1,4 +1,4 @@
-package worldofzuul.PresentationLayer;
+package worldofzuul.PresentationLayer.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,10 +27,10 @@ public class MainMenuController {
 
         Stage stage = (Stage) playGameLabel.getScene().getWindow();
 
-        Parent mainMenu = null;
+        Parent game = null;
         try {
-            mainMenu = FXMLLoader.load(MainGUI.class.getResource("/fxml/test.fxml"));
-            stage.setScene(new Scene(mainMenu, 1197,720));
+            game = FXMLLoader.load(MainGUI.class.getResource("/fxml/GameCanvas.fxml"));
+            stage.setScene(new Scene(game, 1197,720));
         } catch (IOException e) {
             playGameLabel.setText("There was en error starting the game!");
             e.printStackTrace();

@@ -9,6 +9,10 @@ module worldofzuul {
     requires javafx.media;
     requires json;
 
+    //PresentationLayer
     opens worldofzuul.PresentationLayer to javafx.graphics, javafx.controls, javafx.fxml, javafx.media;
     exports worldofzuul.PresentationLayer to javafx.graphics, javafx.controls, javafx.fxml, javafx.media;
+
+    opens worldofzuul.PresentationLayer.Controllers to javafx.graphics, javafx.controls, javafx.fxml, javafx.media;
+    exports worldofzuul.PresentationLayer.Controllers to javafx.graphics, javafx.controls, javafx.fxml, javafx.media;
 }
