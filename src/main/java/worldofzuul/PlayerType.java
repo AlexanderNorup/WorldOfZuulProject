@@ -1,9 +1,10 @@
 package worldofzuul;
 
-import worldofzuul.Objects.Extra;
-import worldofzuul.Objects.Item;
+import worldofzuul.DataLayer.Objects.Extra;
+import worldofzuul.DataLayer.Objects.Item;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Keeps all the properties for a playerType (Student, Bodybuilder etc)
@@ -68,12 +69,12 @@ public class PlayerType {
         this.pickynessFactor = pickynessFactor * equalizer;
     }
 
-    public void addFaveItems(Item faveItem) {
-        faveItemTypes.add(faveItem);
+    public void addFaveItems(Item... items) {
+        faveItemTypes.addAll(Arrays.asList(items));
     }
 
-    public void addHateItems(Item hateItem) {
-        hateItemTypes.add(hateItem);
+    public void addHateItems(Item... items) {
+        hateItemTypes.addAll(Arrays.asList(items));
     }
 
     public void addPositiveExtra(Extra thingThatMatter) {
@@ -97,6 +98,7 @@ public class PlayerType {
         int itemsContainingExtras = 0;
         double variety = 0;
         ArrayList<Item> itemTypeList = new ArrayList<>();
+
 
         for (Item item : items) {
 

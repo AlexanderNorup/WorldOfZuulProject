@@ -1,4 +1,4 @@
-package worldofzuul;
+package worldofzuul.PresentationLayer;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,9 +8,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.net.URL;
-import java.util.Enumeration;
+
 
 public class MainGUI extends Application {
     Scene s;
@@ -25,7 +23,7 @@ public class MainGUI extends Application {
         Media media = new Media(MainGUI.class.getResource("/music/pilfinger.mp3").toString());  //plays music
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
-      
+
         primaryStage.setScene(s);
         primaryStage.setResizable(false);
         primaryStage.setTitle("WorldOfZuul Test");

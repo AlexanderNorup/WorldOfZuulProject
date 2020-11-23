@@ -1,4 +1,4 @@
-package worldofzuul.Objects;
+package worldofzuul.DataLayer.Objects;
 
 import worldofzuul.PlayerType;
 
@@ -25,4 +25,6 @@ public class GameResult {
     public double getHappiness() {
         return happiness;
     }
+
+    public PlayerType getPlayerType() { return playerType; }
 }

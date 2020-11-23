@@ -1,17 +1,9 @@
-package worldofzuul;
+package worldofzuul.PresentationLayer;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import worldofzuul.GUI.Dog;
-import worldofzuul.GUI.Grid;
-import worldofzuul.GUI.PlayerObject;
-import worldofzuul.GUI.Position;
-
-import java.util.Date;
 
 public class TestController {
     Grid grid;
