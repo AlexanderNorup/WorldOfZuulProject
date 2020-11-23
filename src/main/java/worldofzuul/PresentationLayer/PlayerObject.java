@@ -5,6 +5,9 @@ import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the player.
+ */
 public class PlayerObject extends GridSprite {
 
     private Grid grid;
@@ -12,10 +15,16 @@ public class PlayerObject extends GridSprite {
     private Image avatarImg;
     private Image[] walkingSprites;
 
-    public PlayerObject(Grid grid, int x, int y) {
+    /**
+     * The Player on the Grid. The one the player controls around.
+     * Keeps track of the active grid shown on screen.
+     * @param grid The Grid the player starts on.
+     * @param startingPos The Position the player starts on.
+     */
+    public PlayerObject(Grid grid, Position startingPos) {
         super();
         this.grid = grid;
-        this.playerPos = new Position(x, y);
+        this.playerPos = startingPos;
         this.grid.setGridObject(this, this.playerPos);
         this.avatarImg = new Image(getClass().getResource("/sprites/avatar.png").toString());
         this.walkingSprites = new Image[2];
@@ -23,6 +32,11 @@ public class PlayerObject extends GridSprite {
         this.walkingSprites[1] = (new Image(getClass().getResource("/sprites/avatar_walking_2.png").toString()));
     }
 
+    /**
+     * Tries to move the player to a new position.
+     * If the new position is a Warp, then the player changes the active Grid, and moves to the Warp's destination
+     * @param newPosition The position on the Grid the player should try and move to.
+     */
     private void tryMove(Position newPosition) {
         //Start by checking if we're moving onto a warp
         GridObject gridObjectAtNewPosition  = grid.getGridObject(newPosition);
@@ -68,6 +82,8 @@ public class PlayerObject extends GridSprite {
 
     @Override
     public Image getWalkingSprite() {
+        //Because the player has more than 1 walking animation, the animationTimer and currentTimeMillis()
+        //is used to periodically switch the sprite.
         int animationTimer = 25;
         if (System.currentTimeMillis() % animationTimer >= animationTimer/2) {
             return this.walkingSprites[0];
@@ -76,6 +92,9 @@ public class PlayerObject extends GridSprite {
         }
     }
 
+    /**
+     * @return The active Grid. The one the player is on, and currently being drawn.
+     */
     public Grid getActiveGrid() {
         return grid;
     }
