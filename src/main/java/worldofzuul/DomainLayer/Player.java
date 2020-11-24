@@ -1,6 +1,4 @@
-package worldofzuul.DataLayer.Objects;
-
-import worldofzuul.PlayerType;
+package worldofzuul.DomainLayer;
 
 import java.util.ArrayList;
 import java.util.Locale;

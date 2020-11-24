@@ -1,10 +1,8 @@
-package worldofzuul;
+package worldofzuul.DomainLayer;
 
-import worldofzuul.Commandhandling.Command;
-import worldofzuul.Commandhandling.CommandWord;
-import worldofzuul.Commandhandling.Parser;
-import worldofzuul.DataLayer.Objects.*;
-import worldofzuul.Util.ContentGenerator;
+import worldofzuul.DomainLayer.Commandhandling.Command;
+import worldofzuul.DomainLayer.Commandhandling.CommandWord;
+import worldofzuul.DomainLayer.Commandhandling.Parser;
 
 import java.util.ArrayList;
 

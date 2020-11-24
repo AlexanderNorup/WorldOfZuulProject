@@ -1,6 +1,4 @@
-package worldofzuul.Commandhandling;
-
-import worldofzuul.Commandhandling.CommandWord;
+package worldofzuul.DomainLayer.Commandhandling;
 
 import java.util.HashMap;
 
