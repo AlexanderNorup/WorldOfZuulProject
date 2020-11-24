@@ -5,6 +5,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import worldofzuul.PresentationLayer.GridObjects.GridObject;
+import worldofzuul.PresentationLayer.GridObjects.GridSprite;
+import worldofzuul.PresentationLayer.GridObjects.Warp;
 
 import java.util.ArrayList;
 
@@ -127,7 +130,6 @@ public class Grid {
     private void drawGrid() {
 
         //Clear entire background
-        gc.setFill(Color.BLACK);
         gc.clearRect(0, 0, windowWidth, windowHeight);
 
         //Then draw the background

@@ -8,6 +8,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import worldofzuul.PresentationLayer.*;
+import worldofzuul.PresentationLayer.GridObjects.Dog;
+import worldofzuul.PresentationLayer.GridObjects.PlayerObject;
+import worldofzuul.PresentationLayer.GridObjects.Warp;
 
 /**
  * Is the controller for the main GameCanvas.
