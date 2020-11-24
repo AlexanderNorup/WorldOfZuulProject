@@ -21,6 +21,8 @@ public class MainMenuController {
     public Button selectCharacterButton;
     public Label selectCharacterLabel;
 
+    private final String[] playerTypes = new String[] {"Student", "Bodybuilder", "Picky", "Random"};
+    private int playerTypeIndex = -1;
 
     @FXML
     public void playGame(){
@@ -44,7 +46,11 @@ public class MainMenuController {
     }
 
     public void selectCharacter(){
-        selectCharacterLabel.setText("You selected - Student -");
+        playerTypeIndex++;
+        if (playerTypeIndex > 3) {
+            playerTypeIndex = 0;
+        }
+        selectCharacterLabel.setText("You selected: " + playerTypes[playerTypeIndex]);
     }
 
 }
