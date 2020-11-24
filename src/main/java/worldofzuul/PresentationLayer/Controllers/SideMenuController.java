@@ -1,4 +1,4 @@
-package worldofzuul.PresentationLayer;
+package worldofzuul.PresentationLayer.Controllers;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
