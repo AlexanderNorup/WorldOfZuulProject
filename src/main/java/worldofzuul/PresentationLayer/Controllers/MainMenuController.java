@@ -22,7 +22,7 @@ public class MainMenuController {
     public Label selectCharacterLabel;
 
     private final String[] playerTypes = new String[] {"Student", "Bodybuilder", "Picky", "Random"};
-    private int playerTypeIndex = -1;
+    private int playerTypeIndex = 3; // Random playerType
 
     @FXML
     public void playGame(){
