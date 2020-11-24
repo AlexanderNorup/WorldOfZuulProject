@@ -140,6 +140,7 @@ hs_err_pid*
 .gradle
 build/
 
+./saveFile.json
 # Ignore Gradle GUI config
 gradle-app.setting
 
@@ -154,5 +155,7 @@ gradle-app.setting
 
 ### Gradle Patch ###
 **/build/
+
+
 
 # End of https://www.toptal.com/developers/gitignore/api/gradle
