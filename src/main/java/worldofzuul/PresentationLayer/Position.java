@@ -1,8 +1,18 @@
 package worldofzuul.PresentationLayer;
 
+/**
+ * Represents a position in 2D space.
+ */
 public class Position {
     private int x;
     private int y;
+
+    /**
+     * Creates a new position in 2D space.
+     * Positions are messured from the top-left corner of the window.
+     * @param x The x-value.
+     * @param y The y-value
+     */
     public Position(int x, int y){
         this.x = x;
         this.y = y;

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -26,7 +27,8 @@ public class MainGUI extends Application {
 
         primaryStage.setScene(s);
         primaryStage.setResizable(false);
-        primaryStage.setTitle("WorldOfZuul Test");
+        primaryStage.setTitle("WorldOfShopping");
+        primaryStage.getIcons().add(new Image(MainGUI.class.getResource("/sprites/avatar.png").toString()));
         primaryStage.show();
     }
 }

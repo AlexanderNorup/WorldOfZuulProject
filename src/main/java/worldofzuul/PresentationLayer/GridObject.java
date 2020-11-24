@@ -1,10 +1,3 @@
 package worldofzuul.PresentationLayer;
 
-
-import javafx.scene.image.ImageView;
-
-public abstract class GridObject {
-
-    public abstract ImageView draw();
-
-}
+public abstract class GridObject { }
