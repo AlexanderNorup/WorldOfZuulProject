@@ -1,12 +1,19 @@
 package worldofzuul.PresentationLayer.Controllers;
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.Dog;
 import worldofzuul.PresentationLayer.GridObjects.PlayerObject;
@@ -20,11 +27,15 @@ public class GameCanvasController {
 
     private PlayerObject playerObject;
 
+
     @FXML
     Pane root;
 
     @FXML
     Canvas gameCanvas;
+
+    @FXML
+    Pane sideMenu;
 
     /**
      * This method runs every time the user pressed any key on their keyboard, while the game
@@ -56,6 +67,18 @@ public class GameCanvasController {
                 //Turns on debug mode.
                 //The grid will be shown, alogn with warps.
                 playerObject.getActiveGrid().setShowDebug(!playerObject.getActiveGrid().isShowDebug());
+                break;
+            case I:
+                if (sideMenu.isVisible()) {
+                    sideMenu.setVisible(false);
+                    sideMenu.setManaged(false);
+                } else {
+                    sideMenu.setVisible(true);
+                    sideMenu.setManaged(true);
+                    Scene sideScene = sideMenu.getScene();
+                    ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
+                    sideMenuListView.requestFocus();
+                }
                 break;
             case ESCAPE:
                 //Prompts the user if they want to exit.
@@ -119,7 +142,8 @@ public class GameCanvasController {
 
 
 
-        gameCanvas.setFocusTraversable(true); //Makes onKeyPressed() work.
-    }
 
+
+        root.setFocusTraversable(true); //Makes onKeyPressed() work.
+    }
 }
