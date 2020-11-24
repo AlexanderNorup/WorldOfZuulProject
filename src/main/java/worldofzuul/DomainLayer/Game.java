@@ -29,7 +29,7 @@ public class Game {
     public Game() {
         createRooms();
         parser = new Parser();
-        player = new Player(ContentGenerator.getStudentPlayerType());
+        player = new Player(ContentGenerator.getRandomPlayerType());
         finishedGames = new ArrayList<>();
         saveGame = new SaveFile("./saveFile.json");
         try {

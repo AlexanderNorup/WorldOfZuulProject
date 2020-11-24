@@ -18,7 +18,6 @@ public class ContentGenerator {
     private static final String STUDENT_NAME = "Student";
     private static final String BODYBUILDER_NAME = "Bodybuilder";
     private static final String PICKY_NAME = "Picky";
-    private static final String SNOB_NAME = "Snob";
 
     // Number with which to multiply price when product is organic
     private static final double organicFactor = 1.2;
@@ -180,8 +179,6 @@ public class ContentGenerator {
                 return getBodybuilderPlayerType();
             case PICKY_NAME:
                 return getPickyPlayerType();
-            case SNOB_NAME:
-                return getSnobPlayerType();
         }
         throw new IllegalArgumentException("name should be one of the playerTypes in the ContentGenerator");
     }
@@ -197,26 +194,20 @@ public class ContentGenerator {
     }
 
     public static PlayerType getBodybuilderPlayerType(){
-        PlayerType type = new PlayerType(BODYBUILDER_NAME,"The body builder needs loads of protein!");
-        type.setFactors(1,7,2);
-        type.setValues(50,1000,2200);
-        type.addPositiveExtra(Extra.ORGANIC);
+        PlayerType type = new PlayerType(BODYBUILDER_NAME,"The body builder needs loads of protein!" +
+                "You should get 3000 calories per day, and as much protein as possible, but try not to make the world explode");
+        type.setFactors(6,1,3);
+        type.setValues(75,1200,3000);
         return type;
     }
 
     public static PlayerType getPickyPlayerType(){
         PlayerType type = new PlayerType(PICKY_NAME,"The picky player type has a lot of money, but he is very Picky and needs the optimal amount of calories.");
-        type.setFactors(1,7,2);
-        type.setValues(50,1000,2200);
-        type.addPositiveExtra(Extra.ORGANIC);
-        return type;
-    }
-
-    public static PlayerType getSnobPlayerType(){
-        PlayerType type = new PlayerType(SNOB_NAME,"You just hate people");
-        type.setFactors(1,7,2);
-        type.setValues(50,1000,2200);
-        type.addPositiveExtra(Extra.ORGANIC);
+        type.setFactors(1,1,8);
+        type.setValues(100,1500,2000);
+        type.addNegativeExtra(Extra.CONTAINS_GLUTEN);
+        type.addNegativeExtra(Extra.CONTAINS_LACTOSE);
+        type.addNegativeExtra(Extra.CONTAINS_SOY);
         return type;
     }
 
@@ -225,13 +216,12 @@ public class ContentGenerator {
      * @return returns a random playerType with the use of switch
      * statements
      */
-    public static PlayerType randomPlayerType(){
+    public static PlayerType getRandomPlayerType(){
         PlayerType type = null;
-        switch (new Random().nextInt(4)){
+        switch (new Random().nextInt(3)){
             case 0 -> type = getStudentPlayerType();
             case 1 -> type = getBodybuilderPlayerType();
             case 2 -> type = getPickyPlayerType();
-            case 3 -> type = getSnobPlayerType();
         }
         return type;
     }

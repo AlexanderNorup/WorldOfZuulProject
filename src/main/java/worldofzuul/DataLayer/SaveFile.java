@@ -68,8 +68,9 @@ public class SaveFile implements ISaveGame {
 
         File file = new File(path);
 
+        Scanner s = new Scanner(file);
         try {
-            Scanner s = new Scanner(file);
+
 
             // Throws an IOException if the file is empty
             if (s.hasNextLine()) {
