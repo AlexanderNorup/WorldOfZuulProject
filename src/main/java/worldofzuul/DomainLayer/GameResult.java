@@ -1,6 +1,4 @@
-package worldofzuul.DataLayer.Objects;
-
-import worldofzuul.PlayerType;
+package worldofzuul.DomainLayer;
 
 /**
  * A simple class for storing the result of one game

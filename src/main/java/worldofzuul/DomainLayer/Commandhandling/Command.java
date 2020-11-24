@@ -1,4 +1,4 @@
-package worldofzuul.Commandhandling;
+package worldofzuul.DomainLayer.Commandhandling;
 
 /**
  * This class is part of the "World of Zuul" application.

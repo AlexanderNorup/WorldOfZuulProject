@@ -1,7 +1,4 @@
-package worldofzuul.Commandhandling;
-
-import worldofzuul.Commandhandling.Command;
-import worldofzuul.Commandhandling.CommandWords;
+package worldofzuul.DomainLayer.Commandhandling;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package worldofzuul.DataLayer.Objects;
+package worldofzuul.DomainLayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
