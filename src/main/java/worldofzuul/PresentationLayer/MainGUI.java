@@ -21,7 +21,7 @@ public class MainGUI extends Application {
         Parent mainMenu = FXMLLoader.load(MainGUI.class.getResource("/fxml/mainmenu.fxml"));
         s = new Scene(mainMenu, 1197,720);
 
-        Media media = new Media(MainGUI.class.getResource("/music/pilfinger.mp3").toString());  //plays music
+        Media media = new Media(MainGUI.class.getResource("/music/refactor.mp3").toString());  //plays music
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
 
