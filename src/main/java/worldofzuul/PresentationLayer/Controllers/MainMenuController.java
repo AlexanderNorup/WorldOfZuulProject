@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.stage.Stage;
 import worldofzuul.PresentationLayer.MainGUI;
 
@@ -36,7 +37,6 @@ public class MainMenuController {
             e.printStackTrace();
         }
     }
-
     @FXML
     public void quitGame(){
         quitGameLabel.setText("Bye!");
