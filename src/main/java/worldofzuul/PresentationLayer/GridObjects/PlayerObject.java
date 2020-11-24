@@ -40,6 +40,7 @@ public class PlayerObject extends GridSprite {
         //Start by checking if we're moving onto a warp
         GridObject gridObjectAtNewPosition  = grid.getGridObject(newPosition);
         if(gridObjectAtNewPosition instanceof Warp){
+            this.setAnimating(true);
             Warp warp = (Warp) gridObjectAtNewPosition;
             this.grid.setGridObject(null, this.playerPos); //Remove the player from the current grid
             this.grid.setActive(false); //Stop animating the current grid
@@ -49,11 +50,12 @@ public class PlayerObject extends GridSprite {
             this.grid = warp.getGrid(); //Get the new grid that is being opened
             this.grid.setGridObject(this, this.playerPos); //Add the player to the new grid
             this.grid.setActive(true); //Start animating the new grid.
+            this.setAnimating(false);
             return;
         }
 
         //If not moving onto the warp, then we just move by calling the grid.
-        if (grid.moveObject(playerPos, newPosition)) {
+        if (!this.isAnimating() && grid.moveObject(playerPos, newPosition)) {
             playerPos = newPosition;
         }
     }

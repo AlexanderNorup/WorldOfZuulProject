@@ -254,17 +254,17 @@ public class Grid {
      */
     public boolean moveObject(Position currentPos, Position newPos) {
         if (!this.isSpaceFree(newPos)) {
-            System.out.println("[Debug] Cannot move. Space is not free!");
+            //System.out.println("[Debug] Cannot move. Space is not free!");
             return false;
         }
         GridObject gridObject = this.getGridObject(currentPos);
         if (gridObject == null) {
-            System.out.println("[Debug] GridObject is null!");
+            //System.out.println("[Debug] GridObject is null!");
             return false;
         }
         if (gridObject instanceof GridSprite) {
             if (((GridSprite) gridObject).isAnimating()) {
-                System.out.println("[Debug] Cannot move animating object!");
+                //System.out.println("[Debug] Cannot move animating object!");
                 return false;
             }
 
