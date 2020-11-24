@@ -68,9 +68,9 @@ public class SaveFile implements ISaveGame {
 
         File file = new File(path);
 
-        Scanner s = new Scanner(file);
+        Scanner s = null;
         try {
-
+            s = new Scanner(file);
 
             // Throws an IOException if the file is empty
             if (s.hasNextLine()) {
@@ -99,6 +99,10 @@ public class SaveFile implements ISaveGame {
             throw new SaveGameException("IOException when loading game", e);
         } catch (JSONException e) {
             throw new SaveGameException("JSONException when loading game", e);
+        } finally {
+            if (s != null){
+                s.close();
+            }
         }
 
         return toReturn;
