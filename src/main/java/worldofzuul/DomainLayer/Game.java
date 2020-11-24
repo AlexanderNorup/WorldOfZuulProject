@@ -1,5 +1,9 @@
 package worldofzuul.DomainLayer;
 
+import worldofzuul.DataLayer.GameResultData;
+import worldofzuul.DataLayer.ISaveGame;
+import worldofzuul.DataLayer.SaveFile;
+import worldofzuul.DataLayer.SaveGameException;
 import worldofzuul.DomainLayer.Commandhandling.Command;
 import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Commandhandling.Parser;
@@ -20,12 +24,28 @@ public class Game {
     private Room currentRoom;
     private final Player player;
     private final ArrayList<GameResult> finishedGames;
+    private ISaveGame saveGame;
 
     public Game() {
         createRooms();
         parser = new Parser();
         player = new Player(ContentGenerator.getStudentPlayerType());
         finishedGames = new ArrayList<>();
+        saveGame = new SaveFile("./saveFile.json");
+        try {
+            ArrayList<GameResultData> loadedData = saveGame.load();
+            for (GameResultData resultData: loadedData) {
+                GameResult result = new GameResult(resultData.getCo2(),
+                        resultData.getHappiness(),
+                        ContentGenerator.getPlayerTypeByName(resultData.getPlayerTypeName()));
+                finishedGames.add(result);
+            }
+            System.out.println("Your saved game was loaded");
+        } catch (SaveGameException e) {
+            System.out.println("No saved game found - created new game");
+            // finishedGames Arraylist will be an empty list
+            // This is the same as starting a new game
+        }
     }
 
     /**
@@ -159,10 +179,26 @@ public class Game {
 
         GameResult result = player.getGameResult();
         finishedGames.add(result); //adds the game result of the currently played game to an arraylist of results.
+
+        save();
+
         System.out.println("You went to the register and checked out.");
         System.out.println(player.getSummedValuesString()); //prints the values for the current shopping trip, price, calories & protein
         System.out.println("The day is over and you go back home to sleep.");
         resetGame(); //resets the game and starts anew.
+    }
+
+    private void save() {
+        ArrayList<GameResultData> resultData = new ArrayList<>();
+        for (GameResult result : finishedGames) {
+            resultData.add(new GameResultData(result.getCo2(), result.getHappiness(), result.getPlayerType().getName()));
+        }
+        try {
+            saveGame.save(resultData);
+            System.out.println("Game saved successfully");
+        } catch (SaveGameException e) {
+            System.out.println("An error occurred when saving the game");
+        }
     }
 
     private void printHelp(Command command) {
@@ -247,13 +283,15 @@ public class Game {
 
         System.out.println("CO2: " + co2);
 
-        if (co2 < 100) {
+        if (co2 < 5) {
+            System.out.println("The earth is a green and beautiful place");
+        } else if (co2 < 10) {
             System.out.println("you notice your armpits are more stained than usual");
-        }else if(co2 < 200){
-            System.out.println(" it's to hot to walk barefoot");
-        }else if(co2 < 300){
+        }else if(co2 < 15){
+            System.out.println("it's to hot to walk barefoot");
+        }else if(co2 < 20){
             System.out.println("you can boil an egg in the ocean");
-        }else if(co2 < 400){
+        }else if(co2 < 25){
             System.out.println("you've sold your oven, as you don't need it");
         }else {
             System.out.println("the store is on fire");
