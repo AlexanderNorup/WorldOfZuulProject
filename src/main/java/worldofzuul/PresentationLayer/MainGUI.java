@@ -28,7 +28,7 @@ public class MainGUI extends Application {
         primaryStage.setScene(s);
         primaryStage.setResizable(false);
         primaryStage.setTitle("World Of Zhopping");
-        primaryStage.getIcons().add(new Image(MainGUI.class.getResource("/sprites/avatar.png").toString()));
+        primaryStage.getIcons().add(new Image(MainGUI.class.getResource("/sprites/logo.png").toString()));
         primaryStage.show();
     }
 }

@@ -31,7 +31,7 @@ public class MainMenuController {
         Parent game = null;
         try {
             game = FXMLLoader.load(MainGUI.class.getResource("/fxml/GameCanvas.fxml"));
-            stage.setScene(new Scene(game, 1197,720));
+            stage.setScene(new Scene(game, 1280,720));
         } catch (IOException e) {
             playGameLabel.setText("There was en error starting the game!");
             e.printStackTrace();
