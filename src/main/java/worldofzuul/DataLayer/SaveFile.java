@@ -1,10 +1,11 @@
-package worldofzuul.Util;
+package worldofzuul.DataLayer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import worldofzuul.DataLayer.Objects.GameResult;
-import worldofzuul.PlayerType;
+import worldofzuul.DomainLayer.ContentGenerator;
+import worldofzuul.DomainLayer.GameResult;
+import worldofzuul.DomainLayer.PlayerType;
 
 import java.io.File;
 import java.io.FileNotFoundException;

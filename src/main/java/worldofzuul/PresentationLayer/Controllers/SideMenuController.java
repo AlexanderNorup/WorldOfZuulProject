@@ -4,8 +4,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import worldofzuul.DataLayer.Objects.Item;
-import worldofzuul.DataLayer.Objects.Repository;
+import worldofzuul.DomainLayer.Item;
+import worldofzuul.DomainLayer.Repository;
 
 public class SideMenuController {
 

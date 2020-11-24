@@ -1,8 +1,8 @@
-package worldofzuul.Util;
+package worldofzuul.DomainLayer;
 
-import worldofzuul.DataLayer.Objects.Extra;
-import worldofzuul.DataLayer.Objects.Item;
-import worldofzuul.PlayerType;
+import worldofzuul.DomainLayer.Extra;
+import worldofzuul.DomainLayer.Item;
+import worldofzuul.DomainLayer.PlayerType;
 
 import java.util.ArrayList;
 import java.util.Random;
