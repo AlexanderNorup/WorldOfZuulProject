@@ -60,15 +60,12 @@ public class Game implements IGame {
 
     @Override
     public IPlayer getPlayer(){
-        throw new UnsupportedOperationException("not implemented");
-        //TODO implement
+        return player;
     }
 
     public String doAction(String firstWord, String secondWord) {
         CommandWords commands = new CommandWords();
-        processCommand(new Command(commands.getCommandWord(firstWord), secondWord));
-        //TODO processCommand should return a string, which should then replace "null"
-        return null;
+        return processCommand(new Command(commands.getCommandWord(firstWord), secondWord));
     }
 
     /**

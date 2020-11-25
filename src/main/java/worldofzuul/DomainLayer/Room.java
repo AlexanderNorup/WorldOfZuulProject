@@ -1,5 +1,10 @@
 package worldofzuul.DomainLayer;
 
+import worldofzuul.DomainLayer.Interfaces.IRoom;
+import worldofzuul.DomainLayer.Interfaces.Shelf;
+import worldofzuul.DomainLayer.Interfaces.Warp;
+
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,7 +14,7 @@ import java.util.Set;
  * Has a description of itself and keeps track of the items in the room (if any) as well as which rooms
  * can be accessed in which direction (North, South, East, West) from this room
  */
-public class Room {
+public class Room implements IRoom {
 
     private final String description;
     private final ArrayList<Item> items;
@@ -105,5 +110,30 @@ public class Room {
         }
 
         return "Available products: \n" + Item.getListString(items);
+    }
+
+    @Override
+    public ArrayList<Shelf> getShelves() {
+        return null;
+    }
+
+    @Override
+    public int getWidth() {
+        return 0;
+    }
+
+    @Override
+    public int getHeight() {
+        return 0;
+    }
+
+    @Override
+    public ArrayList<Warp> getWarps() {
+        return null;
+    }
+
+    @Override
+    public URI getBackground() {
+        return null;
     }
 }

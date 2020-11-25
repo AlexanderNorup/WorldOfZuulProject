@@ -2,6 +2,7 @@ package worldofzuul.DomainLayer;
 
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IPlayer;
+import worldofzuul.DomainLayer.Interfaces.IRoom;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -36,6 +37,16 @@ public class Player implements IPlayer {
     }
 
     @Override
+    public int getStartingX() {
+        return 0;
+    }
+
+    @Override
+    public int getStartingY() {
+        return 0;
+    }
+
+    @Override
     public double getInventoryValue() {
         return Item.getListValue(inventory);
     }
@@ -54,6 +65,11 @@ public class Player implements IPlayer {
     public double getInventoryCalories() {
         throw new UnsupportedOperationException("not implemented");
         //TODO implement
+    }
+
+    @Override
+    public IRoom getStartingRoom() {
+        return null;
     }
 
     /**
