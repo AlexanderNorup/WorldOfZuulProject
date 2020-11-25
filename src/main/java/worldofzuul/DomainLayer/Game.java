@@ -6,7 +6,11 @@ import worldofzuul.DataLayer.SaveFile;
 import worldofzuul.DataLayer.SaveGameException;
 import worldofzuul.DomainLayer.Commandhandling.Command;
 import worldofzuul.DomainLayer.Commandhandling.CommandWord;
+import worldofzuul.DomainLayer.Commandhandling.CommandWords;
 import worldofzuul.DomainLayer.Commandhandling.Parser;
+import worldofzuul.DomainLayer.Interfaces.IGame;
+import worldofzuul.DomainLayer.Interfaces.IPlayer;
+import worldofzuul.DomainLayer.Interfaces.IRoom;
 
 import java.util.ArrayList;
 
@@ -19,7 +23,7 @@ import java.util.ArrayList;
  * There is a method for each command the user can enter
  * They are all called from the processCommand function
  */
-public class Game {
+public class Game implements IGame {
     private final Parser parser;
     private Room currentRoom;
     private final Player player;
@@ -46,6 +50,22 @@ public class Game {
             // finishedGames Arraylist will be an empty list
             // This is the same as starting a new game
         }
+    }
+
+    @Override
+    public ArrayList<IRoom> getRooms() {
+        throw new UnsupportedOperationException("not implemented");
+        //TODO implement
+    }
+
+    @Override
+    public IPlayer getPlayer(){
+        return player;
+    }
+
+    public String doAction(String firstWord, String secondWord) {
+        CommandWords commands = new CommandWords();
+        return processCommand(new Command(commands.getCommandWord(firstWord), secondWord));
     }
 
     /**
