@@ -41,7 +41,9 @@ public class Item {
             extrasString.append(extra.toString());
             extrasString.append(", ");
         }
-        extrasString.delete(extrasString.length()-2, extrasString.length());
+        if(extra.size() > 0) {
+            extrasString.delete(extrasString.length() - 2, extrasString.length());
+        }
 
         return name + ": price: kr " + price + "; calories: " + calories + " kcal; protein: " + protein + " g;" + "\n" + extrasString.toString();
     }

@@ -1,6 +1,6 @@
 package worldofzuul.PresentationLayer;
 
-import javafx.scene.image.Image;
+import worldofzuul.PresentationLayer.GridObjects.GridSprite;
 
 public class AnimationState {
 

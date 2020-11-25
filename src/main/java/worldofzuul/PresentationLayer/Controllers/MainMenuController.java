@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.stage.Stage;
 import worldofzuul.PresentationLayer.MainGUI;
 
@@ -30,13 +31,12 @@ public class MainMenuController {
         Parent game = null;
         try {
             game = FXMLLoader.load(MainGUI.class.getResource("/fxml/GameCanvas.fxml"));
-            stage.setScene(new Scene(game, 1197,720));
+            stage.setScene(new Scene(game, 1280,720));
         } catch (IOException e) {
             playGameLabel.setText("There was en error starting the game!");
             e.printStackTrace();
         }
     }
-
     @FXML
     public void quitGame(){
         quitGameLabel.setText("Bye!");
