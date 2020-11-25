@@ -1,5 +1,7 @@
 package worldofzuul.DomainLayer;
 
+import worldofzuul.DomainLayer.Interfaces.IItem;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
  * Has two static methods which take an ArrayList as parameter for getting a
  * String of the items in the list or getting the total price of the items in the list
  */
-public class Item {
+public class Item implements IItem {
     private final String name;
     private final double price;
     private final double co2;
@@ -59,6 +61,10 @@ public class Item {
         }else {
             return false;
         }
+    }
+
+    public String getDescription(){
+        return this.toString();
     }
 
     public String getName() {

@@ -1,5 +1,8 @@
 package worldofzuul.DomainLayer;
 
+import worldofzuul.DomainLayer.Interfaces.IItem;
+import worldofzuul.DomainLayer.Interfaces.IPlayer;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -8,7 +11,7 @@ import java.util.Locale;
  * Responsible for keeping track of inventory
  * This is also the class responsible for communicating with the playerType class
  */
-public class Player {
+public class Player implements IPlayer {
 
     private final ArrayList<Item> inventory;
     private PlayerType type;
@@ -21,6 +24,36 @@ public class Player {
     public void addItem(Item item) {
         inventory.add(item);
         //TODO: Discuss whether or not this method should return a boolean.
+    }
+
+    @Override
+    public ArrayList<IItem> getInventory() {
+        //can't pass ArrayList<Item> when ArrayList<IItem> is needed
+        //so this workaround is necessary
+        ArrayList<IItem> returnList = new ArrayList<>();
+        returnList.addAll(inventory);
+        return returnList;
+    }
+
+    @Override
+    public double getInventoryValue() {
+        return Item.getListValue(inventory);
+    }
+
+    @Override
+    public double getBudget() {
+        return type.getBudgetMax();
+    }
+
+    @Override
+    public double getInventoryProtein() {
+        throw new UnsupportedOperationException("not implemented");
+        //TODO implement
+    }
+
+    public double getInventoryCalories() {
+        throw new UnsupportedOperationException("not implemented");
+        //TODO implement
     }
 
     /**
