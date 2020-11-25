@@ -11,5 +11,5 @@ public interface IRoom {
 
     ArrayList<Warp> getWarps();
 
-    URI getBackground();
+    String getBackground();
 }
