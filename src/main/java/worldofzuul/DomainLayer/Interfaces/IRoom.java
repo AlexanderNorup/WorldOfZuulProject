@@ -30,5 +30,5 @@ public interface IRoom {
     /**
      * @return a reference to the resource to be used as the rooms background
      */
-    URI getBackground();
+    String getBackground();
 }

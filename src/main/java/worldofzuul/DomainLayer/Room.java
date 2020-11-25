@@ -1,5 +1,6 @@
 package worldofzuul.DomainLayer;
 
+import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IRoom;
 import worldofzuul.DomainLayer.Interfaces.Shelf;
 import worldofzuul.DomainLayer.Interfaces.Warp;
@@ -17,38 +18,56 @@ import java.util.Set;
 public class Room implements IRoom {
 
     private final String description;
-    private final ArrayList<Item> items;
     private final HashMap<String, Room> exits;
-    private final boolean canCheckout;
+    private boolean canCheckout;
 
-    public Room(String description, boolean canCheckout) {
+    private final ArrayList<Shelf> shelves;
+    private final ArrayList<Warp> warps;
+
+    private final int roomWidth,roomHeight;
+    private final String background;
+    public Room(String description, int roomWidth, int roomHeight, String background) {
         this.description = description;
-        this.items = new ArrayList<>();
+        this.shelves = new ArrayList<Shelf>();
+        this.warps = new ArrayList<Warp>();
         this.exits = new HashMap<>();
-        this.canCheckout = canCheckout;
+        this.canCheckout = false;
+
+        this.roomHeight = roomHeight;
+        this.roomWidth = roomWidth;
+        this.background = background;
     }
-    
-    public Room(String description, boolean canCheckout,ArrayList<Item> items) {
-        this.description = description;
-        this.items = items;
-        this.exits = new HashMap<>();
-        this.canCheckout = canCheckout;
+
+    public void addShelves(ArrayList<Shelf> shelves){
+        this.shelves.addAll(shelves);
+    }
+
+    public void addWarp(int startX, int startY, IRoom destination, int destX, int destY){
+        this.warps.add(new Warp(startX, startY, destination, destX, destY));
     }
 
     public void setExit(String direction, Room neighbor) {
         exits.put(direction, neighbor);
     }
 
+    public void setCanCheckout(boolean checkout){
+        this.canCheckout = checkout;
+    }
+
     public boolean canCheckout(){ //boolean to verify if it's possible to checkout in the current room.
         return canCheckout;
     }
 
-    public void setItems(Item[] items) {
-        this.items.clear();
-        this.items.addAll(Arrays.asList(items));
-    }
 
     public ArrayList<Item> getItems() {
+        ArrayList<Item> items = new ArrayList<>();
+        for(Shelf s : this.shelves){
+            for(IItem i : s.getItems()){
+                if(i instanceof Item){
+                    items.add((Item) i);
+                }
+            }
+        }
         return items;
     }
 
@@ -87,7 +106,7 @@ public class Room implements IRoom {
      */
     public Item getItem(String name){
         Item item = null;
-        for(Item currentItem : items){
+        for(Item currentItem : this.getItems()){
             if(currentItem.getName().equalsIgnoreCase(name)){
                 item = currentItem;
             }
@@ -95,45 +114,41 @@ public class Room implements IRoom {
         return item;
     }
 
-    public void addItem(Item item){
-        items.add(item);
-    }
-
-    public void removeItem(Item item){items.remove(item);}
 
     /**
      * @return "Available products" followed by a list of items each in the format "kr #price#  #item name#
      */
     public String getItemsString(){
-        if(items.size() == 0){  // If the size of the list with items in the current room is 0,
+        if(this.shelves.size() == 0){  // If the size of the list with items in the current room is 0,
             return null;          // the 'Available products' string will not be printed
         }
 
-        return "Available products: \n" + Item.getListString(items);
+        return "Available products: \n" + Item.getListString(this.getItems());
     }
 
+    //The interfaces.
     @Override
     public ArrayList<Shelf> getShelves() {
-        return null;
+        return this.shelves;
     }
 
     @Override
     public int getWidth() {
-        return 0;
+        return this.roomWidth;
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return this.roomHeight;
     }
 
     @Override
     public ArrayList<Warp> getWarps() {
-        return null;
+        return this.warps;
     }
 
     @Override
-    public URI getBackground() {
-        return null;
+    public String getBackground() {
+        return this.background;
     }
 }
