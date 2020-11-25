@@ -5,10 +5,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionModel;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -37,6 +34,9 @@ public class GameCanvasController {
     @FXML
     Pane sideMenu;
 
+    @FXML
+    Pane textBox;
+
     /**
      * This method runs every time the user pressed any key on their keyboard, while the game
      * is focused.
@@ -44,6 +44,9 @@ public class GameCanvasController {
      */
     @FXML
     public void onKeyPressed(KeyEvent keyEvent) {
+        //currently, when spacebar, enter, arrowkeys, esc, etc., are hit, and sidemenu is open,
+        // these keyEvents goes to the sidemenu controller. Therefore a switchcase with some similar instructions
+        // are implemented in the sidemenu controller.
         switch(keyEvent.getCode()){
             case S:
             case DOWN:
@@ -80,6 +83,11 @@ public class GameCanvasController {
                     sideMenuListView.requestFocus();
                 }
                 break;
+            case SPACE:
+                if (textBox.isVisible()) {
+                    textBox.setVisible(false);
+                }
+                break;
             case ESCAPE:
                 //Prompts the user if they want to exit.
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -108,7 +116,7 @@ public class GameCanvasController {
         //Makes the first grid.
         Grid activeGrid = new Grid(gameCanvas, 14,9,new Image(MainGUI.class.getResource("/backgrounds/pink.png").toString()));
 
-        //Then pases the grid over to the PlayerObject. That's the thing we'll be moving
+        //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
         //around. The last 2 arguments here represent the starting-position for the player.
         playerObject = new PlayerObject(activeGrid, new Position(4,2));
 
