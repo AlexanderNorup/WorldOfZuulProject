@@ -41,10 +41,12 @@ public class CommandWords {
     /**
      prints all valid command word Strings.
      */
-    public void showAll() {
+    public String showAll() {
+        StringBuilder returnString = new StringBuilder();
         for (String command : validCommands.keySet()) {
-            System.out.print(command + "  ");
+            returnString.append("- " +command + "\n");
         }
-        System.out.println();
+        returnString.append("\n");
+        return returnString.toString();
     }
 }
