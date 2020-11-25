@@ -14,6 +14,7 @@ import worldofzuul.DomainLayer.Interfaces.IRoom;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -24,6 +25,7 @@ import java.util.ArrayList;
  * There is a method for each command the user can enter
  * They are all called from the processCommand function
  */
+
 public class Game implements IGame {
     private final Parser parser;
     private Room currentRoom;
@@ -80,9 +82,6 @@ public class Game implements IGame {
     private void createRooms() {
         ArrayList<Room> rooms = ContentGenerator.getRooms();
         currentRoom = rooms.get(0); //this sets the starting position to the first room. (Which will always be outside).
-
-
-
     }
 
     /**
@@ -405,4 +404,6 @@ public class Game implements IGame {
         }
         //if item null, print "'itemname' not found in inventory"
     }
+
+
 }
