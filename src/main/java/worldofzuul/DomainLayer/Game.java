@@ -9,6 +9,7 @@ import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Commandhandling.Parser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -19,12 +20,13 @@ import java.util.ArrayList;
  * There is a method for each command the user can enter
  * They are all called from the processCommand function
  */
-public class Game {
+public class Game implements IGame{
     private final Parser parser;
     private Room currentRoom;
     private final Player player;
     private final ArrayList<GameResult> finishedGames;
     private ISaveGame saveGame;
+    private ArrayList<Room> roomArrayList; //list to be sent to presentationLayer
 
     public Game() {
         createRooms();
@@ -96,6 +98,8 @@ public class Game {
         cashier.setExit("north", aisle3);
 
         currentRoom = outside; //this sets the starting position to "outside"
+
+        addRoomInList(outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods);
     }
 
     /**
@@ -415,5 +419,25 @@ public class Game {
             System.out.println("'"+command.getSecondWord()+"' not found in inventory");
         }
         //if item null, print "'itemname' not found in inventory"
+    }
+
+    /**
+     * adds all the rooms in a list. This method is used by createRooms method
+     * so after they are created they get put in a list.
+     * @param rooms
+     */
+    private void addRoomInList(Room... rooms){
+        roomArrayList.addAll(Arrays.asList(rooms));
+
+    }
+
+    @Override
+    public ArrayList<Room> getRooms() {
+        return roomArrayList;
+    }
+
+    @Override
+    public Room roomStart() {
+        return roomArrayList.get(0);
     }
 }
