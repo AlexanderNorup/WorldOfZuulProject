@@ -4,14 +4,20 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="500" prefWidth="200" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="worldofzuul.SideMenuController">
+<BorderPane fx:id="sideMenu" prefHeight="500" prefWidth="200"
+            xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="worldofzuul.PresentationLayer.Controllers.SideMenuController"
+            visible="false"
+            style="-fx-background-color: white"
+            focusTraversable="true"
+            >
     <top>
-        <Label fx:id="SideMenuTitleLabel" maxWidth="-Infinity" prefHeight="30.0" text="Label"
+        <Label fx:id="sideMenuTitleLabel" maxWidth="-Infinity" prefHeight="30.0" text="Test"
                BorderPane.alignment="CENTER"/>
     </top>
     <center>
-        <ListView fx:id="SideMenuListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+        <ListView fx:id="sideMenuListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" onKeyPressed="#listViewKey"/>
     </center>
     <bottom>
         <GridPane BorderPane.alignment="CENTER">
@@ -24,7 +30,7 @@
                 <RowConstraints prefHeight="30.0" vgrow="SOMETIMES"/>
                 <RowConstraints prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
-            <Label text="Budget" GridPane.rowIndex="0">
+            <Label fx:id="budgetLabel" text="Budget" GridPane.rowIndex="0">
                 <GridPane.margin>
                     <Insets left="20.0"/>
                 </GridPane.margin>
@@ -39,9 +45,9 @@
                     <Insets left="20.0"/>
                 </GridPane.margin>
             </Label>
-            <Label fx:id="SideMenuBudgetLabel" alignment="CENTER_RIGHT" text="0" GridPane.columnIndex="1"/>
-            <Label fx:id="SideMenuCalorieLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-            <Label fx:id="SideMenuProteinLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label fx:id="sideMenuBudgetLabel" alignment="CENTER_RIGHT" text="0" GridPane.columnIndex="1"/>
+            <Label fx:id="sideMenuCalorieLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label fx:id="sideMenuProteinLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
         </GridPane>
     </bottom>
 
