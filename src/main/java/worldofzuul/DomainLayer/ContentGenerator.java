@@ -1,10 +1,7 @@
 package worldofzuul.DomainLayer;
 
-import worldofzuul.DomainLayer.Extra;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.Shelf;
-import worldofzuul.DomainLayer.Item;
-import worldofzuul.DomainLayer.PlayerType;
 
 import java.net.URL;
 import java.util.ArrayList;

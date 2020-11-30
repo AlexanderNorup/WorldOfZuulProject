@@ -32,10 +32,11 @@ public class Game implements IGame {
     private final Player player;
     private final ArrayList<GameResult> finishedGames;
     private final ISaveGame saveGame;
-    private ArrayList<Room> rooms;
+    private final ArrayList<Room> rooms;
 
     public Game() {
-        createRooms();
+        rooms = ContentGenerator.getRooms();
+        setStartPosition();
         parser = new Parser();
         player = new Player(ContentGenerator.getRandomPlayerType());
         finishedGames = new ArrayList<>();
@@ -79,8 +80,7 @@ public class Game implements IGame {
      * Sets the current room
      */
     //TODO: add back command?
-    private void createRooms() {
-        rooms = ContentGenerator.getRooms();
+    private void setStartPosition() {
         currentRoom = rooms.get(0); //this sets the starting position to the first room. (Which will always be outside).
     }
 
@@ -132,7 +132,7 @@ public class Game implements IGame {
         boolean wantToQuit = false;
 
         CommandWord commandWord = command.getCommandWord();
-        String output = "";
+        String output;
         switch (commandWord) {
             case GO -> output = goRoom(command);
             case HELP -> output = getHelp(command);
@@ -242,7 +242,7 @@ public class Game implements IGame {
         StringBuilder returnString = new StringBuilder();
         returnString.append(reactToResults());
         player.deleteInventory(); // deletes all items in the inventory
-        createRooms(); //creates the rooms again and fills them with items
+        setStartPosition(); //creates the rooms again and fills them with items
         returnString.append(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + ".");
         player.setPlayerType((ContentGenerator.getStudentPlayerType()));
         returnString.append("It is a new day, you wake up and go to the store.");
@@ -266,7 +266,7 @@ public class Game implements IGame {
             co2 += finishedGame.getCo2();
         }
 
-        returnString.append("CO2: " + co2);
+        returnString.append("CO2: ").append(co2);
 
         if (co2 < 5) {
             returnString.append("The earth is a green and beautiful place\n");
@@ -352,11 +352,7 @@ public class Game implements IGame {
      * @return whether the game is to be ended
      */
     private boolean quit(Command command) {
-        if (command.hasSecondWord()) {
-            return false;
-        } else {
-            return true;
-        }
+        return !command.hasSecondWord();
     }
 
     /**
@@ -404,6 +400,4 @@ public class Game implements IGame {
         }
         //if item null, print "'itemname' not found in inventory"
     }
-
-
 }
