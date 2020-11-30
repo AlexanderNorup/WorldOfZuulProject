@@ -31,7 +31,8 @@ public class Game implements IGame {
     private Room currentRoom;
     private final Player player;
     private final ArrayList<GameResult> finishedGames;
-    private ISaveGame saveGame;
+    private final ISaveGame saveGame;
+    private ArrayList<Room> rooms;
 
     public Game() {
         createRooms();
@@ -57,8 +58,7 @@ public class Game implements IGame {
 
     @Override
     public ArrayList<IRoom> getRooms() {
-        throw new UnsupportedOperationException("not implemented");
-        //TODO implement
+        return new ArrayList<>(rooms);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class Game implements IGame {
      */
     //TODO: add back command?
     private void createRooms() {
-        ArrayList<Room> rooms = ContentGenerator.getRooms();
+        rooms = ContentGenerator.getRooms();
         currentRoom = rooms.get(0); //this sets the starting position to the first room. (Which will always be outside).
     }
 
