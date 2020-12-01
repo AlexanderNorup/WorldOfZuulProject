@@ -1,9 +1,9 @@
 package worldofzuul.DomainLayer;
 
-import worldofzuul.DomainLayer.Extra;
-import worldofzuul.DomainLayer.Item;
-import worldofzuul.DomainLayer.PlayerType;
+import worldofzuul.DomainLayer.Interfaces.IItem;
+import worldofzuul.DomainLayer.Interfaces.Shelf;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,24 +24,29 @@ public class ContentGenerator {
 
     /**
      *
-     * @return returns the Arraylist variable items with
-     * item objects in it. This is a list of butcher items.
+     * @return returns the Arraylist variable shelves with
+     * Shelf objects in it. This is a list of butcher items.
      */
-    public static ArrayList<Item> getButcherItems(){
-        ArrayList<Item> items = new ArrayList<>();
-        //Not organic
-        items.add(new Item("200g Salmon",35,0.6,40,416.6,new Extra[]{}));
-        items.add(new Item("1300g Whole Chicken",50,5,350,2400,new Extra[]{}));
-        items.add(new Item("250g 2 Lamb Chops",50,5.25,62.5,735,new Extra[]{}));
-        items.add(new Item("500g Pork Rib",50,3,135,1200,new Extra[]{}));
-        items.add(new Item("100g Salami",10,0.7,22,335,new Extra[]{}));
-        items.add(new Item("100g Roast Beef",12,0.7,29,170,new Extra[]{}));
-        items.add(new Item("250g Chicken Breast",25,0.75,68,600,new Extra[]{}));
-        items.add(new Item("500g Ground Beef",30,13,70,1660,new Extra[]{}));
+    public static ArrayList<Shelf> getButcherItems(){
+        ArrayList<Shelf> shelves = new ArrayList<>();
 
-        //Organic (organic price = non organic price * 1.2)
-        items.addAll(createOrganics(items));
-        return items;
+        ArrayList<IItem> meats = new ArrayList<IItem>();
+        meats.add(new Item("200g Salmon",35,0.6,40,416.6,new Extra[]{}));
+        meats.add(new Item("1300g Whole Chicken",50,5,350,2400,new Extra[]{}));
+        meats.add(new Item("250g 2 Lamb Chops",50,5.25,62.5,735,new Extra[]{}));
+        meats.add(new Item("500g Pork Rib",50,3,135,1200,new Extra[]{}));
+        shelves.add(new Shelf(0,1,meats));
+        shelves.add(new Shelf(1,1, createOrganics(meats)));
+
+        ArrayList<IItem> coldCuts = new ArrayList<>();
+        coldCuts.add(new Item("100g Salami",10,0.7,22,335,new Extra[]{}));
+        coldCuts.add(new Item("100g Roast Beef",12,0.7,29,170,new Extra[]{}));
+        coldCuts.add(new Item("250g Chicken Breast",25,0.75,68,600,new Extra[]{}));
+        coldCuts.add(new Item("500g Ground Beef",30,13,70,1660,new Extra[]{}));
+        shelves.add(new Shelf(0,2,coldCuts));
+        shelves.add(new Shelf(1,2, createOrganics(coldCuts)));
+
+        return shelves;
     }
 
     /**
@@ -49,25 +54,31 @@ public class ContentGenerator {
      * @return returns a Arraylist of non organic item objects and organic.
      * This is a list of produce items.
      */
-    public static ArrayList<Item> getProduceItems(){
-        ArrayList<Item> items = new ArrayList<>();
-        //Not organic
-        items.add(new Item("500g Potatoes Imported",8,0.1,10,385,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("500g Potatoes Danish",12,0.05,10,385,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("500g Apples Danish",5,0.1,1.5,260,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("400g 1 Cucumber Imported",6,0.56,2.5,60,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("400g 1 Cucumber Danish",8,0.4,2.5,60,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("250g Salad Imported",10,1,2.25,35,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("250g Salad Danish",12,0.5,2.25,35,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("200g Mango",12,2.2,1.6,120,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("100g Blueberries",25,0.1,0.7,58,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("400g Tomatoes Imported",10,2,3.6,72,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("400g Tomatoes Danish",18,1.6,3.6,72,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("1000g Cabbage",4,0.4,13,246,new Extra[]{Extra.VEGAN}));
+    public static ArrayList<Shelf> getProduceItems(){
+        ArrayList<Shelf> shelves = new ArrayList<>();
 
-        //Organic
-        items.addAll(createOrganics(items));
-        return items;
+
+        ArrayList<IItem> imported = new ArrayList<>();
+        imported.add(new Item("500g Potatoes Imported",8,0.1,10,385,new Extra[]{Extra.VEGAN}));
+        imported.add(new Item("400g 1 Cucumber Imported",6,0.56,2.5,60,new Extra[]{Extra.VEGAN}));
+        imported.add(new Item("250g Salad Imported",10,1,2.25,35,new Extra[]{Extra.VEGAN}));
+        imported.add(new Item("200g Mango",12,2.2,1.6,120,new Extra[]{Extra.VEGAN}));
+        imported.add(new Item("100g Blueberries",25,0.1,0.7,58,new Extra[]{Extra.VEGAN}));
+        imported.add(new Item("400g Tomatoes Imported",10,2,3.6,72,new Extra[]{Extra.VEGAN}));
+        imported.add(new Item("1000g Cabbage",4,0.4,13,246,new Extra[]{Extra.VEGAN}));
+        shelves.add(new Shelf(0,1,imported));
+        shelves.add(new Shelf(1,1, createOrganics(imported)));
+
+        ArrayList<IItem> local = new ArrayList<>();
+        local.add(new Item("500g Potatoes Danish",12,0.05,10,385,new Extra[]{Extra.VEGAN}));
+        local.add(new Item("500g Apples Danish",5,0.1,1.5,260,new Extra[]{Extra.VEGAN}));
+        local.add(new Item("400g 1 Cucumber Danish",8,0.4,2.5,60,new Extra[]{Extra.VEGAN}));
+        local.add(new Item("250g Salad Danish",12,0.5,2.25,35,new Extra[]{Extra.VEGAN}));
+        local.add(new Item("400g Tomatoes Danish",18,1.6,3.6,72,new Extra[]{Extra.VEGAN}));
+        shelves.add(new Shelf(0,2,local));
+        shelves.add(new Shelf(1,2, createOrganics(local)));
+
+        return shelves;
     }
 
     /**
@@ -75,38 +86,53 @@ public class ContentGenerator {
      * @return returns a Arraylist of non organic item objects and organic.
      * this is a list of frozen items.
      */
-    public static ArrayList<Item> getFrozenItems(){
-        ArrayList<Item> items = new ArrayList<>();
+    public static ArrayList<Shelf> getFrozenItems(){
+        ArrayList<Shelf> shelves = new ArrayList<>();
 
-        //Non-organic items
-        items.add(new Item("200g Edamame",10,0.5,22,242,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("Ready-made Meal",39,6,25,473,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_SOY}));
-        items.add(new Item("Frozen Pizza",24,5,42,833,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN, Extra.CONTAINS_SOY}));
-        items.add(new Item("250g Spinach",6,0.3,7,57,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("300g frozen berries",14,0.3,2.5,180,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("200g Shrimp",35,0.6,48,200,new Extra[]{}));
-        items.add(new Item("250g Clam",42,0.7,32,185,new Extra[]{}));
 
-        //Organic items
-        items.addAll(createOrganics(items));
-        return items;
+        ArrayList<IItem> frozenGreens = new ArrayList<>();
+        frozenGreens.add(new Item("200g Edamame",10,0.5,22,242,new Extra[]{Extra.VEGAN}));
+        frozenGreens.add(new Item("250g Spinach",6,0.3,7,57,new Extra[]{Extra.VEGAN}));
+        frozenGreens.add(new Item("300g frozen berries",14,0.3,2.5,180,new Extra[]{Extra.VEGAN}));
+        frozenGreens.add(new Item("200g Shrimp",35,0.6,48,200,new Extra[]{}));
+        frozenGreens.add(new Item("250g Clam",42,0.7,32,185,new Extra[]{}));
+        shelves.add(new Shelf(0,1,frozenGreens));
+        shelves.add(new Shelf(1,1, createOrganics(frozenGreens)));
+
+        ArrayList<IItem> frozenFood = new ArrayList<>();
+        frozenFood.add(new Item("Ready-made Meal",39,6,25,473,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_SOY}));
+        frozenFood.add(new Item("Frozen Pizza",24,5,42,833,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN, Extra.CONTAINS_SOY}));
+        shelves.add(new Shelf(0,2,frozenFood));
+        shelves.add(new Shelf(1,2, createOrganics(frozenFood)));
+
+        return shelves;
     }
 
-    public static ArrayList<Item> getDairyItems(){
-        ArrayList<Item> items = new ArrayList<>();
+    public static ArrayList<Shelf> getDairyItems(){
+        ArrayList<Shelf> shelves = new ArrayList<>();
 
         //Non-organic items
-        items.add(new Item("1L Milk",9,1,35,380,new Extra[]{Extra.CONTAINS_LACTOSE}));
-        items.add(new Item("1L Yogurt",15,1.1,38,630,new Extra[]{Extra.CONTAINS_LACTOSE}));
-        items.add(new Item("200g Cheese",26,2,50,660,new Extra[]{Extra.CONTAINS_LACTOSE}));
-        items.add(new Item("200g Butter",10,2,1,1450,new Extra[]{Extra.CONTAINS_LACTOSE}));
-        items.add(new Item("10 eggs",22,1,68,750,new Extra[]{}));
-        items.add(new Item("200g Margarine",8,0.3,0,1450,new Extra[]{Extra.VEGAN}));
+        ArrayList<IItem> liquids = new ArrayList<>();
+        liquids.add(new Item("1L Milk",9,1,35,380,new Extra[]{Extra.CONTAINS_LACTOSE}));
+        liquids.add(new Item("1L Yogurt",15,1.1,38,630,new Extra[]{Extra.CONTAINS_LACTOSE}));
+        shelves.add(new Shelf(0,1,liquids));
+        shelves.add(new Shelf(1,1, createOrganics(liquids)));
 
-        //Organic items
-        items.addAll(createOrganics(items));
+        ArrayList<IItem> butterProducts = new ArrayList<>();
+        butterProducts.add(new Item("200g Cheese",26,2,50,660,new Extra[]{Extra.CONTAINS_LACTOSE}));
+        butterProducts.add(new Item("200g Butter",10,2,1,1450,new Extra[]{Extra.CONTAINS_LACTOSE}));
+        butterProducts.add(new Item("200g Margarine",8,0.3,0,1450,new Extra[]{Extra.VEGAN}));
+        shelves.add(new Shelf(0,2,butterProducts));
+        shelves.add(new Shelf(1,2, createOrganics(butterProducts)));
 
-        return items;
+
+        ArrayList<IItem> eggs = new ArrayList<>();
+        eggs.add(new Item("10 eggs",22,1,68,750,new Extra[]{}));
+        shelves.add(new Shelf(0,3,eggs));
+        shelves.add(new Shelf(1,3, createOrganics(eggs)));
+
+
+        return shelves;
     }
 
     /**
@@ -114,37 +140,48 @@ public class ContentGenerator {
      * @return returns a Arraylist of item objects.
      * this is a list of bakery items.
      */
-    public static ArrayList<Item> getBakeryItems(){
-        ArrayList<Item> items = new ArrayList<>();
-        items.add(new Item("500g White Bread",18,0.3,45,1323,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
-        items.add(new Item("500g Wholegrain Bread",24,0.3,65,1235,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
-        items.add(new Item("200g Pastry",15,0.3,3,800,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
-        items.add(new Item("6 Bread Rolls",18,0.3,33,600,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
+    public static ArrayList<Shelf> getBakeryItems(){
+        ArrayList<Shelf> shelves = new ArrayList<>();
 
-        return items;
+        ArrayList<IItem> breads = new ArrayList<>();
+        breads.add(new Item("500g White Bread",18,0.3,45,1323,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
+        breads.add(new Item("500g Wholegrain Bread",24,0.3,65,1235,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
+        breads.add(new Item("200g Pastry",15,0.3,3,800,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
+        breads.add(new Item("6 Bread Rolls",18,0.3,33,600,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
+        shelves.add(new Shelf(0,1,breads));
+        shelves.add(new Shelf(1,1, createOrganics(breads)));
+        return shelves;
     }
     /**
      *
      * @return returns a Arraylist of non organic item objects and organic.
      * this is a list of tinned good items.
      */
-    public static ArrayList<Item> getTinnedGoodsItems(){
-        ArrayList<Item> items = new ArrayList<>();
+    public static ArrayList<Shelf> getTinnedGoodsItems(){
+        ArrayList<Shelf> shelves = new ArrayList<>();
 
         // Non-organic products
-        items.add(new Item("250g Chick Peas",10,0.2,12.5,400,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("250g Kidney Beans",5,0.2,20,250,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("500g Rice",10,1,29,1800,new Extra[]{Extra.VEGAN, Extra.CONTAINS_GLUTEN}));
-        items.add(new Item("500g Pasta",12,0.4,25,640,new Extra[]{Extra.VEGAN, Extra.CONTAINS_GLUTEN}));
-        items.add(new Item("100g Canned Tuna",15,0.3,25,112,new Extra[]{}));
-        items.add(new Item("100g Almonds",15,0.2,21,600,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("500g Oatmeal",5,0.3,65,1850,new Extra[]{Extra.VEGAN}));
-        items.add(new Item("250g Canned Corn",5,1.5,8,250,new Extra[]{Extra.VEGAN}));
 
-        //Organic products
-        items.addAll(createOrganics(items));
+        ArrayList<IItem> cerials = new ArrayList<>();
+        cerials.add(new Item("500g Oatmeal",5,0.3,65,1850,new Extra[]{Extra.VEGAN}));
+        shelves.add(new Shelf(0,1,cerials));
+        shelves.add(new Shelf(1,1, createOrganics(cerials)));
 
-        return items;
+        ArrayList<IItem> pastaNRice = new ArrayList<>();
+        pastaNRice.add(new Item("500g Rice",10,1,29,1800,new Extra[]{Extra.VEGAN, Extra.CONTAINS_GLUTEN}));
+        pastaNRice.add(new Item("500g Pasta",12,0.4,25,640,new Extra[]{Extra.VEGAN, Extra.CONTAINS_GLUTEN}));
+        shelves.add(new Shelf(0,2,pastaNRice));
+        shelves.add(new Shelf(1,2, createOrganics(pastaNRice)));
+
+        ArrayList<IItem> actuallyTinnedGoods = new ArrayList<>();
+        actuallyTinnedGoods.add(new Item("250g Chick Peas",10,0.2,12.5,400,new Extra[]{Extra.VEGAN}));
+        actuallyTinnedGoods.add(new Item("250g Kidney Beans",5,0.2,20,250,new Extra[]{Extra.VEGAN}));
+        actuallyTinnedGoods.add(new Item("100g Canned Tuna",15,0.3,25,112,new Extra[]{}));
+        actuallyTinnedGoods.add(new Item("100g Almonds",15,0.2,21,600,new Extra[]{Extra.VEGAN}));
+        actuallyTinnedGoods.add(new Item("250g Canned Corn",5,1.5,8,250,new Extra[]{Extra.VEGAN}));
+        shelves.add(new Shelf(0,3,actuallyTinnedGoods));
+        shelves.add(new Shelf(1,3, createOrganics(actuallyTinnedGoods)));
+        return shelves;
     }
 
     /**
@@ -153,20 +190,23 @@ public class ContentGenerator {
      * @return returns a new list with all the same objects as the passed
      * ArrayList, but turned organic.
      */
-    public static ArrayList<Item> createOrganics(ArrayList<Item> items) {
-        ArrayList<Item> organicItems = new ArrayList<>();
+    private static ArrayList<IItem> createOrganics(ArrayList<IItem> items) {
+        ArrayList<IItem> organicItems = new ArrayList<>();
         double organicFactor = 1.2;
-        for (Item item : items) {
-            ArrayList<Extra> organicExtras = item.getExtra();
-            organicExtras.add(Extra.ORGANIC);
+        for (IItem item_ : items) {
+            if(item_ instanceof Item){
+                Item item = (Item) item_;
+                ArrayList<Extra> organicExtras = item.getExtra();
+                organicExtras.add(Extra.ORGANIC);
 
-            organicItems.add(new Item(
+                organicItems.add(new Item(
                     item.getName() + " Organic",
                     item.getPrice() * organicFactor,
                     item.getCo2(),
                     item.getProtein(),
                     item.getCalories(),
                     organicExtras));
+            }
         }
         return organicItems;
     }
@@ -225,4 +265,104 @@ public class ContentGenerator {
         }
         return type;
     }
+
+
+
+    /*
+
+    ______ _____  ________  ___ _____
+    | ___ \  _  ||  _  |  \/  |/  ___|
+    | |_/ / | | || | | | .  . |\ `--.
+    |    /| | | || | | | |\/| | `--. \
+    | |\ \\ \_/ /\ \_/ / |  | |/\__/ /
+    \_| \_|\___/  \___/\_|  |_/\____/
+
+
+     */
+
+    /**
+     * Util-method for getRooms();
+     * Used to load a URL to an image from /resources/backgrounds/
+     * Will make sure the background exists before trying to load the URL
+     * @param background A String representing the filename <b>INCLUDING</b> the extension!
+     * @return A String URL to the background for an Image to load.
+     */
+    private static String getBackground(String background){
+        URL res = Game.class.getResource("/backgrounds/"+background);
+        if(res != null){
+            return res.toString();
+        }
+        return "";
+    }
+
+    public static ArrayList<Room> getRooms(){
+        Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
+        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 7,11, getBackground("pink.png") );
+        aisle1 = new Room("in the 1st aisle. \nTo your east is the dairy section, to your west is the bakery, " +
+                "to your south is the 2nd aisle", 7,11, getBackground("pink.png"));
+        aisle2 = new Room("in the 2nd aisle. \nTo your east is the frozen section, to your west is the " +
+                "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", 7,11, getBackground("pink.png"));
+        aisle3 = new Room("in the 3rd aisle. \nTo your east is the produce section, to your west is the " +
+                "butcher, to your north is the 2nd aisle, to your south is the cashier", 7,11, getBackground("pink.png"));
+        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", 7,11, getBackground("pink.png"));// ContentGenerator.getDairyItems());
+        bakery = new Room("at the bakery\nTo your east is the 1st aisle", 7,11, getBackground("pink.png"));//, ContentGenerator.getBakeryItems());
+        frozen = new Room("in the frozen section. \nTo your west is aisle 2", 7,11, getBackground("pink.png"));//, ContentGenerator.getFrozenItems());
+        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", 7,11, getBackground("pink.png"));//, ContentGenerator.getTinnedGoodsItems());
+        produce = new Room("at the produce section. \nTo your west is the 3. aisle", 7,11, getBackground("pink.png"));//, ContentGenerator.getProduceItems());
+        butcher = new Room("at the butcher. \nTo your east is the 3. aisle", 7,11, getBackground("pink.png"));//, ContentGenerator.getButcherItems());
+        cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", 7,11, getBackground("pink.png"));
+        cashier.setCanCheckout(true);
+
+        //Now add all the items;
+        butcher.addShelves(getButcherItems());
+        dairy.addShelves(getDairyItems());
+        bakery.addShelves(getBakeryItems());
+        frozen.addShelves(getFrozenItems());
+        produce.addShelves(getProduceItems());
+        tinnedGoods.addShelves(getTinnedGoodsItems());
+
+
+        //Sets the exits for the CLI-version
+        outside.setExit("south", aisle1);
+        aisle1.setExit("east", dairy);
+        dairy.setExit("west", aisle1);
+        aisle1.setExit("west", bakery);
+        bakery.setExit("east", aisle1);
+        aisle1.setExit("south", aisle2);
+
+        aisle2.setExit("north", aisle1);
+        aisle2.setExit("east", frozen);
+        frozen.setExit("west", aisle2);
+        aisle2.setExit("west", tinnedGoods);
+        tinnedGoods.setExit("east", aisle2);
+        aisle2.setExit("south", aisle3);
+
+        aisle3.setExit("north", aisle2);
+        aisle3.setExit("east", produce);
+        produce.setExit("west", aisle3);
+        aisle3.setExit("west", butcher);
+        butcher.setExit("east", aisle3);
+        aisle3.setExit("south", cashier);
+
+        cashier.setExit("north", aisle3);
+
+        //Now sets the exits (warps) for the GUI version.
+
+
+        ArrayList<Room> rooms = new ArrayList<>();
+        rooms.add(outside);
+        rooms.add(aisle1);
+        rooms.add(aisle2);
+        rooms.add(aisle3);
+        rooms.add(dairy);
+        rooms.add(bakery);
+        rooms.add(frozen);
+        rooms.add(tinnedGoods);
+        rooms.add(produce);
+        rooms.add(butcher);
+        rooms.add(cashier);
+        return rooms;
+    }
+
+
 }

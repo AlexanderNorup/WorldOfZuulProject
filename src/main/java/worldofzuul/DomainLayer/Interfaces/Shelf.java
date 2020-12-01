@@ -3,8 +3,8 @@ package worldofzuul.DomainLayer.Interfaces;
 import java.util.ArrayList;
 
 public class Shelf {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
     ArrayList<IItem> items;
 
     public Shelf(int x, int y, ArrayList<IItem> items) {

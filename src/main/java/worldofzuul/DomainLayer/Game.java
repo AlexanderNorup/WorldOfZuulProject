@@ -23,15 +23,18 @@ import java.util.ArrayList;
  * There is a method for each command the user can enter
  * They are all called from the processCommand function
  */
+
 public class Game implements IGame {
     private final Parser parser;
     private Room currentRoom;
     private final Player player;
     private final ArrayList<GameResult> finishedGames;
-    private ISaveGame saveGame;
+    private final ISaveGame saveGame;
+    private final ArrayList<Room> rooms;
 
     public Game() {
-        createRooms();
+        rooms = ContentGenerator.getRooms();
+        setStartPosition();
         parser = new Parser();
         player = new Player(ContentGenerator.getRandomPlayerType());
         finishedGames = new ArrayList<>();
@@ -54,8 +57,7 @@ public class Game implements IGame {
 
     @Override
     public ArrayList<IRoom> getRooms() {
-        throw new UnsupportedOperationException("not implemented");
-        //TODO implement
+        return new ArrayList<>(rooms);
     }
 
     @Override
@@ -68,54 +70,16 @@ public class Game implements IGame {
         return processCommand(new Command(commands.getCommandWord(firstWord), secondWord));
     }
 
+
+
     /**
      * Creates all the rooms in the shopping mall and connects them with setExit
      * Also populates some of the rooms with items
      * Sets the current room
      */
     //TODO: add back command?
-    private void createRooms() {
-        Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
-
-        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", false);
-        aisle1 = new Room("in the 1st aisle. \nTo your east is the dairy section, to your west is the bakery, " +
-                "to your south is the 2nd aisle", false);
-        aisle2 = new Room("in the 2nd aisle. \nTo your east is the frozen section, to your west is the " +
-                "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", false);
-        aisle3 = new Room("in the 3rd aisle. \nTo your east is the produce section, to your west is the " +
-                "butcher, to your north is the 2nd aisle, to your south is the cashier", false);
-        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", false, ContentGenerator.getDairyItems());
-        bakery = new Room("at the bakery\nTo your east is the 1st aisle", false, ContentGenerator.getBakeryItems());
-        frozen = new Room("in the frozen section. \nTo your west is aisle 2", false, ContentGenerator.getFrozenItems());
-        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", false, ContentGenerator.getTinnedGoodsItems());
-        produce = new Room("at the produce section. \nTo your west is the 3. aisle", false, ContentGenerator.getProduceItems());
-        butcher = new Room("at the butcher. \nTo your east is the 3. aisle", false, ContentGenerator.getButcherItems());
-        cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", true);
-
-        outside.setExit("south", aisle1);
-        aisle1.setExit("east", dairy);
-        dairy.setExit("west", aisle1);
-        aisle1.setExit("west", bakery);
-        bakery.setExit("east", aisle1);
-        aisle1.setExit("south", aisle2);
-
-        aisle2.setExit("north", aisle1);
-        aisle2.setExit("east", frozen);
-        frozen.setExit("west", aisle2);
-        aisle2.setExit("west", tinnedGoods);
-        tinnedGoods.setExit("east", aisle2);
-        aisle2.setExit("south", aisle3);
-
-        aisle3.setExit("north", aisle2);
-        aisle3.setExit("east", produce);
-        produce.setExit("west", aisle3);
-        aisle3.setExit("west", butcher);
-        butcher.setExit("east", aisle3);
-        aisle3.setExit("south", cashier);
-
-        cashier.setExit("north", aisle3);
-
-        currentRoom = outside; //this sets the starting position to "outside"
+    private void setStartPosition() {
+        currentRoom = rooms.get(0); //this sets the starting position to the first room. (Which will always be outside).
     }
 
     /**
@@ -166,7 +130,7 @@ public class Game implements IGame {
         boolean wantToQuit = false;
 
         CommandWord commandWord = command.getCommandWord();
-        String output = "";
+        String output;
         switch (commandWord) {
             case GO -> output = goRoom(command);
             case HELP -> output = getHelp(command);
@@ -276,7 +240,7 @@ public class Game implements IGame {
         StringBuilder returnString = new StringBuilder();
         returnString.append(reactToResults());
         player.deleteInventory(); // deletes all items in the inventory
-        createRooms(); //creates the rooms again and fills them with items
+        setStartPosition(); //creates the rooms again and fills them with items
         returnString.append(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + ".");
         player.setPlayerType((ContentGenerator.getStudentPlayerType()));
         returnString.append("It is a new day, you wake up and go to the store.");
@@ -300,7 +264,7 @@ public class Game implements IGame {
             co2 += finishedGame.getCo2();
         }
 
-        returnString.append("CO2: " + co2);
+        returnString.append("CO2: ").append(co2);
 
         if (co2 < 5) {
             returnString.append("The earth is a green and beautiful place\n");
@@ -386,11 +350,7 @@ public class Game implements IGame {
      * @return whether the game is to be ended
      */
     private boolean quit(Command command) {
-        if (command.hasSecondWord()) {
-            return false;
-        } else {
-            return true;
-        }
+        return !command.hasSecondWord();
     }
 
     /**
