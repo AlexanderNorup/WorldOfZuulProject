@@ -7,10 +7,10 @@ import java.util.ArrayList;
  */
 public interface IPlayer {
     /**
-     * WARNING: for technical reasons this is not necessarily a reference to the inventory of the
+     * <b>WARNING:</b> for technical reasons this is not necessarily a reference to the inventory of the
      * underlying player object. Don't expect the inventory of the Player class to reflect changes
      * made to the object returned by this function
-     * @return
+     * @return A list of IItems representing the inventory
      */
     ArrayList<IItem> getInventory();
 
