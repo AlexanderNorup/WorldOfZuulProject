@@ -36,16 +36,26 @@ public class ContentGenerator {
         meats.add(new Item("1300g Whole Chicken",50,5,350,2400,new Extra[]{}));
         meats.add(new Item("250g 2 Lamb Chops",50,5.25,62.5,735,new Extra[]{}));
         meats.add(new Item("500g Pork Rib",50,3,135,1200,new Extra[]{}));
-        shelves.add(new Shelf(0,1,meats));
-        shelves.add(new Shelf(1,1, createOrganics(meats)));
 
         ArrayList<IItem> coldCuts = new ArrayList<>();
         coldCuts.add(new Item("100g Salami",10,0.7,22,335,new Extra[]{}));
         coldCuts.add(new Item("100g Roast Beef",12,0.7,29,170,new Extra[]{}));
         coldCuts.add(new Item("250g Chicken Breast",25,0.75,68,600,new Extra[]{}));
         coldCuts.add(new Item("500g Ground Beef",30,13,70,1660,new Extra[]{}));
-        shelves.add(new Shelf(0,2,coldCuts));
-        shelves.add(new Shelf(1,2, createOrganics(coldCuts)));
+
+
+        shelves.add(new Shelf(4,3,coldCuts));
+        shelves.add(new Shelf(5,3,coldCuts));
+        shelves.add(new Shelf(1,3, createOrganics(coldCuts)));
+        shelves.add(new Shelf(2,3, createOrganics(coldCuts)));
+        shelves.add(new Shelf(0,1, createOrganics(meats)));
+        shelves.add(new Shelf(1,1, createOrganics(meats)));
+        shelves.add(new Shelf(2,1, createOrganics(meats)));
+        shelves.add(new Shelf(3,1, createOrganics(meats)));
+        shelves.add(new Shelf(4,1,meats));
+        shelves.add(new Shelf(5,1,meats));
+        shelves.add(new Shelf(6,1,meats));
+        shelves.add(new Shelf(7,1,meats));
 
         return shelves;
     }
@@ -67,8 +77,6 @@ public class ContentGenerator {
         imported.add(new Item("100g Blueberries",25,0.1,0.7,58,new Extra[]{Extra.VEGAN}));
         imported.add(new Item("400g Tomatoes Imported",10,2,3.6,72,new Extra[]{Extra.VEGAN}));
         imported.add(new Item("1000g Cabbage",4,0.4,13,246,new Extra[]{Extra.VEGAN}));
-        shelves.add(new Shelf(0,1,imported));
-        shelves.add(new Shelf(1,1, createOrganics(imported)));
 
         ArrayList<IItem> local = new ArrayList<>();
         local.add(new Item("500g Potatoes Danish",12,0.05,10,385,new Extra[]{Extra.VEGAN}));
@@ -76,8 +84,21 @@ public class ContentGenerator {
         local.add(new Item("400g 1 Cucumber Danish",8,0.4,2.5,60,new Extra[]{Extra.VEGAN}));
         local.add(new Item("250g Salad Danish",12,0.5,2.25,35,new Extra[]{Extra.VEGAN}));
         local.add(new Item("400g Tomatoes Danish",18,1.6,3.6,72,new Extra[]{Extra.VEGAN}));
-        shelves.add(new Shelf(0,2,local));
-        shelves.add(new Shelf(1,2, createOrganics(local)));
+
+
+        shelves.add(new Shelf(2,3,local));
+        shelves.add(new Shelf(3,3,local));
+        shelves.add(new Shelf(4,3,local));
+        shelves.add(new Shelf(5,3,imported));
+        shelves.add(new Shelf(6,3,imported));
+        shelves.add(new Shelf(7,3,imported));
+
+        shelves.add(new Shelf(2,1, createOrganics(imported)));
+        shelves.add(new Shelf(3,1, createOrganics(imported)));
+        shelves.add(new Shelf(4,1, createOrganics(imported)));
+        shelves.add(new Shelf(5,1, createOrganics(local)));
+        shelves.add(new Shelf(6,1, createOrganics(local)));
+        shelves.add(new Shelf(7,1, createOrganics(local)));
 
         return shelves;
     }
@@ -95,16 +116,28 @@ public class ContentGenerator {
         frozenGreens.add(new Item("200g Edamame",10,0.5,22,242,new Extra[]{Extra.VEGAN}));
         frozenGreens.add(new Item("250g Spinach",6,0.3,7,57,new Extra[]{Extra.VEGAN}));
         frozenGreens.add(new Item("300g frozen berries",14,0.3,2.5,180,new Extra[]{Extra.VEGAN}));
-        frozenGreens.add(new Item("200g Shrimp",35,0.6,48,200,new Extra[]{}));
-        frozenGreens.add(new Item("250g Clam",42,0.7,32,185,new Extra[]{}));
-        shelves.add(new Shelf(0,1,frozenGreens));
-        shelves.add(new Shelf(1,1, createOrganics(frozenGreens)));
 
-        ArrayList<IItem> frozenFood = new ArrayList<>();
-        frozenFood.add(new Item("Ready-made Meal",39,6,25,473,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_SOY}));
-        frozenFood.add(new Item("Frozen Pizza",24,5,42,833,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN, Extra.CONTAINS_SOY}));
-        shelves.add(new Shelf(0,2,frozenFood));
-        shelves.add(new Shelf(1,2, createOrganics(frozenFood)));
+        ArrayList<IItem> frozenMeat = new ArrayList<>();
+        frozenMeat.add(new Item("200g Shrimp",35,0.6,48,200,new Extra[]{}));
+        frozenMeat.add(new Item("250g Clam",42,0.7,32,185,new Extra[]{}));
+
+        ArrayList<IItem> frozenMeals = new ArrayList<>();
+        frozenMeals.add(new Item("Ready-made Meal",39,6,25,473,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_SOY}));
+        frozenMeals.add(new Item("Frozen Pizza",24,5,42,833,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN, Extra.CONTAINS_SOY}));
+
+        shelves.add(new Shelf(2,1, createOrganics(frozenGreens)));
+        shelves.add(new Shelf(3,1, createOrganics(frozenGreens)));
+        shelves.add(new Shelf(4,1, createOrganics(frozenMeat)));
+        shelves.add(new Shelf(5,1, createOrganics(frozenMeat)));
+        shelves.add(new Shelf(6,1, createOrganics(frozenMeals)));
+        shelves.add(new Shelf(7,1, createOrganics(frozenMeals)));
+
+        shelves.add(new Shelf(2,3,frozenGreens));
+        shelves.add(new Shelf(3,3,frozenGreens));
+        shelves.add(new Shelf(4,3,frozenMeat));
+        shelves.add(new Shelf(5,3,frozenMeat));
+        shelves.add(new Shelf(6,3,frozenMeals));
+        shelves.add(new Shelf(7,3,frozenMeals));
 
         return shelves;
     }
