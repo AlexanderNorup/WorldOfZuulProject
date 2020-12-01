@@ -56,13 +56,23 @@ public class Player implements IPlayer {
 
     @Override
     public double getInventoryProtein() {
-        throw new UnsupportedOperationException("not implemented");
-        //TODO implement
+        double totalProtein = 0.0;
+
+        for (Item item : inventory) {
+            totalProtein += item.getProtein();
+        }
+
+        return totalProtein;
     }
 
     public double getInventoryCalories() {
-        throw new UnsupportedOperationException("not implemented");
-        //TODO implement
+        double totalCalories = 0.0;
+
+        for (Item item : inventory) {
+            totalCalories += item.getProtein();
+        }
+
+        return totalCalories;
     }
 
     @Override
@@ -139,18 +149,9 @@ public class Player implements IPlayer {
      * @return String of the total price, calories and protein for this game
      */
     public String getSummedValuesString() {
-        double totalPrice = 0.0;
-        double totalCalories = 0.0;
-        double totalProtein = 0.0;
-
-        for (Item item : inventory) {
-            totalPrice += item.getPrice();
-            totalCalories += item.getCalories();
-            totalProtein += item.getProtein();
-        }
-
-        return "Happiness: " + String.format(Locale.US, "%7.2f",  type.getHappiness(inventory)) + " | Total Price: " + totalPrice + " | " + "Total Calories: " + totalCalories + " | " + "Total Protein: " + totalProtein;
+        return "Happiness: " + String.format(Locale.US, "%7.2f",  type.getHappiness(inventory)) + " | Total Price: " + getInventoryValue() + " | " + "Total Calories: " + getInventoryCalories() + " | " + "Total Protein: " + getInventoryProtein();
     }
+
 
     public void setPlayerType(PlayerType type) {
         this.type = type;
