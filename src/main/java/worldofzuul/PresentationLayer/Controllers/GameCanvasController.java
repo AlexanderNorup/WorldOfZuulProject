@@ -11,10 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import worldofzuul.DomainLayer.Game;
-import worldofzuul.DomainLayer.Interfaces.IGame;
-import worldofzuul.DomainLayer.Interfaces.IPlayer;
-import worldofzuul.DomainLayer.Interfaces.IRoom;
-import worldofzuul.DomainLayer.Interfaces.IShelf;
+import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.Dog;
@@ -140,13 +137,24 @@ public class GameCanvasController {
 
         IRoom startingRoom = player.getStartingRoom();
 
-        for(int i = 0; i< rooms.size(); i++){
-            grids.add(new Grid(gameCanvas,rooms.get(i).getWidth(),rooms.get(i).getHeight(),new Image(rooms.get(i).getBackground())));
-            for(IShelf shelf : rooms.get(i).getShelves()){
-                grids.get(i).setGridObject(new Shelf(shelf.getItems()),new Position(shelf.getX(),shelf.getY()));
-            }
 
+
+        for(IRoom iRoom : rooms){
+            Grid grid = new Grid(gameCanvas, iRoom.getWidth(), iRoom.getHeight(),new Image(iRoom.getBackground()));
+            for(IShelf shelf : iRoom.getShelves()){
+                grid.setGridObject(new Shelf(shelf.getItems()),new Position(shelf.getX(),shelf.getY()));
+            }
+            grids.add(grid);
         }
+
+        for(IRoom iRoom : rooms){
+            for(IWarp iWarp : iRoom.getWarps()){
+                Warp warp = new Warp(grids.get(rooms.indexOf(iWarp.getDestination())),new Position(iWarp.getDestX(), iWarp.getDestY()));
+                grids.get(rooms.indexOf(iRoom)).setGridObject(warp,new Position(iWarp.getX(), iWarp.getY()));
+            }
+        }
+        grids.get(0).setActive(true);
+
 
 
 
@@ -158,8 +166,9 @@ public class GameCanvasController {
 
         //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
         //around. The last 2 arguments here represent the starting-position for the player.
-        playerObject = new PlayerObject(activeGrid, new Position(2,1));
+        playerObject = new PlayerObject(grids.get(0), new Position(2,1));
         playerObject.setAvatarImg(new Image (player.getSprite()));
+
 
         //Then we set some GridObjects. That could be anything that extends the GridObject class.
         //These "Dog"s extend the GridSprite class, which in turn then extends the GridObject.
@@ -187,7 +196,7 @@ public class GameCanvasController {
 
         //Then we set the first grid as "active".
         //This means that grid will be the one on screen.
-        activeGrid.setActive(true); //Starts drawing and animations
+        //activeGrid.setActive(true); //Starts drawing and animations
 
 
 
