@@ -36,7 +36,9 @@ public class Game implements IGame {
         rooms = ContentGenerator.getRooms();
         setStartPosition();
         parser = new Parser();
-        player = new Player(ContentGenerator.getRandomPlayerType());
+        player = new Player(ContentGenerator.getRandomPlayerType(),
+                            this.rooms.get(0)); //Set's starting room to the first room (outside).
+
         finishedGames = new ArrayList<>();
         saveGame = new SaveFile("./saveFile.json");
         try {

@@ -16,10 +16,12 @@ public class Player implements IPlayer {
 
     private final ArrayList<Item> inventory;
     private PlayerType type;
+    private IRoom startingRoom;
 
-    public Player(PlayerType playerType) {
+    public Player(PlayerType playerType, IRoom startingRoom) {
         this.inventory = new ArrayList<>();
         this.type = playerType;
+        this.startingRoom = startingRoom;
     }
 
     public void addItem(Item item) {
@@ -77,7 +79,7 @@ public class Player implements IPlayer {
 
     @Override
     public IRoom getStartingRoom() {
-        return null;
+        return this.startingRoom;
     }
 
     /**
