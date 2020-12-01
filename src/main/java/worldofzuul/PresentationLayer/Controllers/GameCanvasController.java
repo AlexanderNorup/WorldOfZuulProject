@@ -19,6 +19,7 @@ import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.Dog;
 import worldofzuul.PresentationLayer.GridObjects.PlayerObject;
+import worldofzuul.PresentationLayer.GridObjects.Shelf;
 import worldofzuul.PresentationLayer.GridObjects.Warp;
 
 import java.util.ArrayList;
@@ -121,9 +122,19 @@ public class GameCanvasController {
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
 
         ArrayList<IRoom> rooms = MainGUI.game.getRooms();
+        ArrayList<Grid> grids = new ArrayList<>();
         IPlayer player = MainGUI.game.getPlayer();
 
         IRoom startingRoom = player.getStartingRoom();
+
+        for(int i = 0; i< rooms.size(); i++){
+            grids.add(new Grid(gameCanvas,rooms.get(i).getWidth(),rooms.get(i).getHeight(),new Image(rooms.get(i).getBackground())));
+            for(IShelf shelf : rooms.get(i).getShelves()){
+                grids.get(i).setGridObject(new Shelf(shelf.getItems()),new Position(shelf.getX(),shelf.getY()));
+            }
+
+        }
+
 
 
 
