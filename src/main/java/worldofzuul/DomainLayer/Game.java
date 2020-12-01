@@ -87,6 +87,10 @@ public class Game implements IGame {
             case "Random":
                 this.player.setPlayerType(ContentGenerator.getRandomPlayerType());
                 break;
+            case "Mystery":
+                PlayerType newPicky = ContentGenerator.getPickyPlayerType();
+                newPicky.setPlayerSprite(Game.class.getResource("/sprites/Piggy.png").toString());
+                this.player.setPlayerType(newPicky);
             default:
         }
     }
