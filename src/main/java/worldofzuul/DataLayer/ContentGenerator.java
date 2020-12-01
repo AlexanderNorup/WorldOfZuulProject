@@ -301,19 +301,19 @@ public class ContentGenerator {
 
     public static ArrayList<Room> getRooms(){
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
-        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 7,11, getBackground("pink.png") );
+        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 4,6, getBackground("pink.png") );
         aisle1 = new Room("in the 1st aisle. \nTo your east is the dairy section, to your west is the bakery, " +
-                "to your south is the 2nd aisle", 6,10, getBackground("aisle_butcher_produce.png"));
+                "to your south is the 2nd aisle", 4,6, getBackground("aisle_butcher_produce.png"));
         aisle2 = new Room("in the 2nd aisle. \nTo your east is the frozen section, to your west is the " +
-                "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", 6,10, getBackground("aisle_dried_frozen.png"));
+                "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", 4,6, getBackground("aisle_dried_frozen.png"));
         aisle3 = new Room("in the 3rd aisle. \nTo your east is the produce section, to your west is the " +
-                "butcher, to your north is the 2nd aisle, to your south is the cashier", 6,10, getBackground("aisle_bakery_dairy.png"));
-        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", 10,5, getBackground("dairy.png"));// ContentGenerator.getDairyItems());
-        bakery = new Room("at the bakery\nTo your east is the 1st aisle", 10,6, getBackground("bakery.png"));//, ContentGenerator.getBakeryItems());
-        frozen = new Room("in the frozen section. \nTo your west is aisle 2", 8,6, getBackground("frost.png"));//, ContentGenerator.getFrozenItems());
-        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", 8,6, getBackground("dried.png"));//, ContentGenerator.getTinnedGoodsItems());
-        produce = new Room("at the produce section. \nTo your west is the 3. aisle", 8,6, getBackground("produce.png"));//, ContentGenerator.getProduceItems());
-        butcher = new Room("at the butcher. \nTo your east is the 3. aisle", 8,6, getBackground("butcher.png"));//, ContentGenerator.getButcherItems());
+                "butcher, to your north is the 2nd aisle, to your south is the cashier", 4,6, getBackground("aisle_bakery_dairy.png"));
+        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", 8,5, getBackground("dairy.png"));// ContentGenerator.getDairyItems());
+        bakery = new Room("at the bakery\nTo your east is the 1st aisle", 8,5, getBackground("bakery.png"));//, ContentGenerator.getBakeryItems());
+        frozen = new Room("in the frozen section. \nTo your west is aisle 2", 8,5, getBackground("frost.png"));//, ContentGenerator.getFrozenItems());
+        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", 8,5, getBackground("dried.png"));//, ContentGenerator.getTinnedGoodsItems());
+        produce = new Room("at the produce section. \nTo your west is the 3. aisle", 8,5, getBackground("produce.png"));//, ContentGenerator.getProduceItems());
+        butcher = new Room("at the butcher. \nTo your east is the 3. aisle", 8,5, getBackground("butcher.png"));//, ContentGenerator.getButcherItems());
         cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", 4,4, getBackground("cashier.png"));
 
         cashier.setCanCheckout(true);
@@ -351,54 +351,54 @@ public class ContentGenerator {
 
         cashier.setExit("north", aisle3);
 
-        outside.addWarp(2,0,aisle1,5,1);
-        outside.addWarp(3,0,aisle1,5,2);
+        outside.addWarp(1,0,aisle1,1,4);
+        outside.addWarp(2,0,aisle1,2,4);
 
-        aisle1.addWarp(0,2,butcher,3,7);
-        aisle1.addWarp(3,2,produce,3,0);
-        aisle1.addWarp(0,0,aisle2,0,5);
-        aisle1.addWarp(1,0,aisle2,1,5);
-        aisle1.addWarp(2,0,aisle2,2,5);
-        aisle1.addWarp(3,0,aisle2,3,5);
-        aisle1.addWarp(0,5,outside,0,0);
-        aisle1.addWarp(1,5,outside,1,0);
-        aisle1.addWarp(2,5,outside,2,0);
-        aisle1.addWarp(3,5,outside,3,0);
+        aisle1.addWarp(0,2,butcher,6,2);
+        aisle1.addWarp(3,2,produce,1,2);
+        aisle1.addWarp(0,0,aisle2,0,4);
+        aisle1.addWarp(1,0,aisle2,1,4);
+        aisle1.addWarp(2,0,aisle2,2,4);
+        aisle1.addWarp(3,0,aisle2,3,4);
+        aisle1.addWarp(0,5,outside,1,1);
+        aisle1.addWarp(1,5,outside,1,1);
+        aisle1.addWarp(2,5,outside,2,1);
+        aisle1.addWarp(3,5,outside,2,1);
 
-        aisle2.addWarp(0,2,tinnedGoods,3,7);
-        aisle2.addWarp(3,2,produce,3,0);
-        aisle2.addWarp(0,0,aisle3,0,5);
-        aisle2.addWarp(1,0,aisle3,1,5);
-        aisle2.addWarp(2,0,aisle3,2,5);
-        aisle2.addWarp(3,0,aisle3,3,5);
-        aisle2.addWarp(0,5,aisle1,0,0);
-        aisle2.addWarp(1,5,aisle1,1,0);
-        aisle2.addWarp(2,5,aisle1,2,0);
-        aisle2.addWarp(3,5,aisle1,3,0);
+        aisle2.addWarp(0,2,tinnedGoods,6,2);
+        aisle2.addWarp(3,2,frozen,1,2);
+        aisle2.addWarp(0,0,aisle3,0,4);
+        aisle2.addWarp(1,0,aisle3,1,4);
+        aisle2.addWarp(2,0,aisle3,2,4);
+        aisle2.addWarp(3,0,aisle3,3,4);
+        aisle2.addWarp(0,5,aisle1,0,1);
+        aisle2.addWarp(1,5,aisle1,1,1);
+        aisle2.addWarp(2,5,aisle1,2,1);
+        aisle2.addWarp(3,5,aisle1,3,1);
 
-        aisle3.addWarp(0,2,bakery,3,7);
-        aisle3.addWarp(3,2,dairy,3,0);
-        aisle3.addWarp(0,0,cashier,0,5);
-        aisle3.addWarp(1,0,cashier,1,5);
-        aisle3.addWarp(2,0,cashier,2,5);
-        aisle3.addWarp(3,0,cashier,3,5);
-        aisle3.addWarp(0,5,aisle2,0,0);
-        aisle3.addWarp(1,5,aisle2,1,0);
-        aisle3.addWarp(2,5,aisle2,2,0);
-        aisle3.addWarp(3,5,aisle2,3,0);
+        aisle3.addWarp(0,2,bakery,6,2);
+        aisle3.addWarp(3,2,dairy,1,2);
+        aisle3.addWarp(0,0,cashier,0,2);
+        aisle3.addWarp(1,0,cashier,1,2);
+        aisle3.addWarp(2,0,cashier,2,2);
+        aisle3.addWarp(3,0,cashier,3,2);
+        aisle3.addWarp(0,5,aisle2,0,1);
+        aisle3.addWarp(1,5,aisle2,1,1);
+        aisle3.addWarp(2,5,aisle2,2,1);
+        aisle3.addWarp(3,5,aisle2,3,1);
 
-        cashier.addWarp(0,3,aisle3,0,0);
-        cashier.addWarp(1,3,aisle3,1,0);
-        cashier.addWarp(2,3,aisle3,2,0);
-        cashier.addWarp(3,3,aisle3,3,0);
+        cashier.addWarp(0,3,aisle3,0,1);
+        cashier.addWarp(1,3,aisle3,1,1);
+        cashier.addWarp(2,3,aisle3,2,1);
+        cashier.addWarp(3,3,aisle3,3,1);
 
-        butcher.addWarp(7,2,aisle1,0,2);
-        tinnedGoods.addWarp(7,2,aisle2,0,2);
-        bakery.addWarp(7,2,aisle3,0,2);
+        butcher.addWarp(7,2,aisle1,1,2);
+        tinnedGoods.addWarp(7,2,aisle2,1,2);
+        bakery.addWarp(7,2,aisle3,1,2);
 
-        produce.addWarp(0,2,aisle1,3,2);
-        frozen.addWarp(0,2,aisle2,3,2);
-        dairy.addWarp(0,2,aisle3,3,2);
+        produce.addWarp(0,2,aisle1,2,2);
+        frozen.addWarp(0,2,aisle2,2,2);
+        dairy.addWarp(0,2,aisle3,2,2);
 
 
         ArrayList<Room> rooms = new ArrayList<>();
