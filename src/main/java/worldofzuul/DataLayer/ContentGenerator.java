@@ -229,6 +229,7 @@ public class ContentGenerator {
                 "You need around 2200 calories per day, and the student cares about the enviroment. Focus on organic items, and please try not to make the world explode.");
         type.setFactors(1,7,2);
         type.setValues(50,1000,2200);
+        type.setPlayerSprite(Game.class.getResource("/sprites/student.png").toString());
         type.addPositiveExtra(Extra.ORGANIC);
         return type;
 
@@ -239,6 +240,7 @@ public class ContentGenerator {
                 "You should get 3000 calories per day, and as much protein as possible, but try not to make the world explode");
         type.setFactors(6,1,3);
         type.setValues(75,1200,3000);
+        type.setPlayerSprite(Game.class.getResource("/sprites/BodyBuilderTight.png").toString());
         return type;
     }
 
@@ -249,6 +251,7 @@ public class ContentGenerator {
         type.addNegativeExtra(Extra.CONTAINS_GLUTEN);
         type.addNegativeExtra(Extra.CONTAINS_LACTOSE);
         type.addNegativeExtra(Extra.CONTAINS_SOY);
+        type.setPlayerSprite(Game.class.getResource("/sprites/Picky.png").toString());
         return type;
     }
 
