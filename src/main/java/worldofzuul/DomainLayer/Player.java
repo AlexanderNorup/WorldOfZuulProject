@@ -31,9 +31,7 @@ public class Player implements IPlayer {
     public ArrayList<IItem> getInventory() {
         //can't pass ArrayList<Item> when ArrayList<IItem> is needed
         //so this workaround is necessary
-        ArrayList<IItem> returnList = new ArrayList<>();
-        returnList.addAll(inventory);
-        return returnList;
+        return new ArrayList<>(inventory);
     }
 
     @Override

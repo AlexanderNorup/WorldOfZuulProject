@@ -55,6 +55,9 @@ public class Game implements IGame {
         }
     }
 
+    /**
+     * parsing arraylist of Rooms to an arraylist of IRoom and returns it
+     */
     @Override
     public ArrayList<IRoom> getRooms() {
         return new ArrayList<>(rooms);
