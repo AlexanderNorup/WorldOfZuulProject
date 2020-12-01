@@ -75,6 +75,24 @@ public class Game implements IGame {
         return processCommand(new Command(commands.getCommandWord(firstWord), secondWord));
     }
 
+    @Override
+    public void setPlayerType(String playerType) {
+        switch (playerType){
+            case "Student":
+                this.player.setPlayerType(ContentGenerator.getStudentPlayerType());
+                break;
+            case "Bodybuilder":
+                this.player.setPlayerType(ContentGenerator.getBodybuilderPlayerType());
+                break;
+            case "Picky":
+                this.player.setPlayerType(ContentGenerator.getPickyPlayerType());
+                break;
+            case "Random":
+                this.player.setPlayerType(ContentGenerator.getRandomPlayerType());
+                break;
+            default:
+        }
+    }
 
 
     /**

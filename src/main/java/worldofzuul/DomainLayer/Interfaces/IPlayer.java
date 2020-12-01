@@ -32,4 +32,14 @@ public interface IPlayer {
      * @return reference to the room in which the player should start the game
      */
     IRoom getStartingRoom();
+
+    /**
+     * @return string returning the description of the current playerType
+     */
+    String getDescription();
+
+    /**
+     * @return string returning the sprite of the current playerType
+     */
+    String getSprite();
 }
