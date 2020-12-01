@@ -75,7 +75,7 @@ public class SideMenuController {
                 TextArea textArea = (TextArea) sideMenu.getParent().getScene().lookup("#textBox").lookup("#textArea");
 
                 //Sets textArea's text to currently selected item in listView
-                textArea.setText(sideMenuListView.getSelectionModel().getSelectedItem().toString());
+                textArea.setText(sideMenuListView.getSelectionModel().getSelectedItem().getDescription());
 
                 //Sets visibility of textBox (parent of textArea) to true
                 textArea.getParent().setVisible(true);
