@@ -31,5 +31,10 @@ public interface IGame {
      */
     String doAction(String firstWord, String secondWord);
 
+
+    /**
+     * Allows us to set the playerType, so the IPlayers getSprite() method returns the correct sprite for that playerType.
+     * @param playerType String of the playerType, i.e. Student
+     */
     void setPlayerType(String playerType);
 }
