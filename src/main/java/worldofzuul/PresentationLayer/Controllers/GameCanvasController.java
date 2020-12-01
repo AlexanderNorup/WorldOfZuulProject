@@ -138,12 +138,16 @@ public class GameCanvasController {
 
 
 
+
+
         //Makes the first grid.
         Grid activeGrid = new Grid(gameCanvas, 4,6,new Image(MainGUI.class.getResource("/backgrounds/aisle_bakery_dairy.png").toString()));
 
         //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
         //around. The last 2 arguments here represent the starting-position for the player.
         playerObject = new PlayerObject(activeGrid, new Position(2,1));
+        playerObject.setAvatarImg(new Image (player.getSprite()));
+
 
         //Then we set some GridObjects. That could be anything that extends the GridObject class.
         //These "Dog"s extend the GridSprite class, which in turn then extends the GridObject.
