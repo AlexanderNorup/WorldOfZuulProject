@@ -149,21 +149,21 @@ public class ContentGenerator {
         ArrayList<IItem> liquids = new ArrayList<>();
         liquids.add(new Item("1L Milk",9,1,35,380,new Extra[]{Extra.CONTAINS_LACTOSE}));
         liquids.add(new Item("1L Yogurt",15,1.1,38,630,new Extra[]{Extra.CONTAINS_LACTOSE}));
-        shelves.add(new Shelf(0,1,liquids));
-        shelves.add(new Shelf(1,1, createOrganics(liquids)));
 
-        ArrayList<IItem> butterProducts = new ArrayList<>();
-        butterProducts.add(new Item("200g Cheese",26,2,50,660,new Extra[]{Extra.CONTAINS_LACTOSE}));
-        butterProducts.add(new Item("200g Butter",10,2,1,1450,new Extra[]{Extra.CONTAINS_LACTOSE}));
-        butterProducts.add(new Item("200g Margarine",8,0.3,0,1450,new Extra[]{Extra.VEGAN}));
-        shelves.add(new Shelf(0,2,butterProducts));
-        shelves.add(new Shelf(1,2, createOrganics(butterProducts)));
+        ArrayList<IItem> nonLiquids = new ArrayList<>();
+        nonLiquids.add(new Item("200g Cheese",26,2,50,660,new Extra[]{Extra.CONTAINS_LACTOSE}));
+        nonLiquids.add(new Item("200g Butter",10,2,1,1450,new Extra[]{Extra.CONTAINS_LACTOSE}));
+        nonLiquids.add(new Item("200g Margarine",8,0.3,0,1450,new Extra[]{Extra.VEGAN}));
+        nonLiquids.add(new Item("10 eggs",22,1,68,750,new Extra[]{}));
 
-
-        ArrayList<IItem> eggs = new ArrayList<>();
-        eggs.add(new Item("10 eggs",22,1,68,750,new Extra[]{}));
-        shelves.add(new Shelf(0,3,eggs));
-        shelves.add(new Shelf(1,3, createOrganics(eggs)));
+        shelves.add(new Shelf(0,1,nonLiquids));
+        shelves.add(new Shelf(1,1,nonLiquids));
+        shelves.add(new Shelf(2,1,liquids));
+        shelves.add(new Shelf(3,1,liquids));
+        shelves.add(new Shelf(4,1, createOrganics(nonLiquids)));
+        shelves.add(new Shelf(5,1, createOrganics(nonLiquids)));
+        shelves.add(new Shelf(6,1, createOrganics(liquids)));
+        shelves.add(new Shelf(7,1, createOrganics(liquids)));
 
 
         return shelves;
@@ -178,12 +178,24 @@ public class ContentGenerator {
         ArrayList<IShelf> shelves = new ArrayList<>();
 
         ArrayList<IItem> breads = new ArrayList<>();
+        ArrayList<IItem> cakes = new ArrayList<>();
+
+
         breads.add(new Item("500g White Bread",18,0.3,45,1323,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
         breads.add(new Item("500g Wholegrain Bread",24,0.3,65,1235,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
-        breads.add(new Item("200g Pastry",15,0.3,3,800,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
         breads.add(new Item("6 Bread Rolls",18,0.3,33,600,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
-        shelves.add(new Shelf(0,1,breads));
+        cakes.add(new Item("200g Pastry",15,0.3,3,800,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
+
+        shelves.add(new Shelf(0,1, createOrganics(breads)));
         shelves.add(new Shelf(1,1, createOrganics(breads)));
+        shelves.add(new Shelf(2,1, createOrganics(cakes)));
+        shelves.add(new Shelf(3,1, createOrganics(cakes)));
+
+        shelves.add(new Shelf(4,1,breads));
+        shelves.add(new Shelf(5,1,breads));
+        shelves.add(new Shelf(6,1,cakes));
+        shelves.add(new Shelf(7,1,cakes));
+
         return shelves;
     }
     /**
@@ -195,26 +207,33 @@ public class ContentGenerator {
         ArrayList<IShelf> shelves = new ArrayList<>();
 
         // Non-organic products
-
-        ArrayList<IItem> cerials = new ArrayList<>();
-        cerials.add(new Item("500g Oatmeal",5,0.3,65,1850,new Extra[]{Extra.VEGAN}));
-        shelves.add(new Shelf(0,1,cerials));
-        shelves.add(new Shelf(1,1, createOrganics(cerials)));
-
-        ArrayList<IItem> pastaNRice = new ArrayList<>();
-        pastaNRice.add(new Item("500g Rice",10,1,29,1800,new Extra[]{Extra.VEGAN, Extra.CONTAINS_GLUTEN}));
-        pastaNRice.add(new Item("500g Pasta",12,0.4,25,640,new Extra[]{Extra.VEGAN, Extra.CONTAINS_GLUTEN}));
-        shelves.add(new Shelf(0,2,pastaNRice));
-        shelves.add(new Shelf(1,2, createOrganics(pastaNRice)));
+        ArrayList<IItem> notActuallyTinnedGoods = new ArrayList<>();
+        notActuallyTinnedGoods.add(new Item("500g Rice",10,1,29,1800,new Extra[]{Extra.VEGAN, Extra.CONTAINS_GLUTEN}));
+        notActuallyTinnedGoods.add(new Item("500g Pasta",12,0.4,25,640,new Extra[]{Extra.VEGAN, Extra.CONTAINS_GLUTEN}));
+        notActuallyTinnedGoods.add(new Item("500g Oatmeal",5,0.3,65,1850,new Extra[]{Extra.VEGAN}));
+        notActuallyTinnedGoods.add(new Item("100g Almonds",15,0.2,21,600,new Extra[]{Extra.VEGAN}));
 
         ArrayList<IItem> actuallyTinnedGoods = new ArrayList<>();
         actuallyTinnedGoods.add(new Item("250g Chick Peas",10,0.2,12.5,400,new Extra[]{Extra.VEGAN}));
         actuallyTinnedGoods.add(new Item("250g Kidney Beans",5,0.2,20,250,new Extra[]{Extra.VEGAN}));
         actuallyTinnedGoods.add(new Item("100g Canned Tuna",15,0.3,25,112,new Extra[]{}));
-        actuallyTinnedGoods.add(new Item("100g Almonds",15,0.2,21,600,new Extra[]{Extra.VEGAN}));
         actuallyTinnedGoods.add(new Item("250g Canned Corn",5,1.5,8,250,new Extra[]{Extra.VEGAN}));
-        shelves.add(new Shelf(0,3,actuallyTinnedGoods));
+
+        shelves.add(new Shelf(2,1, createOrganics(notActuallyTinnedGoods)));
+        shelves.add(new Shelf(3,1, createOrganics(notActuallyTinnedGoods)));
+        shelves.add(new Shelf(4,1,notActuallyTinnedGoods));
+        shelves.add(new Shelf(5,1,notActuallyTinnedGoods));
+
+        shelves.add(new Shelf(0,1, createOrganics(actuallyTinnedGoods)));
+        shelves.add(new Shelf(1,1, createOrganics(actuallyTinnedGoods)));
+        shelves.add(new Shelf(6,1,actuallyTinnedGoods));
+        shelves.add(new Shelf(7,1,actuallyTinnedGoods));
+
         shelves.add(new Shelf(1,3, createOrganics(actuallyTinnedGoods)));
+        shelves.add(new Shelf(2,3, createOrganics(actuallyTinnedGoods)));
+        shelves.add(new Shelf(4,3,actuallyTinnedGoods));
+        shelves.add(new Shelf(5,3,actuallyTinnedGoods));
+
         return shelves;
     }
 
@@ -448,6 +467,4 @@ public class ContentGenerator {
         rooms.add(cashier);
         return rooms;
     }
-
-
 }
