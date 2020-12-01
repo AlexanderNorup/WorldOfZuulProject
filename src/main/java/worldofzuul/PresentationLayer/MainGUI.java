@@ -8,12 +8,14 @@ import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-
+import worldofzuul.DomainLayer.Game;
+import worldofzuul.DomainLayer.Interfaces.IGame;
 
 
 public class MainGUI extends Application {
     Scene s;
     MediaPlayer mediaPlayer;
+    public static IGame game;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -24,6 +26,8 @@ public class MainGUI extends Application {
         Media media = new Media(MainGUI.class.getResource("/music/tendo.mp3").toString());  //plays music
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
+
+        game = new Game();
 
         primaryStage.setScene(s);
         primaryStage.setResizable(false);

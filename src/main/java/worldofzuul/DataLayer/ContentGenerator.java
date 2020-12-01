@@ -1,5 +1,6 @@
-package worldofzuul.DomainLayer;
+package worldofzuul.DataLayer;
 
+import worldofzuul.DomainLayer.*;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IShelf;
 
@@ -307,8 +308,8 @@ public class ContentGenerator {
         dairy = new Room("in the dairy section\nTo your west is the 1st aisle", 10,5, getBackground("dairy.png"));// ContentGenerator.getDairyItems());
         bakery = new Room("at the bakery\nTo your east is the 1st aisle", 10,6, getBackground("bakery.png"));//, ContentGenerator.getBakeryItems());
         frozen = new Room("in the frozen section. \nTo your west is aisle 2", 8,6, getBackground("frost.png"));//, ContentGenerator.getFrozenItems());
-        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", 8,6, getBackground("pink.png"));//, ContentGenerator.getTinnedGoodsItems());
-        produce = new Room("at the produce section. \nTo your west is the 3. aisle", 8,6, getBackground("pink.png"));//, ContentGenerator.getProduceItems());
+        tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", 8,6, getBackground("dried.png"));//, ContentGenerator.getTinnedGoodsItems());
+        produce = new Room("at the produce section. \nTo your west is the 3. aisle", 8,6, getBackground("produce.png"));//, ContentGenerator.getProduceItems());
         butcher = new Room("at the butcher. \nTo your east is the 3. aisle", 8,6, getBackground("butcher.png"));//, ContentGenerator.getButcherItems());
         cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", 6,4, getBackground("cashier.png"));
 

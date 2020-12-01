@@ -1,9 +1,6 @@
 package worldofzuul.DomainLayer;
 
-import worldofzuul.DataLayer.GameResultData;
-import worldofzuul.DataLayer.ISaveGame;
-import worldofzuul.DataLayer.SaveFile;
-import worldofzuul.DataLayer.SaveGameException;
+import worldofzuul.DataLayer.*;
 import worldofzuul.DomainLayer.Commandhandling.Command;
 import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Commandhandling.CommandWords;
@@ -75,6 +72,24 @@ public class Game implements IGame {
         return processCommand(new Command(commands.getCommandWord(firstWord), secondWord));
     }
 
+    @Override
+    public void setPlayerType(String playerType) {
+        switch (playerType){
+            case "Student":
+                this.player.setPlayerType(ContentGenerator.getStudentPlayerType());
+                break;
+            case "Bodybuilder":
+                this.player.setPlayerType(ContentGenerator.getBodybuilderPlayerType());
+                break;
+            case "Picky":
+                this.player.setPlayerType(ContentGenerator.getPickyPlayerType());
+                break;
+            case "Random":
+                this.player.setPlayerType(ContentGenerator.getRandomPlayerType());
+                break;
+            default:
+        }
+    }
 
 
     /**

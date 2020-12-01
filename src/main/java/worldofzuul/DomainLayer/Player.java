@@ -82,6 +82,16 @@ public class Player implements IPlayer {
         return this.startingRoom;
     }
 
+    @Override
+    public String getDescription() {
+        return getPlayerType().getDescription();
+    }
+
+    @Override
+    public String getSprite() {
+        return getPlayerType().getPlayerSprite();
+    }
+
     /**
      * @param string name of the item
      * @return the item with the specified name; returns null if no such item exists

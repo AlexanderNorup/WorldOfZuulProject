@@ -11,7 +11,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import worldofzuul.DomainLayer.Game;
-import worldofzuul.DomainLayer.Interfaces.*;
+import worldofzuul.DomainLayer.Interfaces.IGame;
+import worldofzuul.DomainLayer.Interfaces.IPlayer;
+import worldofzuul.DomainLayer.Interfaces.IRoom;
+import worldofzuul.DomainLayer.Interfaces.IShelf;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.Dog;
@@ -118,10 +121,10 @@ public class GameCanvasController {
     public void initialize(){
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
 
-        IGame game = new Game();
-        ArrayList<IRoom> rooms = game.getRooms();
+        ArrayList<IRoom> rooms = MainGUI.game.getRooms();
         ArrayList<Grid> grids = new ArrayList<>();
-        IPlayer player = game.getPlayer();
+        IPlayer player = MainGUI.game.getPlayer();
+
         IRoom startingRoom = player.getStartingRoom();
 
         for(int i = 0; i< rooms.size(); i++){
@@ -168,7 +171,7 @@ public class GameCanvasController {
 
         //Then we set the first grid as "active".
         //This means that grid will be the one on screen.
-        grids.get(0).setActive(true); //Starts drawing and animations
+        activeGrid.setActive(true); //Starts drawing and animations
 
 
 
