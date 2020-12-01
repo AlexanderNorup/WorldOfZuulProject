@@ -14,7 +14,7 @@ import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.IGame;
 import worldofzuul.DomainLayer.Interfaces.IPlayer;
 import worldofzuul.DomainLayer.Interfaces.IRoom;
-import worldofzuul.DomainLayer.Interfaces.Shelf;
+import worldofzuul.DomainLayer.Interfaces.IShelf;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.Dog;

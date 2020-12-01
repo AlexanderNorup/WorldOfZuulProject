@@ -1,9 +1,12 @@
-package worldofzuul.DomainLayer.Interfaces;
+package worldofzuul.DomainLayer;
+
+import worldofzuul.DomainLayer.Interfaces.IRoom;
+import worldofzuul.DomainLayer.Interfaces.IWarp;
 
 /**
  * A warp describes a grid cell in the gui which "teleports" the player to another room
  */
-public class Warp {
+public class Warp implements IWarp {
     private int x;
     private int y;
     private IRoom destination;
