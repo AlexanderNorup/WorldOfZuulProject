@@ -1,5 +1,6 @@
-package worldofzuul.DomainLayer;
+package worldofzuul.DataLayer;
 
+import worldofzuul.DomainLayer.*;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IShelf;
 
@@ -300,15 +301,15 @@ public class ContentGenerator {
 
     public static ArrayList<Room> getRooms(){
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
-        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 7,11, getBackground("pink.png") );
+        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 6,5, getBackground("pink.png") );
         aisle1 = new Room("in the 1st aisle. \nTo your east is the dairy section, to your west is the bakery, " +
-                "to your south is the 2nd aisle", 6,10, getBackground("aisle_butcher_produce.png"));
+                "to your south is the 2nd aisle", 4,6, getBackground("aisle_butcher_produce.png"));
         aisle2 = new Room("in the 2nd aisle. \nTo your east is the frozen section, to your west is the " +
-                "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", 6,10, getBackground("aisle_dried_frozen.png"));
+                "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", 4,6, getBackground("aisle_dried_frozen.png"));
         aisle3 = new Room("in the 3rd aisle. \nTo your east is the produce section, to your west is the " +
-                "butcher, to your north is the 2nd aisle, to your south is the cashier", 6,10, getBackground("aisle_bakery_dairy.png"));
-        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", 10,5, getBackground("dairy.png"));// ContentGenerator.getDairyItems());
-        bakery = new Room("at the bakery\nTo your east is the 1st aisle", 10,6, getBackground("bakery.png"));//, ContentGenerator.getBakeryItems());
+                "butcher, to your north is the 2nd aisle, to your south is the cashier", 4,6, getBackground("aisle_bakery_dairy.png"));
+        dairy = new Room("in the dairy section\nTo your west is the 1st aisle", 8,5, getBackground("dairy.png"));// ContentGenerator.getDairyItems());
+        bakery = new Room("at the bakery\nTo your east is the 1st aisle", 8,6, getBackground("bakery.png"));//, ContentGenerator.getBakeryItems());
         frozen = new Room("in the frozen section. \nTo your west is aisle 2", 8,6, getBackground("frost.png"));//, ContentGenerator.getFrozenItems());
         tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", 8,6, getBackground("dried.png"));//, ContentGenerator.getTinnedGoodsItems());
         produce = new Room("at the produce section. \nTo your west is the 3. aisle", 8,6, getBackground("produce.png"));//, ContentGenerator.getProduceItems());
@@ -351,6 +352,17 @@ public class ContentGenerator {
         cashier.setExit("north", aisle3);
 
         //Now sets the exits (warps) for the GUI version.
+        outside.addWarp(2,0,aisle1,5,1);
+        outside.addWarp(3,0,aisle1,5,2);
+
+        aisle1.addWarp(0,2,butcher,3,7);
+        aisle1.addWarp(3,2,produce,3,0);
+
+        aisle2.addWarp(0,2,tinnedGoods,3,7);
+        aisle2.addWarp(3,2,produce,3,0);
+
+        aisle3.addWarp(0,2,bakery,3,7);
+        aisle3.addWarp(3,2,dairy,3,0);
 
 
         ArrayList<Room> rooms = new ArrayList<>();
