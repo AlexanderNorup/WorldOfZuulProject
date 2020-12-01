@@ -28,8 +28,8 @@ public class Room implements IRoom {
     private final String background;
     public Room(String description, int roomWidth, int roomHeight, String background) {
         this.description = description;
-        this.shelves = new ArrayList<Shelf>();
-        this.warps = new ArrayList<Warp>();
+        this.shelves = new ArrayList<>();
+        this.warps = new ArrayList<>();
         this.exits = new HashMap<>();
         this.canCheckout = false;
 
