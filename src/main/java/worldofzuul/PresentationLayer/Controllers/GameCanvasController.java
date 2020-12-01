@@ -114,7 +114,7 @@ public class GameCanvasController {
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
 
         //Makes the first grid.
-        Grid activeGrid = new Grid(gameCanvas, 14,9,new Image(MainGUI.class.getResource("/backgrounds/pink.png").toString()));
+        Grid activeGrid = new Grid(gameCanvas, 6,10,new Image(MainGUI.class.getResource("/backgrounds/aisle_bakery_dairy.png").toString()));
 
         //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
         //around. The last 2 arguments here represent the starting-position for the player.
@@ -124,8 +124,8 @@ public class GameCanvasController {
         //These "Dog"s extend the GridSprite class, which in turn then extends the GridObject.
         //GridSprites are objects that can be drawn to the screen in a tile.
         //Here 2 dogs are created just as a test. They are each given a position on the board.
-        activeGrid.setGridObject(new Dog(), new Position(0,1));
-        activeGrid.setGridObject(new Dog(), new Position(1,4));
+        activeGrid.setGridObject(new Dog(), new Position(1,2));
+        activeGrid.setGridObject(new Dog(), new Position(4,2));
 
         //Then we make another grid. It is created the excact same way as before.
         //It also has a dog.

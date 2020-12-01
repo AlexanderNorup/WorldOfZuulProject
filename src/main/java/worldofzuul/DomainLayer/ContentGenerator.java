@@ -299,11 +299,11 @@ public class ContentGenerator {
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
         outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 7,11, getBackground("pink.png") );
         aisle1 = new Room("in the 1st aisle. \nTo your east is the dairy section, to your west is the bakery, " +
-                "to your south is the 2nd aisle", 7,11, getBackground("pink.png"));
+                "to your south is the 2nd aisle", 7,11, getBackground("aisle_butcher_produce.png"));
         aisle2 = new Room("in the 2nd aisle. \nTo your east is the frozen section, to your west is the " +
-                "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", 7,11, getBackground("ping.png"));
+                "Tinned goods section, to your north is the 1st aisle, to your south is the 2nd aisle", 7,11, getBackground("aisle_dried_frozen.png"));
         aisle3 = new Room("in the 3rd aisle. \nTo your east is the produce section, to your west is the " +
-                "butcher, to your north is the 2nd aisle, to your south is the cashier", 7,11, getBackground("ping.png"));
+                "butcher, to your north is the 2nd aisle, to your south is the cashier", 7,11, getBackground("aisle_bakery_dairy.png"));
         dairy = new Room("in the dairy section\nTo your west is the 1st aisle", 7,11, getBackground("ping.png"));// ContentGenerator.getDairyItems());
         bakery = new Room("at the bakery\nTo your east is the 1st aisle", 7,11, getBackground("ping.png"));//, ContentGenerator.getBakeryItems());
         frozen = new Room("in the frozen section. \nTo your west is aisle 2", 7,11, getBackground("ping.png"));//, ContentGenerator.getFrozenItems());
