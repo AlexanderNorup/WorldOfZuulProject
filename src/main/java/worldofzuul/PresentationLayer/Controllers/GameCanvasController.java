@@ -10,11 +10,18 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import worldofzuul.DomainLayer.Game;
+import worldofzuul.DomainLayer.Interfaces.IGame;
+import worldofzuul.DomainLayer.Interfaces.IPlayer;
+import worldofzuul.DomainLayer.Interfaces.IRoom;
+import worldofzuul.DomainLayer.Interfaces.Shelf;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.Dog;
 import worldofzuul.PresentationLayer.GridObjects.PlayerObject;
 import worldofzuul.PresentationLayer.GridObjects.Warp;
+
+import java.util.ArrayList;
 
 /**
  * Is the controller for the main GameCanvas.
@@ -112,6 +119,13 @@ public class GameCanvasController {
     @FXML
     public void initialize(){
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
+
+        IGame game = new Game();
+        ArrayList<IRoom> rooms = game.getRooms();
+        IPlayer player = game.getPlayer();
+        IRoom startingRoom = player.getStartingRoom();
+
+
 
         //Makes the first grid.
         Grid activeGrid = new Grid(gameCanvas, 6,10,new Image(MainGUI.class.getResource("/backgrounds/aisle_bakery_dairy.png").toString()));
