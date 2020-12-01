@@ -5,9 +5,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import worldofzuul.PresentationLayer.GridObjects.GridObject;
-import worldofzuul.PresentationLayer.GridObjects.GridSprite;
-import worldofzuul.PresentationLayer.GridObjects.Warp;
+import javafx.scene.text.Font;
+import worldofzuul.PresentationLayer.GridObjects.*;
 
 import java.util.ArrayList;
 
@@ -156,6 +155,9 @@ public class Grid {
                         gameWidth, row * tileSize);
             }
 
+            gc.setFont(new Font(16));
+            gc.fillText("DEBUG VIEW IS ON (Press G)", 0, -16);
+
         }
         gc.restore(); //Restores the translation
 
@@ -168,9 +170,15 @@ public class Grid {
                         && !((GridSprite) grid[x][y]).isAnimating()) { //And that GridSprite isn't currently animating
                     //Draw the SpriteObject
                     this.drawObject(((GridSprite) grid[x][y]).getIdleSprite(), this.getPositionGrid(new Position(x, y)));
-                }else if(grid[x][y] instanceof Warp && this.showDebug){
-                    //If debug-mode is turned on, then draw the Warps using the "warp.png" image. s
-                    this.drawObject(new Image(getClass().getResource("/sprites/warp.png").toString()), this.getPositionGrid(new Position(x, y)));
+                }else if(this.showDebug){
+                    //If debug-mode is turned on, then draw some of the invisible things
+                    if(grid[x][y] instanceof Warp) {
+                        this.drawObject(new Image(getClass().getResource("/sprites/warp.png").toString()), this.getPositionGrid(new Position(x, y)));
+                    }else if(grid[x][y] instanceof Shelf) {
+                        this.drawObject(new Image(getClass().getResource("/sprites/shelf.png").toString()), this.getPositionGrid(new Position(x, y)));
+                    }else if(grid[x][y] instanceof Wall) {
+                        this.drawObject(new Image(getClass().getResource("/sprites/wall.png").toString()), this.getPositionGrid(new Position(x, y)));
+                    }
                 }
             }
         }
