@@ -311,7 +311,7 @@ public class ContentGenerator {
         tinnedGoods = new Room("in the tinned goods section. \nTo your east is aisle 2", 8,6, getBackground("dried.png"));//, ContentGenerator.getTinnedGoodsItems());
         produce = new Room("at the produce section. \nTo your west is the 3. aisle", 8,6, getBackground("produce.png"));//, ContentGenerator.getProduceItems());
         butcher = new Room("at the butcher. \nTo your east is the 3. aisle", 8,6, getBackground("butcher.png"));//, ContentGenerator.getButcherItems());
-        cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", 6,4, getBackground("cashier.png"));
+        cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", 4,4, getBackground("cashier.png"));
 
         cashier.setCanCheckout(true);
 
@@ -349,6 +349,54 @@ public class ContentGenerator {
         cashier.setExit("north", aisle3);
 
         //Now sets the exits (warps) for the GUI version.
+        outside.addWarp(2,0,aisle1,5,1);
+        outside.addWarp(3,0,aisle1,5,2);
+
+        aisle1.addWarp(0,2,butcher,3,7);
+        aisle1.addWarp(3,2,produce,3,0);
+        aisle1.addWarp(0,0,aisle2,0,5);
+        aisle1.addWarp(1,0,aisle2,1,5);
+        aisle1.addWarp(2,0,aisle2,2,5);
+        aisle1.addWarp(3,0,aisle2,3,5);
+        aisle1.addWarp(0,5,outside,0,0);
+        aisle1.addWarp(1,5,outside,1,0);
+        aisle1.addWarp(2,5,outside,2,0);
+        aisle1.addWarp(3,5,outside,3,0);
+
+        aisle2.addWarp(0,2,tinnedGoods,3,7);
+        aisle2.addWarp(3,2,produce,3,0);
+        aisle2.addWarp(0,0,aisle3,0,5);
+        aisle2.addWarp(1,0,aisle3,1,5);
+        aisle2.addWarp(2,0,aisle3,2,5);
+        aisle2.addWarp(3,0,aisle3,3,5);
+        aisle2.addWarp(0,5,aisle1,0,0);
+        aisle2.addWarp(1,5,aisle1,1,0);
+        aisle2.addWarp(2,5,aisle1,2,0);
+        aisle2.addWarp(3,5,aisle1,3,0);
+
+        aisle3.addWarp(0,2,bakery,3,7);
+        aisle3.addWarp(3,2,dairy,3,0);
+        aisle3.addWarp(0,0,cashier,0,5);
+        aisle3.addWarp(1,0,cashier,1,5);
+        aisle3.addWarp(2,0,cashier,2,5);
+        aisle3.addWarp(3,0,cashier,3,5);
+        aisle3.addWarp(0,5,aisle2,0,0);
+        aisle3.addWarp(1,5,aisle2,1,0);
+        aisle3.addWarp(2,5,aisle2,2,0);
+        aisle3.addWarp(3,5,aisle2,3,0);
+
+        cashier.addWarp(0,3,aisle3,0,0);
+        cashier.addWarp(1,3,aisle3,1,0);
+        cashier.addWarp(2,3,aisle3,2,0);
+        cashier.addWarp(3,3,aisle3,3,0);
+
+        butcher.addWarp(7,2,aisle1,0,2);
+        tinnedGoods.addWarp(7,2,aisle2,0,2);
+        bakery.addWarp(7,2,aisle3,0,2);
+
+        produce.addWarp(0,2,aisle1,3,2);
+        frozen.addWarp(0,2,aisle2,3,2);
+        dairy.addWarp(0,2,aisle3,3,2);
 
 
         ArrayList<Room> rooms = new ArrayList<>();
