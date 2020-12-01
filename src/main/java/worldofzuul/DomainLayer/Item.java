@@ -38,16 +38,7 @@ public class Item implements IItem {
      */
     @Override
     public String toString() {
-        StringBuilder extrasString = new StringBuilder();
-        for (Extra extra: extra){
-            extrasString.append(extra.toString());
-            extrasString.append(", ");
-        }
-        if(extra.size() > 0) {
-            extrasString.delete(extrasString.length() - 2, extrasString.length());
-        }
-
-        return name + ": price: kr " + price + "; calories: " + calories + " kcal; protein: " + protein + " g;" + "\n" + extrasString.toString();
+        return String.format("DKK%6.2f %s", price, name);
     }
 
     /**
@@ -64,7 +55,16 @@ public class Item implements IItem {
     }
 
     public String getDescription(){
-        return this.toString();
+        StringBuilder extrasString = new StringBuilder();
+        for (Extra extra: extra){
+            extrasString.append(extra.toString());
+            extrasString.append(", ");
+        }
+        if(extra.size() > 0) {
+            extrasString.delete(extrasString.length() - 2, extrasString.length());
+        }
+
+        return "This is " + name + ". it costs DKK " + price + ". It contains " + calories + " kcal and " + protein + " g of protein" + "\n" + extrasString.toString();
     }
 
     public String getName() {

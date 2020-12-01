@@ -45,6 +45,9 @@ public class GameCanvasController {
     @FXML
     Pane textBox;
 
+    @FXML
+    Pane shelfMenu;
+
     /**
      * This method runs every time the user pressed any key on their keyboard, while the game
      * is focused.
@@ -94,6 +97,16 @@ public class GameCanvasController {
             case SPACE:
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
+                }
+                break;
+            case ENTER:
+                // TODO check whether the player is standing in front of a shelf
+                if (true) {
+                    shelfMenu.setVisible(true);
+                    shelfMenu.setManaged(true);
+                    Scene shelfScene = shelfMenu.getScene();
+                    ListView<Item> shelfMenuListView = (ListView<Item>) shelfScene.lookup("#shelfMenuListView");
+                    shelfMenuListView.requestFocus();
                 }
                 break;
             case ESCAPE:

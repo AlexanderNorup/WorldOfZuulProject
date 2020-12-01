@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="shelfMenu"
+        xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="worldofzuul.PresentationLayer.Controllers.ShelfMenuController"
+            visible="false"
+            style="-fx-background-color: white"
+            focusTraversable="true"
+            prefHeight="500" prefWidth="300">
+
+    <top>
+        <Label maxWidth="-Infinity" prefHeight="30.0" text="Shelf"
+               BorderPane.alignment="CENTER"/>
+    </top>
+
+    <center>
+        <ListView fx:id="shelfMenuListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" onKeyPressed="#listViewKey"/>
+    </center>
+
+</BorderPane>
