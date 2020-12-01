@@ -1,8 +1,11 @@
-package worldofzuul.DomainLayer.Interfaces;
+package worldofzuul.DomainLayer;
+
+import worldofzuul.DomainLayer.Interfaces.IItem;
+import worldofzuul.DomainLayer.Interfaces.IShelf;
 
 import java.util.ArrayList;
 
-public class Shelf {
+public class Shelf implements IShelf {
     private final int x;
     private final int y;
     ArrayList<IItem> items;
