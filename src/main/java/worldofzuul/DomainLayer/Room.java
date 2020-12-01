@@ -1,13 +1,8 @@
 package worldofzuul.DomainLayer;
 
-import worldofzuul.DomainLayer.Interfaces.IItem;
-import worldofzuul.DomainLayer.Interfaces.IRoom;
-import worldofzuul.DomainLayer.Interfaces.Shelf;
-import worldofzuul.DomainLayer.Interfaces.Warp;
+import worldofzuul.DomainLayer.Interfaces.*;
 
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -21,8 +16,8 @@ public class Room implements IRoom {
     private final HashMap<String, Room> exits;
     private boolean canCheckout;
 
-    private final ArrayList<Shelf> shelves;
-    private final ArrayList<Warp> warps;
+    private final ArrayList<IShelf> shelves;
+    private final ArrayList<IWarp> warps;
 
     private final int roomWidth,roomHeight;
     private final String background;
@@ -38,7 +33,7 @@ public class Room implements IRoom {
         this.background = background;
     }
 
-    public void addShelves(ArrayList<Shelf> shelves){
+    public void addShelves(ArrayList<IShelf> shelves){
         this.shelves.addAll(shelves);
     }
 
@@ -61,7 +56,7 @@ public class Room implements IRoom {
 
     public ArrayList<Item> getItems() {
         ArrayList<Item> items = new ArrayList<>();
-        for(Shelf s : this.shelves){
+        for(IShelf s : this.shelves){
             for(IItem i : s.getItems()){
                 if(i instanceof Item){
                     items.add((Item) i);
@@ -128,8 +123,8 @@ public class Room implements IRoom {
 
     //The interfaces.
     @Override
-    public ArrayList<Shelf> getShelves() {
-        return this.shelves;
+    public ArrayList<IShelf> getShelves() {
+        return new ArrayList<>(this.shelves);
     }
 
     @Override
@@ -143,7 +138,7 @@ public class Room implements IRoom {
     }
 
     @Override
-    public ArrayList<Warp> getWarps() {
+    public ArrayList<IWarp> getWarps() {
         return this.warps;
     }
 

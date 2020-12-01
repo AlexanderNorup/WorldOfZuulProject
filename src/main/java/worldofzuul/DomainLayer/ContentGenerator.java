@@ -1,7 +1,7 @@
 package worldofzuul.DomainLayer;
 
 import worldofzuul.DomainLayer.Interfaces.IItem;
-import worldofzuul.DomainLayer.Interfaces.Shelf;
+import worldofzuul.DomainLayer.Interfaces.IShelf;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,8 +27,8 @@ public class ContentGenerator {
      * @return returns the Arraylist variable shelves with
      * Shelf objects in it. This is a list of butcher items.
      */
-    public static ArrayList<Shelf> getButcherItems(){
-        ArrayList<Shelf> shelves = new ArrayList<>();
+    public static ArrayList<IShelf> getButcherItems(){
+        ArrayList<IShelf> shelves = new ArrayList<>();
 
         ArrayList<IItem> meats = new ArrayList<IItem>();
         meats.add(new Item("200g Salmon",35,0.6,40,416.6,new Extra[]{}));
@@ -54,8 +54,8 @@ public class ContentGenerator {
      * @return returns a Arraylist of non organic item objects and organic.
      * This is a list of produce items.
      */
-    public static ArrayList<Shelf> getProduceItems(){
-        ArrayList<Shelf> shelves = new ArrayList<>();
+    public static ArrayList<IShelf> getProduceItems(){
+        ArrayList<IShelf> shelves = new ArrayList<>();
 
 
         ArrayList<IItem> imported = new ArrayList<>();
@@ -86,8 +86,8 @@ public class ContentGenerator {
      * @return returns a Arraylist of non organic item objects and organic.
      * this is a list of frozen items.
      */
-    public static ArrayList<Shelf> getFrozenItems(){
-        ArrayList<Shelf> shelves = new ArrayList<>();
+    public static ArrayList<IShelf> getFrozenItems(){
+        ArrayList<IShelf> shelves = new ArrayList<>();
 
 
         ArrayList<IItem> frozenGreens = new ArrayList<>();
@@ -108,8 +108,8 @@ public class ContentGenerator {
         return shelves;
     }
 
-    public static ArrayList<Shelf> getDairyItems(){
-        ArrayList<Shelf> shelves = new ArrayList<>();
+    public static ArrayList<IShelf> getDairyItems(){
+        ArrayList<IShelf> shelves = new ArrayList<>();
 
         //Non-organic items
         ArrayList<IItem> liquids = new ArrayList<>();
@@ -140,8 +140,8 @@ public class ContentGenerator {
      * @return returns a Arraylist of item objects.
      * this is a list of bakery items.
      */
-    public static ArrayList<Shelf> getBakeryItems(){
-        ArrayList<Shelf> shelves = new ArrayList<>();
+    public static ArrayList<IShelf> getBakeryItems(){
+        ArrayList<IShelf> shelves = new ArrayList<>();
 
         ArrayList<IItem> breads = new ArrayList<>();
         breads.add(new Item("500g White Bread",18,0.3,45,1323,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
@@ -157,8 +157,8 @@ public class ContentGenerator {
      * @return returns a Arraylist of non organic item objects and organic.
      * this is a list of tinned good items.
      */
-    public static ArrayList<Shelf> getTinnedGoodsItems(){
-        ArrayList<Shelf> shelves = new ArrayList<>();
+    public static ArrayList<IShelf> getTinnedGoodsItems(){
+        ArrayList<IShelf> shelves = new ArrayList<>();
 
         // Non-organic products
 

@@ -1,6 +1,5 @@
 package worldofzuul.DomainLayer.Interfaces;
 
-import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +9,7 @@ public interface IRoom {
     /**
      * @return The shelves in the given room
      */
-    ArrayList<Shelf> getShelves();
+    ArrayList<IShelf> getShelves();
 
     /**
      * @return The rooms width in grid cells
@@ -25,7 +24,7 @@ public interface IRoom {
     /**
      * @return Returns a list of the given rooms warps to other rooms
      */
-    ArrayList<Warp> getWarps();
+    ArrayList<IWarp> getWarps();
 
     /**
      * @return a reference to the resource to be used as the rooms background
