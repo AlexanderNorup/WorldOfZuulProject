@@ -11,14 +11,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import worldofzuul.DomainLayer.Game;
-import worldofzuul.DomainLayer.Interfaces.IGame;
-import worldofzuul.DomainLayer.Interfaces.IPlayer;
-import worldofzuul.DomainLayer.Interfaces.IRoom;
-import worldofzuul.DomainLayer.Interfaces.IShelf;
+import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.Dog;
 import worldofzuul.PresentationLayer.GridObjects.PlayerObject;
+import worldofzuul.PresentationLayer.GridObjects.Shelf;
 import worldofzuul.PresentationLayer.GridObjects.Warp;
 
 import java.util.ArrayList;
@@ -122,8 +120,18 @@ public class GameCanvasController {
 
         IGame game = new Game();
         ArrayList<IRoom> rooms = game.getRooms();
+        ArrayList<Grid> grids = new ArrayList<>();
         IPlayer player = game.getPlayer();
         IRoom startingRoom = player.getStartingRoom();
+
+        for(int i = 0; i< rooms.size(); i++){
+            grids.add(new Grid(gameCanvas,rooms.get(i).getWidth(),rooms.get(i).getHeight(),new Image(rooms.get(i).getBackground())));
+            for(IShelf shelf : rooms.get(i).getShelves()){
+                grids.get(i).setGridObject(new Shelf(shelf.getItems()),new Position(shelf.getX(),shelf.getY()));
+            }
+
+        }
+
 
 
 
@@ -160,7 +168,7 @@ public class GameCanvasController {
 
         //Then we set the first grid as "active".
         //This means that grid will be the one on screen.
-        activeGrid.setActive(true); //Starts drawing and animations
+        grids.get(0).setActive(true); //Starts drawing and animations
 
 
 
