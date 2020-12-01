@@ -32,4 +32,8 @@ public interface IPlayer {
      * @return reference to the room in which the player should start the game
      */
     IRoom getStartingRoom();
+
+    String getDescription();
+
+    String getSprite();
 }

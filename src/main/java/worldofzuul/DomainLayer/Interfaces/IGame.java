@@ -30,4 +30,6 @@ public interface IGame {
      * @return a String which is a response to the action e.g. "you picked up 200g Salami"
      */
     String doAction(String firstWord, String secondWord);
+
+    void setPlayerType(String playerType);
 }

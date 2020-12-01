@@ -25,10 +25,14 @@ public class PlayerObject extends GridSprite {
         this.grid = grid;
         this.playerPos = startingPos;
         this.grid.setGridObject(this, this.playerPos);
-        this.avatarImg = new Image(getClass().getResource("/sprites/student.png").toString());
+        this.avatarImg = new Image(getClass().getResource("/sprites/geoalex.png").toString());
         this.walkingSprites = new Image[2];
         this.walkingSprites[0] = avatarImg;//(new Image(getClass().getResource("/sprites/avatar_walking_1.png").toString()));
         this.walkingSprites[1] = avatarImg;//(new Image(getClass().getResource("/sprites/avatar_walking_2.png").toString()));
+    }
+
+    public void setAvatarImg(Image playerSprite){
+        this.avatarImg = playerSprite;
     }
 
     /**
@@ -81,7 +85,7 @@ public class PlayerObject extends GridSprite {
         return avatarImg;
     }
 
-    @Override
+    /*@Override
     public Image getWalkingSprite() {
         //Because the player has more than 1 walking animation, the animationTimer and currentTimeMillis()
         //is used to periodically switch the sprite.
@@ -91,7 +95,7 @@ public class PlayerObject extends GridSprite {
         } else {
             return this.walkingSprites[1];
         }
-    }
+    }*/
 
     /**
      * @return The active Grid. The one the player is on, and currently being drawn.

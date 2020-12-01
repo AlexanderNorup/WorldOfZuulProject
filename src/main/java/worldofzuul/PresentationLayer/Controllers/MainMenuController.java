@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.stage.Stage;
+import worldofzuul.DomainLayer.Interfaces.IPlayer;
 import worldofzuul.PresentationLayer.MainGUI;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class MainMenuController {
 
     private final String[] playerTypes = new String[] {"Student", "Bodybuilder", "Picky", "Random"};
     private int playerTypeIndex = 3; // Random playerType
+    private IPlayer player;
 
     @FXML
     public void playGame(){
@@ -51,6 +53,8 @@ public class MainMenuController {
             playerTypeIndex = 0;
         }
         selectCharacterLabel.setText("You selected: " + playerTypes[playerTypeIndex]);
+
+        MainGUI.game.setPlayerType(playerTypes[playerTypeIndex]);
     }
 
 }

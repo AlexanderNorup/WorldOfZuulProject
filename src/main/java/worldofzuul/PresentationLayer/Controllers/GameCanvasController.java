@@ -120,9 +120,9 @@ public class GameCanvasController {
     public void initialize(){
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
 
-        IGame game = new Game();
-        ArrayList<IRoom> rooms = game.getRooms();
-        IPlayer player = game.getPlayer();
+        ArrayList<IRoom> rooms = MainGUI.game.getRooms();
+        IPlayer player = MainGUI.game.getPlayer();
+
         IRoom startingRoom = player.getStartingRoom();
 
 
@@ -132,7 +132,8 @@ public class GameCanvasController {
 
         //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
         //around. The last 2 arguments here represent the starting-position for the player.
-        playerObject = new PlayerObject(activeGrid, new Position(4,2));
+        playerObject = new PlayerObject(activeGrid, new Position(4,1));
+        playerObject.setAvatarImg(new Image (player.getSprite()));
 
         //Then we set some GridObjects. That could be anything that extends the GridObject class.
         //These "Dog"s extend the GridSprite class, which in turn then extends the GridObject.
