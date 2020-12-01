@@ -14,10 +14,7 @@ import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
-import worldofzuul.PresentationLayer.GridObjects.Dog;
-import worldofzuul.PresentationLayer.GridObjects.PlayerObject;
-import worldofzuul.PresentationLayer.GridObjects.Shelf;
-import worldofzuul.PresentationLayer.GridObjects.Warp;
+import worldofzuul.PresentationLayer.GridObjects.*;
 
 import java.util.ArrayList;
 
@@ -154,6 +151,8 @@ public class GameCanvasController {
             }
         }
         grids.get(0).setActive(true);
+        grids.get(0).setGridObject(new Wall(), new Position(2,4));
+        grids.get(0).setGridObject(new Wall(), new Position(1,4));
 
 
 
