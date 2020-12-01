@@ -1,9 +1,6 @@
 package worldofzuul.DomainLayer;
 
-import worldofzuul.DataLayer.GameResultData;
-import worldofzuul.DataLayer.ISaveGame;
-import worldofzuul.DataLayer.SaveFile;
-import worldofzuul.DataLayer.SaveGameException;
+import worldofzuul.DataLayer.*;
 import worldofzuul.DomainLayer.Commandhandling.Command;
 import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Commandhandling.CommandWords;
