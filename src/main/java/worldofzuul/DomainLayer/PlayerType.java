@@ -14,6 +14,7 @@ public class PlayerType {
 
     private final String name;
     private final String description;
+    private String playerSprite;
     private double budgetMax;
     private double calorieMin;
     private double calorieGoal;
@@ -55,6 +56,13 @@ public class PlayerType {
         this.budgetMax = budgetMax;
         this.calorieMin = calorieMin;
         this.calorieGoal = calorieGoal;
+    }
+    public void setPlayerSprite(String path){
+        this.playerSprite = path;
+    }
+
+    public String getPlayerSprite(){
+        return playerSprite;
     }
 
     public void setOther(int calorieGoal){

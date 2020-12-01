@@ -19,6 +19,7 @@ import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.Dog;
 import worldofzuul.PresentationLayer.GridObjects.PlayerObject;
+import worldofzuul.PresentationLayer.GridObjects.Shelf;
 import worldofzuul.PresentationLayer.GridObjects.Warp;
 
 import java.util.ArrayList;
@@ -133,26 +134,39 @@ public class GameCanvasController {
     public void initialize(){
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
 
-        IGame game = new Game();
-        ArrayList<IRoom> rooms = game.getRooms();
-        IPlayer player = game.getPlayer();
+        ArrayList<IRoom> rooms = MainGUI.game.getRooms();
+        ArrayList<Grid> grids = new ArrayList<>();
+        IPlayer player = MainGUI.game.getPlayer();
+
         IRoom startingRoom = player.getStartingRoom();
+
+        for(int i = 0; i< rooms.size(); i++){
+            grids.add(new Grid(gameCanvas,rooms.get(i).getWidth(),rooms.get(i).getHeight(),new Image(rooms.get(i).getBackground())));
+            for(IShelf shelf : rooms.get(i).getShelves()){
+                grids.get(i).setGridObject(new Shelf(shelf.getItems()),new Position(shelf.getX(),shelf.getY()));
+            }
+
+        }
+
+
+
 
 
 
         //Makes the first grid.
-        Grid activeGrid = new Grid(gameCanvas, 6,10,new Image(MainGUI.class.getResource("/backgrounds/aisle_bakery_dairy.png").toString()));
+        Grid activeGrid = new Grid(gameCanvas, 4,6,new Image(MainGUI.class.getResource("/backgrounds/aisle_bakery_dairy.png").toString()));
 
         //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
         //around. The last 2 arguments here represent the starting-position for the player.
-        playerObject = new PlayerObject(activeGrid, new Position(4,2));
+        playerObject = new PlayerObject(activeGrid, new Position(2,1));
+        playerObject.setAvatarImg(new Image (player.getSprite()));
 
         //Then we set some GridObjects. That could be anything that extends the GridObject class.
         //These "Dog"s extend the GridSprite class, which in turn then extends the GridObject.
         //GridSprites are objects that can be drawn to the screen in a tile.
         //Here 2 dogs are created just as a test. They are each given a position on the board.
-        activeGrid.setGridObject(new Dog(), new Position(1,2));
-        activeGrid.setGridObject(new Dog(), new Position(4,2));
+        activeGrid.setGridObject(new Dog(), new Position(0,5));
+        activeGrid.setGridObject(new Dog(), new Position(3,5));
 
         //Then we make another grid. It is created the excact same way as before.
         //It also has a dog.
@@ -163,12 +177,12 @@ public class GameCanvasController {
         //A Warp is also a child of GridObject. It dosn't have a sprite (unless you enable debug-mode).
         //A Warp takes 2 arguments: What grid to teleport to, and where the teleport should place the player.
         //A Warp activates when the player is about to step onto it.
-        Warp activeToAnotherWarp = new Warp(activeGrid,new Position(5,6));
+        Warp activeToAnotherWarp = new Warp(activeGrid,new Position(3,3));
         //We add the Warp the same way we add a ordinary GridObject
         anotherGrid.setGridObject(activeToAnotherWarp, new Position(3,4));
 
         //We create another warp. This one takes the player from the activeGrid to anotherGrid.
-        activeGrid.setGridObject(new Warp(anotherGrid,new Position(0,0)), new Position(5,5));
+        activeGrid.setGridObject(new Warp(anotherGrid,new Position(0,0)), new Position(3,2));
 
 
         //Then we set the first grid as "active".
