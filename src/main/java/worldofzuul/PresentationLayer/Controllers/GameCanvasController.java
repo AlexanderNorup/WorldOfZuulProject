@@ -151,9 +151,12 @@ public class GameCanvasController {
             }
         }
         grids.get(0).setActive(true);
-        grids.get(0).setGridObject(new Wall(), new Position(2,4));
-        grids.get(0).setGridObject(new Wall(), new Position(1,4));
-
+        grids.get(0).setGridObject(new Wall(), new Position(0,3)); //2,4
+        grids.get(0).setGridObject(new Wall(), new Position(1,3)); //1,4
+        grids.get(0).setGridObject(new Wall(), new Position(2,3));
+        grids.get(0).setGridObject(new Wall(), new Position(5,3));
+        grids.get(0).setGridObject(new Wall(), new Position(6,3));
+        grids.get(0).setGridObject(new Wall(), new Position(7,3));
 
 
 
@@ -165,7 +168,7 @@ public class GameCanvasController {
 
         //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
         //around. The last 2 arguments here represent the starting-position for the player.
-        playerObject = new PlayerObject(grids.get(0), new Position(2,1));
+        playerObject = new PlayerObject(grids.get(0), new Position(2,4));//2,1
         playerObject.setAvatarImg(new Image (player.getSprite()));
 
 

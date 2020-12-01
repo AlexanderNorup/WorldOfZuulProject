@@ -353,7 +353,7 @@ public class ContentGenerator {
 
     public static ArrayList<Room> getRooms(){
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
-        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 4,6, getBackground("pink.png") );
+        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 8,5, getBackground("supermarket.jpg") );
         aisle1 = new Room("in the 1st aisle. \nTo your east is the dairy section, to your west is the bakery, " +
                 "to your south is the 2nd aisle", 4,6, getBackground("aisle_butcher_produce.png"));
         aisle2 = new Room("in the 2nd aisle. \nTo your east is the frozen section, to your west is the " +
@@ -403,8 +403,8 @@ public class ContentGenerator {
 
         cashier.setExit("north", aisle3);
 
-        outside.addWarp(1,0,aisle1,1,4);
-        outside.addWarp(2,0,aisle1,2,4);
+        outside.addWarp(3,3,aisle1,1,4);//1,2
+        outside.addWarp(4,3,aisle1,2,4);//2,2
 
         aisle1.addWarp(0,2,butcher,6,2);
         aisle1.addWarp(3,2,produce,1,2);
@@ -412,10 +412,10 @@ public class ContentGenerator {
         aisle1.addWarp(1,0,aisle2,1,4);
         aisle1.addWarp(2,0,aisle2,2,4);
         aisle1.addWarp(3,0,aisle2,3,4);
-        aisle1.addWarp(0,5,outside,1,1);
-        aisle1.addWarp(1,5,outside,1,1);
-        aisle1.addWarp(2,5,outside,2,1);
-        aisle1.addWarp(3,5,outside,2,1);
+        aisle1.addWarp(0,5,outside,3,4);//1,1
+        aisle1.addWarp(1,5,outside,3,4);//1,1
+        aisle1.addWarp(2,5,outside,4,4);//2,1
+        aisle1.addWarp(3,5,outside,4,4);//2,1
 
         aisle2.addWarp(0,2,tinnedGoods,6,2);
         aisle2.addWarp(3,2,frozen,1,2);
