@@ -19,6 +19,7 @@ import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.Dog;
 import worldofzuul.PresentationLayer.GridObjects.PlayerObject;
+import worldofzuul.PresentationLayer.GridObjects.Shelf;
 import worldofzuul.PresentationLayer.GridObjects.Warp;
 
 import java.util.ArrayList;
@@ -121,10 +122,18 @@ public class GameCanvasController {
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
 
         ArrayList<IRoom> rooms = MainGUI.game.getRooms();
+        ArrayList<Grid> grids = new ArrayList<>();
         IPlayer player = MainGUI.game.getPlayer();
 
         IRoom startingRoom = player.getStartingRoom();
 
+        for(int i = 0; i< rooms.size(); i++){
+            grids.add(new Grid(gameCanvas,rooms.get(i).getWidth(),rooms.get(i).getHeight(),new Image(rooms.get(i).getBackground())));
+            for(IShelf shelf : rooms.get(i).getShelves()){
+                grids.get(i).setGridObject(new Shelf(shelf.getItems()),new Position(shelf.getX(),shelf.getY()));
+            }
+
+        }
 
 
 
@@ -135,7 +144,6 @@ public class GameCanvasController {
         //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
         //around. The last 2 arguments here represent the starting-position for the player.
         playerObject = new PlayerObject(activeGrid, new Position(2,1));
-        playerObject.setAvatarImg(new Image (player.getSprite()));
 
         //Then we set some GridObjects. That could be anything that extends the GridObject class.
         //These "Dog"s extend the GridSprite class, which in turn then extends the GridObject.
