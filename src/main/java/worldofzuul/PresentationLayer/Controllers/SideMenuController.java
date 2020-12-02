@@ -93,18 +93,12 @@ public class SideMenuController {
                 Bounds bounds = sideMenuListView.localToScreen(sideMenuListView.getBoundsInLocal());
                 contextMenu.show(sideMenuListView, bounds.getMinX() - 50, bounds.getMinY());
                 break;
-            case SPACE:
+            case ESCAPE:
                 //"Close" textBox, if textBox is "open". If textBox is not "open", but sideMenu is, "close" sideMenu
                 Node textBox = sideMenu.getParent().getScene().lookup("#textBox");
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
                 } else if (sideMenu.isVisible()) {
-                    sideMenu.setVisible(false);
-                    sideMenu.setManaged(false);
-                }
-                break;
-            case ESCAPE:
-                if (sideMenu.isVisible()) {
                     sideMenu.setVisible(false);
                     sideMenu.setManaged(false);
                 }

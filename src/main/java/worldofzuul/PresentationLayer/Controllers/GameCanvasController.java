@@ -8,10 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -20,11 +17,8 @@ import worldofzuul.DomainLayer.Extra;
 import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
-import worldofzuul.PresentationLayer.Direction;
-import worldofzuul.PresentationLayer.Grid;
+import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.*;
-import worldofzuul.PresentationLayer.MainGUI;
-import worldofzuul.PresentationLayer.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +31,7 @@ public class GameCanvasController {
 
     private PlayerObject playerObject;
 
+    private GridObject objectAbovePlayer;
 
     @FXML
     Pane root;
@@ -108,12 +103,15 @@ public class GameCanvasController {
                 }
                 break;
             case ENTER:
-                // TODO check whether the player is standing in front of a shelf
-                if (playerObject.getActiveGrid().getGridObject(new Position(playerObject.getPlayerPos().getX(), playerObject.getPlayerPos().getY()-1)) instanceof Shelf) {
+                objectAbovePlayer = playerObject.getActiveGrid().getGridObject(new Position(playerObject.getPlayerPos().getX(), playerObject.getPlayerPos().getY()-1));
+                if (objectAbovePlayer instanceof Shelf) {
+                    Shelf currentShelf = (Shelf) objectAbovePlayer;
+                    Scene shelfScene = shelfMenu.getScene();
+                    ListView<IItem> shelfMenuListView = (ListView<IItem>) shelfScene.lookup("#shelfMenuListView");
+                    shelfMenuListView.getItems().setAll(currentShelf.getItems());
+
                     shelfMenu.setVisible(true);
                     shelfMenu.setManaged(true);
-                    Scene shelfScene = shelfMenu.getScene();
-                    ListView<Item> shelfMenuListView = (ListView<Item>) shelfScene.lookup("#shelfMenuListView");
                     shelfMenuListView.requestFocus();
                 }
                 break;
@@ -133,16 +131,6 @@ public class GameCanvasController {
         }
 
     }
-
-    private void tryMove(Direction direction){
-
-    }
-
-    private void interact(){}
-
-    private void Quit(){}
-
-
 
 
     /**

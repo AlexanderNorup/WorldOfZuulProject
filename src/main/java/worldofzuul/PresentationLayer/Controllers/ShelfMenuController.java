@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
@@ -34,20 +35,6 @@ public class ShelfMenuController {
     ArrayList<IItem> items;
 
     public void initialize() {
-        //Temporary test items, feel free to remove.
-        items = new ArrayList<IItem>();
-        items.add(new Item("200g Salmon",35,0.6,40,416.6,new Extra[]{}));
-        items.add(new Item("1300g Whole Chicken",50,5,350,2400,new Extra[]{}));
-        items.add(new Item("250g 2 Lamb Chops",50,5.25,62.5,735,new Extra[]{}));
-        items.add(new Item("500g Pork Rib",50,3,135,1200,new Extra[]{}));
-        items.add(new Item("100g Salami",10,0.7,22,335,new Extra[]{}));
-        items.add(new Item("100g Roast Beef",12,0.7,29,170,new Extra[]{}));
-
-        ObservableList<IItem> itemObservableList = FXCollections.observableArrayList();
-        itemObservableList.addAll(items);
-
-        shelfMenuListView.setItems(itemObservableList);
-
         contextMenu = new ContextMenu();
         inspect = new MenuItem("Inspect");
         take = new MenuItem("Take");
@@ -72,8 +59,8 @@ public class ShelfMenuController {
                 IItem item = shelfMenuListView.getSelectionModel().getSelectedItem();
                 System.out.println("Taken");
                 MainGUI.game.doAction("take", item.getName());
-                itemObservableList.clear();
-                itemObservableList.addAll(MainGUI.game.getPlayer().getInventory());
+                ListView<IItem> sideMenuListView = (ListView<IItem>) shelfMenu.getParent().getScene().lookup("#sideMenu").lookup("#sideMenuListView");
+                sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
             }
         });
 
@@ -88,8 +75,14 @@ public class ShelfMenuController {
                 contextMenu.show(shelfMenuListView, bounds.getMaxX() - 50, bounds.getMinY());
                 break;
             case ESCAPE:
-                shelfMenu.setVisible(false);
-                shelfMenu.setManaged(false);
+                //"Close" textBox, if textBox is "open". If textBox is not "open", but sideMenu is, "close" sideMenu
+                Node textBox = shelfMenu.getParent().getScene().lookup("#textBox");
+                if (textBox.isVisible()) {
+                    textBox.setVisible(false);
+                } else if (shelfMenu.isVisible()){
+                    shelfMenu.setVisible(false);
+                    shelfMenu.setManaged(false);
+                }
         }
     }
 }
