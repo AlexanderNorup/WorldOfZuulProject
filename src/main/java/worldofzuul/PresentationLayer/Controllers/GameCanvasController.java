@@ -173,17 +173,6 @@ public class GameCanvasController {
         });
     }
 
-    private void tryMove(Direction direction){
-
-    }
-
-    private void interact(){}
-
-    private void Quit(){}
-
-
-
-
     /**
      * This method gets called as soon as this Controller is loaded.
      */
