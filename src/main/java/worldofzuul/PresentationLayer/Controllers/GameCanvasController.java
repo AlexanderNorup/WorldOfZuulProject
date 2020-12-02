@@ -1,6 +1,11 @@
 package worldofzuul.PresentationLayer.Controllers;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
@@ -9,6 +14,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import worldofzuul.DomainLayer.Extra;
+import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.Direction;
@@ -18,6 +26,7 @@ import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Is the controller for the main GameCanvas.
@@ -85,7 +94,10 @@ public class GameCanvasController {
                     sideMenu.setVisible(true);
                     sideMenu.setManaged(true);
                     Scene sideScene = sideMenu.getScene();
-                    ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
+                    Label moneySpentLabel = (Label)sideScene.lookup("#labelsGrid").lookup("#moneySpent");
+                    moneySpentLabel.setText(String.valueOf(MainGUI.game.getPlayer().getInventoryValue()));
+                    System.out.println(MainGUI.game.getPlayer().getInventoryValue());
+                    Node sideMenuListView = sideScene.lookup("#sideMenuListView");
                     sideMenuListView.requestFocus();
                 }
                 break;
