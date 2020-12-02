@@ -228,4 +228,13 @@ public class GameCanvasController {
 
         root.setFocusTraversable(true); //Makes onKeyPressed() work.
     }
+
+    private void tryMove(Direction direction){
+
+    }
+
+    private void interact(){}
+
+    private void Quit(){}
 }
+
