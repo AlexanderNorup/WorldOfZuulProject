@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import worldofzuul.DomainLayer.Extra;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Item;
+import worldofzuul.PresentationLayer.MainGUI;
 
 import java.util.ArrayList;
 
@@ -68,7 +69,11 @@ public class ShelfMenuController {
         take.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                IItem item = shelfMenuListView.getSelectionModel().getSelectedItem();
+                System.out.println("Taken");
+                MainGUI.game.doAction("take", item.getName());
+                itemObservableList.clear();
+                itemObservableList.addAll(MainGUI.game.getPlayer().getInventory());
             }
         });
 
