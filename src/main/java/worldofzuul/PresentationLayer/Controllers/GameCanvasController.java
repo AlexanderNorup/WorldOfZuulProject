@@ -9,6 +9,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.Direction;
@@ -53,83 +54,114 @@ public class GameCanvasController {
         //currently, when spacebar, enter, arrowkeys, esc, etc., are hit, and sidemenu is open,
         // these keyEvents goes to the sidemenu controller. Therefore a switchcase with some similar instructions
         // are implemented in the sidemenu controller.
-        switch(keyEvent.getCode()){
-            case S:
-            case DOWN:
-                //All these are similar. The PlayerObject makes sure it is actually possible
-                //to move into the given direction.
-                playerObject.moveDown();
-                break;
-            case W:
-            case UP:
-                playerObject.moveUp();
-                break;
-            case A:
-            case LEFT:
-                playerObject.moveLeft();
-                break;
-            case D:
-            case RIGHT:
-                playerObject.moveRight();
-                break;
-            case G:
-                //Turns on debug mode.
-                //The grid will be shown, alogn with warps.
-                playerObject.getActiveGrid().setShowDebug(!playerObject.getActiveGrid().isShowDebug());
-                break;
-            case I:
-                if (sideMenu.isVisible()) {
-                    sideMenu.setVisible(false);
-                    sideMenu.setManaged(false);
-                } else {
-                    sideMenu.setVisible(true);
-                    sideMenu.setManaged(true);
-                    Scene sideScene = sideMenu.getScene();
-                    ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
-                    sideMenuListView.requestFocus();
-                }
-                break;
-            case SPACE:
-                if (textBox.isVisible()) {
-                    textBox.setVisible(false);
-                }
-                break;
-            case ENTER:
-                // TODO check whether the player is standing in front of a shelf
-                if (playerObject.getActiveGrid().getGridObject(new Position(playerObject.getPlayerPos().getX(), playerObject.getPlayerPos().getY()-1)) instanceof Shelf) {
-                    shelfMenu.setVisible(true);
-                    shelfMenu.setManaged(true);
-                    Scene shelfScene = shelfMenu.getScene();
-                    ListView<Item> shelfMenuListView = (ListView<Item>) shelfScene.lookup("#shelfMenuListView");
-                    shelfMenuListView.requestFocus();
-                }
-                break;
-            case ESCAPE:
-                //Prompts the user if they want to exit.
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Quit the game?");
-                alert.setHeaderText("Do you want to quit the game?");
-                alert.setContentText("You will loose all progress!");
-                alert.showAndWait().ifPresent(rs -> {
-                    if (rs == ButtonType.OK) {
-                        System.exit(0); //0-exit code means "successfull".
-                    }
-                });
-
-                break;
+        //All these are similar. The PlayerObject makes sure it is actually possible
+        //to move into the given direction.
+        //Turns on debug mode.
+        //The grid will be shown, alogn with warps.
+        switch (keyEvent.getCode()) {
+            case S, DOWN -> tryMove(Direction.DOWN);
+            case W, UP -> tryMove(Direction.UP);
+            case A, LEFT -> tryMove(Direction.LEFT);
+            case D, RIGHT -> tryMove(Direction.RIGHT);
+            case G -> playerObject.getActiveGrid().setShowDebug(!playerObject.getActiveGrid().isShowDebug());
+            case I -> toggleSideMenu();
+            case SPACE -> toggleTextBox();
+            case ENTER -> interact();
+            case ESCAPE -> quit();
         }
 
     }
 
+    /**
+     * Tries to move the player to a new position.
+     * If the new position is a Warp, then the player changes the active Grid, and moves to the Warp's destination
+     * @param direction the direction the player should go.
+     */
     private void tryMove(Direction direction){
+        Grid currentGrid = playerObject.getActiveGrid();
+        Position currentPosition = playerObject.getPlayerPos();
+        Position newPosition = currentPosition;
+        switch (direction){
+            case UP -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() - 1);
+            case DOWN -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() + 1);
+            case LEFT -> newPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
+            case RIGHT -> newPosition = new Position(currentPosition.getX() + 1, currentPosition.getY());
+        }
+        GridObject gridObjectAtNewPosition  = currentGrid.getGridObject(newPosition);
+        if(gridObjectAtNewPosition instanceof Warp){
+            playerObject.setAnimating(true);
+            Warp warp = (Warp) gridObjectAtNewPosition;
+            currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
+            currentGrid.setActive(false); //Stop animating the current grid
 
+            playerObject.setPlayerPos(warp.getPlayerPos()); //Get the player position that the warp sends the player to
+            warp.getGrid().setGridObject(playerObject, warp.getPlayerPos()); //Add the player to the new grid
+            playerObject.setActiveGrid(warp.getGrid()); //Get the new grid that is being opened
+            playerObject.getActiveGrid().setActive(true);//Start animating the new grid.
+            playerObject.setAnimating(false);
+            return;
+        }
+
+        //If not moving onto the warp, then we just move by calling the grid.
+        if (!playerObject.isAnimating() && playerObject.getActiveGrid().moveObject(playerObject.getPlayerPos(), newPosition)) {
+            playerObject.setPlayerPos(newPosition);
+        }
     }
 
-    private void interact(){}
+    private void toggleSideMenu(){
+        if (sideMenu.isVisible()) {
+            sideMenu.setVisible(false);
+            sideMenu.setManaged(false);
+        } else {
+            sideMenu.setVisible(true);
+            sideMenu.setManaged(true);
+            Scene sideScene = sideMenu.getScene();
+            ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
+            sideMenuListView.requestFocus();
+        }
+    }
 
-    private void Quit(){}
+    private void toggleTextBox(){
+        if (textBox.isVisible()) {
+            textBox.setVisible(false);
+        }
+    }
 
+    private void interact(){
+        GridObject objectAbovePlayer = playerObject.getActiveGrid().getGridObject(new Position(playerObject.getPlayerPos().getX(), playerObject.getPlayerPos().getY()-1));
+        // TODO check whether the player is standing in front of a shelf
+        if (objectAbovePlayer instanceof Shelf) {
+            shelfMenu.setVisible(true);
+            shelfMenu.setManaged(true);
+            Scene shelfScene = shelfMenu.getScene();
+            ListView<Item> shelfMenuListView = (ListView<Item>) shelfScene.lookup("#shelfMenuListView");
+            shelfMenuListView.requestFocus();
+        }else if(objectAbovePlayer instanceof Cashier){
+            //TODO checkout
+            System.out.println("CASHIER");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("CHECKOUT");
+            alert.setHeaderText("do you want to checkout?");
+            alert.showAndWait().ifPresent(rs -> {
+                if (rs == ButtonType.OK) {
+                    System.out.println(MainGUI.game.doAction(CommandWord.CHECKOUT.toString(),null));
+                }
+            });
+        }
+    }
 
+    private void quit(){
+        //Prompts the user if they want to exit.
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Quit the game?");
+        alert.setHeaderText("Do you want to quit the game?");
+        alert.setContentText("You will loose all progress!");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.exit(0); //0-exit code means "successfull".
+            }
+        });
+    }
 
 
     /**
