@@ -8,7 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -17,8 +19,11 @@ import worldofzuul.DomainLayer.Extra;
 import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
-import worldofzuul.PresentationLayer.*;
+import worldofzuul.PresentationLayer.Direction;
+import worldofzuul.PresentationLayer.Grid;
 import worldofzuul.PresentationLayer.GridObjects.*;
+import worldofzuul.PresentationLayer.MainGUI;
+import worldofzuul.PresentationLayer.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +108,7 @@ public class GameCanvasController {
                 break;
             case ENTER:
                 // TODO check whether the player is standing in front of a shelf
-                if (true) {
+                if (playerObject.getActiveGrid().getGridObject(new Position(playerObject.getPlayerPos().getX(), playerObject.getPlayerPos().getY()-1)) instanceof Shelf) {
                     shelfMenu.setVisible(true);
                     shelfMenu.setManaged(true);
                     Scene shelfScene = shelfMenu.getScene();
@@ -128,6 +133,16 @@ public class GameCanvasController {
 
     }
 
+    private void tryMove(Direction direction){
+
+    }
+
+    private void interact(){}
+
+    private void Quit(){}
+
+
+
 
     /**
      * This method gets called as soon as this Controller is loaded.
@@ -146,29 +161,43 @@ public class GameCanvasController {
 
         for(IRoom iRoom : rooms){
             Grid grid = new Grid(gameCanvas, iRoom.getWidth(), iRoom.getHeight(),new Image(iRoom.getBackground()));
-            for(IShelf shelf : iRoom.getShelves()){
-                grid.setGridObject(new Shelf(shelf.getItems()),new Position(shelf.getX(),shelf.getY()));
+
+            for(IRoomObject object : iRoom.getObjects()){
+                if(object instanceof IShelf){
+                    grid.setGridObject(new Shelf(((IShelf) object).getItems()),new Position(object.getXPosition(),object.getYPosition()));
+                }
             }
+
+            for(IRoomObject object : iRoom.getObjects()){
+                if(object instanceof ICashier){
+                    grid.setGridObject(new Cashier(), new Position(object.getXPosition(), object.getYPosition()));
+                }
+            }
+
             grids.add(grid);
         }
 
         for(IRoom iRoom : rooms){
-            for(IWarp iWarp : iRoom.getWarps()){
-                Warp warp = new Warp(grids.get(rooms.indexOf(iWarp.getDestination())),new Position(iWarp.getDestX(), iWarp.getDestY()));
-                grids.get(rooms.indexOf(iRoom)).setGridObject(warp,new Position(iWarp.getX(), iWarp.getY()));
+            for(IRoomObject object : iRoom.getObjects()){
+                if(object instanceof IWarp){
+                    IWarp iWarp = (IWarp) object;
+                    Warp warp = new Warp(grids.get(rooms.indexOf(iWarp.getDestination())),new Position(iWarp.getDestX(), iWarp.getDestY()));
+                    grids.get(rooms.indexOf(iRoom)).setGridObject(warp,new Position(iWarp.getXPosition(), iWarp.getYPosition()));
+                }
             }
         }
-        grids.get(0).setActive(true);
-        grids.get(0).setGridObject(new Wall(), new Position(0,3)); //2,4
-        grids.get(0).setGridObject(new Wall(), new Position(1,3)); //1,4
-        grids.get(0).setGridObject(new Wall(), new Position(2,3));
-        grids.get(0).setGridObject(new Wall(), new Position(5,3));
-        grids.get(0).setGridObject(new Wall(), new Position(6,3));
-        grids.get(0).setGridObject(new Wall(), new Position(7,3));
 
-
-
-
+        Grid startingGrid = grids.get(rooms.indexOf(startingRoom));
+        startingGrid.setActive(true);
+        startingGrid.setGridObject(new Wall(), new Position(2,4));
+        startingGrid.setGridObject(new Wall(), new Position(1,4));
+        startingGrid.setActive(true);
+        startingGrid.setGridObject(new Wall(), new Position(0,3)); //2,4
+        startingGrid.setGridObject(new Wall(), new Position(1,3)); //1,4
+        startingGrid.setGridObject(new Wall(), new Position(2,3));
+        startingGrid.setGridObject(new Wall(), new Position(5,3));
+        startingGrid.setGridObject(new Wall(), new Position(6,3));
+        startingGrid.setGridObject(new Wall(), new Position(7,3));
 
 
         //Makes the first grid.
@@ -176,7 +205,7 @@ public class GameCanvasController {
 
         //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
         //around. The last 2 arguments here represent the starting-position for the player.
-        playerObject = new PlayerObject(grids.get(0), new Position(2,4));//2,1
+        playerObject = new PlayerObject(startingGrid, new Position(2,4));
         playerObject.setAvatarImg(new Image (player.getSprite()));
 
 
@@ -207,7 +236,6 @@ public class GameCanvasController {
         //Then we set the first grid as "active".
         //This means that grid will be the one on screen.
         //activeGrid.setActive(true); //Starts drawing and animations
-
 
         root.setFocusTraversable(true); //Makes onKeyPressed() work.
     }

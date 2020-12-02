@@ -1,15 +1,6 @@
 package worldofzuul.DomainLayer.Interfaces;
 
-public interface IWarp {
-    /**
-     * @return x value of the warp position in the room
-     */
-    int getX();
-
-    /**
-     * @return y value of the warp position in the room
-     */
-    int getY();
+public interface IWarp extends IRoomObject{
 
     /**
      * @return The room the player is warped to when moving into the warp

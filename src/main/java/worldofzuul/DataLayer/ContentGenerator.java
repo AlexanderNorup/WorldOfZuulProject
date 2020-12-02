@@ -1,8 +1,12 @@
 package worldofzuul.DataLayer;
 
 import worldofzuul.DomainLayer.*;
+import worldofzuul.DomainLayer.Interfaces.ICashier;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IShelf;
+import worldofzuul.DomainLayer.RoomObjects.Cashier;
+import worldofzuul.DomainLayer.RoomObjects.Shelf;
+import worldofzuul.DomainLayer.RoomObjects.Warp;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -368,16 +372,16 @@ public class ContentGenerator {
         butcher = new Room("at the butcher. \nTo your east is the 3. aisle", 8,5, getBackground("butcher.png"));//, ContentGenerator.getButcherItems());
         cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", 4,4, getBackground("cashier.png"));
 
-        cashier.setCanCheckout(true);
+        cashier.addRoomObject(new Cashier(1,0));
+        cashier.addRoomObject(new Cashier(2,0));
 
         //Now add all the items;
-        butcher.addShelves(getButcherItems());
-        dairy.addShelves(getDairyItems());
-        bakery.addShelves(getBakeryItems());
-        frozen.addShelves(getFrozenItems());
-        produce.addShelves(getProduceItems());
-        tinnedGoods.addShelves(getTinnedGoodsItems());
-
+        butcher.addRoomObject(new ArrayList<>(getButcherItems()));
+        dairy.addRoomObject(new ArrayList<>(getDairyItems()));
+        bakery.addRoomObject(new ArrayList<>(getBakeryItems()));
+        frozen.addRoomObject(new ArrayList<>(getFrozenItems()));
+        produce.addRoomObject(new ArrayList<>(getProduceItems()));
+        tinnedGoods.addRoomObject(new ArrayList<>(getTinnedGoodsItems()));
 
         //Sets the exits for the CLI-version
         outside.setExit("south", aisle1);
@@ -403,54 +407,56 @@ public class ContentGenerator {
 
         cashier.setExit("north", aisle3);
 
-        outside.addWarp(3,3,aisle1,1,4);//1,2
-        outside.addWarp(4,3,aisle1,2,4);//2,2
+        //Sets the exits for the non-CLI-version
+        outside.addRoomObject(new Warp(3,3,aisle1,1,4));//1,2
+        outside.addRoomObject(new Warp(4,3,aisle1,2,4));//2,2
 
-        aisle1.addWarp(0,2,butcher,6,2);
-        aisle1.addWarp(3,2,produce,1,2);
-        aisle1.addWarp(0,0,aisle2,0,4);
-        aisle1.addWarp(1,0,aisle2,1,4);
-        aisle1.addWarp(2,0,aisle2,2,4);
-        aisle1.addWarp(3,0,aisle2,3,4);
-        aisle1.addWarp(0,5,outside,3,4);//1,1
-        aisle1.addWarp(1,5,outside,3,4);//1,1
-        aisle1.addWarp(2,5,outside,4,4);//2,1
-        aisle1.addWarp(3,5,outside,4,4);//2,1
+        aisle1.addRoomObject(new Warp(0,2,butcher,6,2));
+        aisle1.addRoomObject(new Warp(3,2,produce,1,2));
+        aisle1.addRoomObject(new Warp(0,0,aisle2,0,4));
+        aisle1.addRoomObject(new Warp(1,0,aisle2,1,4));
+        aisle1.addRoomObject(new Warp(2,0,aisle2,2,4));
+        aisle1.addRoomObject(new Warp(3,0,aisle2,3,4));
+        aisle1.addRoomObject(new Warp(0,5,outside,3,4));//1,1
+        aisle1.addRoomObject(new Warp(1,5,outside,3,4));//1,1
+        aisle1.addRoomObject(new Warp(2,5,outside,4,4));//2,1
+        aisle1.addRoomObject(new Warp(3,5,outside,4,4));//2,1
 
-        aisle2.addWarp(0,2,tinnedGoods,6,2);
-        aisle2.addWarp(3,2,frozen,1,2);
-        aisle2.addWarp(0,0,aisle3,0,4);
-        aisle2.addWarp(1,0,aisle3,1,4);
-        aisle2.addWarp(2,0,aisle3,2,4);
-        aisle2.addWarp(3,0,aisle3,3,4);
-        aisle2.addWarp(0,5,aisle1,0,1);
-        aisle2.addWarp(1,5,aisle1,1,1);
-        aisle2.addWarp(2,5,aisle1,2,1);
-        aisle2.addWarp(3,5,aisle1,3,1);
+        aisle2.addRoomObject(new Warp(0,2,tinnedGoods,6,2));
+        aisle2.addRoomObject(new Warp(3,2,frozen,1,2));
+        aisle2.addRoomObject(new Warp(0,0,aisle3,0,4));
+        aisle2.addRoomObject(new Warp(1,0,aisle3,1,4));
+        aisle2.addRoomObject(new Warp(2,0,aisle3,2,4));
+        aisle2.addRoomObject(new Warp(3,0,aisle3,3,4));
+        aisle2.addRoomObject(new Warp(0,5,aisle1,0,1));
+        aisle2.addRoomObject(new Warp(1,5,aisle1,1,1));
+        aisle2.addRoomObject(new Warp(2,5,aisle1,2,1));
+        aisle2.addRoomObject(new Warp(3,5,aisle1,3,1));
 
-        aisle3.addWarp(0,2,bakery,6,2);
-        aisle3.addWarp(3,2,dairy,1,2);
-        aisle3.addWarp(0,0,cashier,0,2);
-        aisle3.addWarp(1,0,cashier,1,2);
-        aisle3.addWarp(2,0,cashier,2,2);
-        aisle3.addWarp(3,0,cashier,3,2);
-        aisle3.addWarp(0,5,aisle2,0,1);
-        aisle3.addWarp(1,5,aisle2,1,1);
-        aisle3.addWarp(2,5,aisle2,2,1);
-        aisle3.addWarp(3,5,aisle2,3,1);
+        aisle3.addRoomObject(new Warp(0,2,bakery,6,2));
+        aisle3.addRoomObject(new Warp(3,2,dairy,1,2));
+        aisle3.addRoomObject(new Warp(0,0,cashier,0,2));
+        aisle3.addRoomObject(new Warp(1,0,cashier,1,2));
+        aisle3.addRoomObject(new Warp(2,0,cashier,2,2));
+        aisle3.addRoomObject(new Warp(3,0,cashier,3,2));
+        aisle3.addRoomObject(new Warp(0,5,aisle2,6,2));
+        aisle3.addRoomObject(new Warp(1,5,aisle2,1,1));
+        aisle3.addRoomObject(new Warp(2,5,aisle2,2,1));
+        aisle3.addRoomObject(new Warp(3,5,aisle2,3,1));
 
-        cashier.addWarp(0,3,aisle3,0,1);
-        cashier.addWarp(1,3,aisle3,1,1);
-        cashier.addWarp(2,3,aisle3,2,1);
-        cashier.addWarp(3,3,aisle3,3,1);
+        cashier.addRoomObject(new Warp(0,3,aisle3,1,1));
+        cashier.addRoomObject(new Warp(1,3,aisle3,1,1));
+        cashier.addRoomObject(new Warp(2,3,aisle3,2,1));
+        cashier.addRoomObject(new Warp(3,3,aisle3,2,1));
 
-        butcher.addWarp(7,2,aisle1,1,2);
-        tinnedGoods.addWarp(7,2,aisle2,1,2);
-        bakery.addWarp(7,2,aisle3,1,2);
+        butcher.addRoomObject(new Warp(7,2,aisle1,1,2));
+        tinnedGoods.addRoomObject(new Warp(7,2,aisle2,1,2));
+        bakery.addRoomObject(new Warp(7,2,aisle3,1,2));
 
-        produce.addWarp(0,2,aisle1,2,2);
-        frozen.addWarp(0,2,aisle2,2,2);
-        dairy.addWarp(0,2,aisle3,2,2);
+        produce.addRoomObject(new Warp(0,2,aisle1,2,2));
+        frozen.addRoomObject(new Warp(0,2,aisle2,2,2));
+        dairy.addRoomObject(new Warp(0,2,aisle3,2,2));
+
 
 
         ArrayList<Room> rooms = new ArrayList<>();
