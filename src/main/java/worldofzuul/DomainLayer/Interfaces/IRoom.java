@@ -6,10 +6,6 @@ import java.util.ArrayList;
  * Interface describing what a gui need to know about a room in world of zuul
  */
 public interface IRoom {
-    /**
-     * @return The shelves in the given room
-     */
-    ArrayList<IShelf> getShelves();
 
     /**
      * @return The rooms width in grid cells
@@ -22,9 +18,9 @@ public interface IRoom {
     int getHeight();
 
     /**
-     * @return Returns a list of the given rooms warps to other rooms
+     * @return The shelves in the given room
      */
-    ArrayList<IWarp> getWarps();
+    ArrayList<IRoomObject> getObjects();
 
     /**
      * @return a reference to the resource to be used as the rooms background

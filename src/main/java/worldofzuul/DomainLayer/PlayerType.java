@@ -1,8 +1,5 @@
 package worldofzuul.DomainLayer;
 
-import worldofzuul.DomainLayer.Extra;
-import worldofzuul.DomainLayer.Item;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 

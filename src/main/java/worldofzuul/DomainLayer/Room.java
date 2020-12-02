@@ -1,10 +1,10 @@
 package worldofzuul.DomainLayer;
 
 import worldofzuul.DomainLayer.Interfaces.*;
+import worldofzuul.DomainLayer.RoomObjects.Cashier;
+import worldofzuul.DomainLayer.RoomObjects.Warp;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Has a description of itself and keeps track of the items in the room (if any) as well as which rooms
@@ -14,52 +14,49 @@ public class Room implements IRoom {
 
     private final String description;
     private final HashMap<String, Room> exits;
-    private boolean canCheckout;
 
-    private final ArrayList<IShelf> shelves;
-    private final ArrayList<IWarp> warps;
+    private final ArrayList<IRoomObject> roomObjects;
 
     private final int roomWidth,roomHeight;
     private final String background;
     public Room(String description, int roomWidth, int roomHeight, String background) {
         this.description = description;
-        this.shelves = new ArrayList<>();
-        this.warps = new ArrayList<>();
+        this.roomObjects = new ArrayList<>();
         this.exits = new HashMap<>();
-        this.canCheckout = false;
 
         this.roomHeight = roomHeight;
         this.roomWidth = roomWidth;
         this.background = background;
     }
 
-    public void addShelves(ArrayList<IShelf> shelves){
-        this.shelves.addAll(shelves);
+    public void addRoomObject(ArrayList<IRoomObject> objects){
+        roomObjects.addAll(objects);
     }
-
-    public void addWarp(int startX, int startY, IRoom destination, int destX, int destY){
-        this.warps.add(new Warp(startX, startY, destination, destX, destY));
+    public void addRoomObject(IRoomObject... objects){
+        roomObjects.addAll(Arrays.asList(objects));
     }
 
     public void setExit(String direction, Room neighbor) {
         exits.put(direction, neighbor);
     }
 
-    public void setCanCheckout(boolean checkout){
-        this.canCheckout = checkout;
+    public boolean canCheckout(){
+        for(IRoomObject object : roomObjects){
+            if(object instanceof ICashier){
+                return true;
+            }
+        }
+        return false;
     }
-
-    public boolean canCheckout(){ //boolean to verify if it's possible to checkout in the current room.
-        return canCheckout;
-    }
-
 
     public ArrayList<Item> getItems() {
         ArrayList<Item> items = new ArrayList<>();
-        for(IShelf s : this.shelves){
-            for(IItem i : s.getItems()){
-                if(i instanceof Item){
-                    items.add((Item) i);
+        for(IRoomObject object : this.roomObjects){
+            if(object instanceof IShelf){
+                for(IItem i : ((IShelf) object).getItems()){
+                    if(i instanceof Item){
+                        items.add((Item) i);
+                    }
                 }
             }
         }
@@ -114,19 +111,15 @@ public class Room implements IRoom {
      * @return "Available products" followed by a list of items each in the format "kr #price#  #item name#
      */
     public String getItemsString(){
-        if(this.shelves.size() == 0){  // If the size of the list with items in the current room is 0,
-            return null;          // the 'Available products' string will not be printed
+        for(IRoomObject object : roomObjects){
+            if(object instanceof IShelf){
+                return "Available products: \n" + Item.getListString(this.getItems());
+            }
         }
-
-        return "Available products: \n" + Item.getListString(this.getItems());
+        return null;
     }
 
     //The interfaces.
-    @Override
-    public ArrayList<IShelf> getShelves() {
-        return new ArrayList<>(this.shelves);
-    }
-
     @Override
     public int getWidth() {
         return this.roomWidth;
@@ -138,9 +131,10 @@ public class Room implements IRoom {
     }
 
     @Override
-    public ArrayList<IWarp> getWarps() {
-        return this.warps;
+    public ArrayList<IRoomObject> getObjects() {
+        return new ArrayList<>(this.roomObjects);
     }
+
 
     @Override
     public String getBackground() {

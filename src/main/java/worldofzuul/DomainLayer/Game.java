@@ -67,6 +67,7 @@ public class Game implements IGame {
         return player;
     }
 
+    @Override
     public String doAction(String firstWord, String secondWord) {
         CommandWords commands = new CommandWords();
         return processCommand(new Command(commands.getCommandWord(firstWord), secondWord));
@@ -101,7 +102,6 @@ public class Game implements IGame {
      * Also populates some of the rooms with items
      * Sets the current room
      */
-    //TODO: add back command?
     private void setStartPosition() {
         currentRoom = rooms.get(0); //this sets the starting position to the first room. (Which will always be outside).
     }
@@ -178,6 +178,8 @@ public class Game implements IGame {
      * if everything is alright adds a new gameResult to the list of results and restarts the game
      */
     private String checkout() {
+        System.out.println("checkout");
+
         if (!currentRoom.canCheckout()) { //checks if it is possible to checkout in the current room.
             return "You can't checkout here, go to the cashier.";
         }
@@ -190,6 +192,8 @@ public class Game implements IGame {
 
         GameResult result = player.getGameResult();
         finishedGames.add(result); //adds the game result of the currently played game to an arraylist of results.
+
+        //TODO implement correct checkout procedure
 
         save();
         StringBuilder returnString = new StringBuilder();
@@ -382,7 +386,6 @@ public class Game implements IGame {
      *
      * @param command second word should be the name of the item the player wants to inspect
      */
-    //TODO:Check both Player and Room for item
     private String inspect(Command command) {
         Item item = currentRoom.getItem(command.getSecondWord());
         return item != null ? item.toString() : "item not found";
