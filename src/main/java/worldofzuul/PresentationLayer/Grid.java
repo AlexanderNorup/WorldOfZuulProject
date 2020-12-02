@@ -62,16 +62,6 @@ public class Grid {
     public Grid(Canvas canvas, int gridWidth, int gridHeight, Image background) {
         //Starts off by filling the grid with null
         grid = new GridObject[gridWidth][gridHeight];
-        //for (int x = 0; x < grid.length; x++) {
-        //    for (int y = 0; y < grid[x].length; y++) {
-        //        grid[x][y] = null;
-        //    }
-        //}
-
-        //COULD THIS WORK?
-        for (GridObject[] gridObjects : grid) {
-            Arrays.fill(gridObjects, null);
-        }
 
         //Then grabs the GraphicsContext from the Canvas.
         this.gc = canvas.getGraphicsContext2D();
