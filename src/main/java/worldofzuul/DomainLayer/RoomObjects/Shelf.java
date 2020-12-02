@@ -1,11 +1,12 @@
-package worldofzuul.DomainLayer;
+package worldofzuul.DomainLayer.RoomObjects;
 
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IShelf;
+import worldofzuul.DomainLayer.Interfaces.IRoomObject;
 
 import java.util.ArrayList;
 
-public class Shelf implements IShelf {
+public class Shelf implements IRoomObject,IShelf {
     private final int x;
     private final int y;
     ArrayList<IItem> items;
@@ -16,15 +17,17 @@ public class Shelf implements IShelf {
         this.items = items;
     }
 
-    public int getX() {
+    public ArrayList<IItem> getItems() {
+        return items;
+    }
+
+    @Override
+    public int getXPosition() {
         return x;
     }
 
-    public int getY() {
+    @Override
+    public int getYPosition() {
         return y;
-    }
-
-    public ArrayList<IItem> getItems() {
-        return items;
     }
 }

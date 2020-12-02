@@ -138,22 +138,29 @@ public class GameCanvasController {
 
         for(IRoom iRoom : rooms){
             Grid grid = new Grid(gameCanvas, iRoom.getWidth(), iRoom.getHeight(),new Image(iRoom.getBackground()));
-            for(IShelf shelf : iRoom.getShelves()){
-                grid.setGridObject(new Shelf(shelf.getItems()),new Position(shelf.getX(),shelf.getY()));
+
+            for(IRoomObject object : iRoom.getObjects()){
+                if(object instanceof IShelf){
+                    grid.setGridObject(new Shelf(((IShelf) object).getItems()),new Position(object.getXPosition(),object.getYPosition()));
+                }
             }
 
-            for(ICashier iCashier : iRoom.getCashiers()){
-                Cashier cashier = new Cashier();
-                grid.setGridObject(cashier, new Position(iCashier.getXPosition(), iCashier.getYPosition()));
+            for(IRoomObject object : iRoom.getObjects()){
+                if(object instanceof ICashier){
+                    grid.setGridObject(new Cashier(), new Position(object.getXPosition(), object.getYPosition()));
+                }
             }
 
             grids.add(grid);
         }
 
         for(IRoom iRoom : rooms){
-            for(IWarp iWarp : iRoom.getWarps()){
-                Warp warp = new Warp(grids.get(rooms.indexOf(iWarp.getDestination())),new Position(iWarp.getDestX(), iWarp.getDestY()));
-                grids.get(rooms.indexOf(iRoom)).setGridObject(warp,new Position(iWarp.getX(), iWarp.getY()));
+            for(IRoomObject object : iRoom.getObjects()){
+                if(object instanceof IWarp){
+                    IWarp iWarp = (IWarp) object;
+                    Warp warp = new Warp(grids.get(rooms.indexOf(iWarp.getDestination())),new Position(iWarp.getDestX(), iWarp.getDestY()));
+                    grids.get(rooms.indexOf(iRoom)).setGridObject(warp,new Position(iWarp.getXPosition(), iWarp.getYPosition()));
+                }
             }
         }
 
@@ -168,10 +175,6 @@ public class GameCanvasController {
         startingGrid.setGridObject(new Wall(), new Position(5,3));
         startingGrid.setGridObject(new Wall(), new Position(6,3));
         startingGrid.setGridObject(new Wall(), new Position(7,3));
-
-
-
-
 
 
         //Makes the first grid.

@@ -1,10 +1,10 @@
 package worldofzuul.DomainLayer;
 
 import worldofzuul.DomainLayer.Interfaces.*;
+import worldofzuul.DomainLayer.RoomObjects.Cashier;
+import worldofzuul.DomainLayer.RoomObjects.Warp;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Has a description of itself and keeps track of the items in the room (if any) as well as which rooms
@@ -15,6 +15,7 @@ public class Room implements IRoom {
     private final String description;
     private final HashMap<String, Room> exits;
 
+    private final ArrayList<IRoomObject> roomObjects;
     private final ArrayList<IShelf> shelves;
     private final ArrayList<IWarp> warps;
     private final ArrayList<ICashier> cashiers;
@@ -23,6 +24,7 @@ public class Room implements IRoom {
     private final String background;
     public Room(String description, int roomWidth, int roomHeight, String background) {
         this.description = description;
+        this.roomObjects = new ArrayList<>();
         this.shelves = new ArrayList<>();
         this.warps = new ArrayList<>();
         this.exits = new HashMap<>();
@@ -33,20 +35,15 @@ public class Room implements IRoom {
         this.background = background;
     }
 
-    public void addShelves(ArrayList<IShelf> shelves){
-        this.shelves.addAll(shelves);
+    public void addRoomObject(ArrayList<IRoomObject> objects){
+        roomObjects.addAll(objects);
     }
-
-    public void addWarp(int startX, int startY, IRoom destination, int destX, int destY){
-        this.warps.add(new Warp(startX, startY, destination, destX, destY));
+    public void addRoomObject(IRoomObject... objects){
+        roomObjects.addAll(Arrays.asList(objects));
     }
 
     public void setExit(String direction, Room neighbor) {
         exits.put(direction, neighbor);
-    }
-
-    public void addCashier(int xPosition, int yPosition){
-        cashiers.add(new Cashier(xPosition, yPosition));
     }
 
     public boolean canCheckout(){
@@ -122,11 +119,6 @@ public class Room implements IRoom {
 
     //The interfaces.
     @Override
-    public ArrayList<IShelf> getShelves() {
-        return new ArrayList<>(this.shelves);
-    }
-
-    @Override
     public int getWidth() {
         return this.roomWidth;
     }
@@ -137,14 +129,10 @@ public class Room implements IRoom {
     }
 
     @Override
-    public ArrayList<IWarp> getWarps() {
-        return this.warps;
+    public ArrayList<IRoomObject> getObjects() {
+        return new ArrayList<IRoomObject>(this.roomObjects);
     }
 
-    @Override
-    public ArrayList<ICashier> getCashiers(){
-        return this.cashiers;
-    }
 
     @Override
     public String getBackground() {

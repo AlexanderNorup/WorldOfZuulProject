@@ -20,17 +20,7 @@ public interface IRoom {
     /**
      * @return The shelves in the given room
      */
-    ArrayList<IShelf> getShelves();
-
-    /**
-     * @return Returns a list of the given rooms warps to other rooms
-     */
-    ArrayList<IWarp> getWarps();
-
-    /**
-     * @return The cashiers in the given room
-     */
-    ArrayList<ICashier> getCashiers();
+    ArrayList<IRoomObject> getObjects();
 
     /**
      * @return a reference to the resource to be used as the rooms background

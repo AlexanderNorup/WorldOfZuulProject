@@ -1,8 +1,6 @@
 package worldofzuul.DomainLayer.Interfaces;
 
-import java.util.ArrayList;
-
-public interface IShelf {
+public interface IRoomObject {
 
     /**
      * @return x value of the warp position in the room
@@ -14,5 +12,4 @@ public interface IShelf {
      */
     int getYPosition();
 
-    ArrayList<IItem> getItems();
 }
