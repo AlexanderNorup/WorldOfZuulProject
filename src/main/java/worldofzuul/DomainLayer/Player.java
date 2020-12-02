@@ -26,7 +26,6 @@ public class Player implements IPlayer {
 
     public void addItem(Item item) {
         inventory.add(item);
-        //TODO: Discuss whether or not this method should return a boolean.
     }
 
     @Override

@@ -368,6 +368,7 @@ public class ContentGenerator {
         butcher = new Room("at the butcher. \nTo your east is the 3. aisle", 8,5, getBackground("butcher.png"));//, ContentGenerator.getButcherItems());
         cashier = new Room("at the cashier.\nUse command 'checkout' to checkout and finish the game ", 4,4, getBackground("cashier.png"));
 
+        cashier.setCanCheckout();
         cashier.addCashier(1,0);
         cashier.addCashier(2,0);
 

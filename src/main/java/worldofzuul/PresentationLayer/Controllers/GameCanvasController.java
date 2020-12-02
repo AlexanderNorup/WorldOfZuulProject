@@ -95,7 +95,7 @@ public class GameCanvasController {
                 break;
             case ENTER:
                 // TODO check whether the player is standing in front of a shelf
-                if (true) {
+                if (playerObject.getActiveGrid().getGridObject(new Position(playerObject.getPlayerPos().getX(), playerObject.getPlayerPos().getY()-1)) instanceof Shelf) {
                     shelfMenu.setVisible(true);
                     shelfMenu.setManaged(true);
                     Scene shelfScene = shelfMenu.getScene();

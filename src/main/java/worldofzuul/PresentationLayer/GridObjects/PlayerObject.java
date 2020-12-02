@@ -68,7 +68,7 @@ public class PlayerObject extends GridSprite {
             alert.setHeaderText("do you want to checkout?");
             alert.showAndWait().ifPresent(rs -> {
                 if (rs == ButtonType.OK) {
-                    MainGUI.game.doAction(CommandWord.CHECKOUT.toString(),null);
+                    System.out.println(MainGUI.game.doAction(CommandWord.CHECKOUT.toString(),null));
                 }
             });
         }
@@ -117,5 +117,9 @@ public class PlayerObject extends GridSprite {
      */
     public Grid getActiveGrid() {
         return grid;
+    }
+
+    public Position getPlayerPos(){
+        return playerPos;
     }
 }
