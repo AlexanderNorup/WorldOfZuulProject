@@ -7,7 +7,7 @@ import worldofzuul.DomainLayer.Interfaces.IRoomObject;
 /**
  * A warp describes a grid cell in the gui which "teleports" the player to another room
  */
-public class Warp implements IRoomObject,IWarp {
+public class Warp implements IWarp {
     private int x;
     private int y;
     private IRoom destination;

@@ -3,7 +3,7 @@ package worldofzuul.DomainLayer.RoomObjects;
 import worldofzuul.DomainLayer.Interfaces.ICashier;
 import worldofzuul.DomainLayer.Interfaces.IRoomObject;
 
-public class Cashier implements IRoomObject, ICashier {
+public class Cashier implements ICashier {
 
     private final int xPosition;
     private final int yPosition;

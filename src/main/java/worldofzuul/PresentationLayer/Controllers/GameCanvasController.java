@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
+import worldofzuul.PresentationLayer.Direction;
 import worldofzuul.PresentationLayer.Grid;
 import worldofzuul.PresentationLayer.GridObjects.*;
 import worldofzuul.PresentationLayer.MainGUI;
@@ -119,6 +120,16 @@ public class GameCanvasController {
         }
 
     }
+
+    private void tryMove(Direction direction){
+
+    }
+
+    private void interact(){}
+
+    private void Quit(){}
+
+
 
 
     /**

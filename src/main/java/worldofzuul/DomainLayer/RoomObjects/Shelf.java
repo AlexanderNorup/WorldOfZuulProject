@@ -6,7 +6,7 @@ import worldofzuul.DomainLayer.Interfaces.IRoomObject;
 
 import java.util.ArrayList;
 
-public class Shelf implements IRoomObject,IShelf {
+public class Shelf implements IShelf {
     private final int x;
     private final int y;
     ArrayList<IItem> items;

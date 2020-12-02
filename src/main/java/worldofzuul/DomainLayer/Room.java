@@ -16,19 +16,13 @@ public class Room implements IRoom {
     private final HashMap<String, Room> exits;
 
     private final ArrayList<IRoomObject> roomObjects;
-    private final ArrayList<IShelf> shelves;
-    private final ArrayList<IWarp> warps;
-    private final ArrayList<ICashier> cashiers;
 
     private final int roomWidth,roomHeight;
     private final String background;
     public Room(String description, int roomWidth, int roomHeight, String background) {
         this.description = description;
         this.roomObjects = new ArrayList<>();
-        this.shelves = new ArrayList<>();
-        this.warps = new ArrayList<>();
         this.exits = new HashMap<>();
-        this.cashiers = new ArrayList<>();
 
         this.roomHeight = roomHeight;
         this.roomWidth = roomWidth;
@@ -47,15 +41,22 @@ public class Room implements IRoom {
     }
 
     public boolean canCheckout(){
-        return this.cashiers.size() > 0;
+        for(IRoomObject object : roomObjects){
+            if(object instanceof ICashier){
+                return true;
+            }
+        }
+        return false;
     }
 
     public ArrayList<Item> getItems() {
         ArrayList<Item> items = new ArrayList<>();
-        for(IShelf s : this.shelves){
-            for(IItem i : s.getItems()){
-                if(i instanceof Item){
-                    items.add((Item) i);
+        for(IRoomObject object : this.roomObjects){
+            if(object instanceof IShelf){
+                for(IItem i : ((IShelf) object).getItems()){
+                    if(i instanceof Item){
+                        items.add((Item) i);
+                    }
                 }
             }
         }
@@ -110,11 +111,12 @@ public class Room implements IRoom {
      * @return "Available products" followed by a list of items each in the format "kr #price#  #item name#
      */
     public String getItemsString(){
-        if(this.shelves.size() == 0){  // If the size of the list with items in the current room is 0,
-            return null;          // the 'Available products' string will not be printed
+        for(IRoomObject object : roomObjects){
+            if(object instanceof IShelf){
+                return "Available products: \n" + Item.getListString(this.getItems());
+            }
         }
-
-        return "Available products: \n" + Item.getListString(this.getItems());
+        return null;
     }
 
     //The interfaces.
@@ -130,7 +132,7 @@ public class Room implements IRoom {
 
     @Override
     public ArrayList<IRoomObject> getObjects() {
-        return new ArrayList<IRoomObject>(this.roomObjects);
+        return new ArrayList<>(this.roomObjects);
     }
 
 
