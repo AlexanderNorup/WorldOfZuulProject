@@ -149,6 +149,7 @@ public class GameCanvasController {
 
             grids.add(grid);
         }
+
         for(IRoom iRoom : rooms){
             for(IWarp iWarp : iRoom.getWarps()){
                 Warp warp = new Warp(grids.get(rooms.indexOf(iWarp.getDestination())),new Position(iWarp.getDestX(), iWarp.getDestY()));
@@ -160,7 +161,13 @@ public class GameCanvasController {
         startingGrid.setActive(true);
         startingGrid.setGridObject(new Wall(), new Position(2,4));
         startingGrid.setGridObject(new Wall(), new Position(1,4));
-
+        startingGrid.setActive(true);
+        startingGrid.setGridObject(new Wall(), new Position(0,3)); //2,4
+        startingGrid.setGridObject(new Wall(), new Position(1,3)); //1,4
+        startingGrid.setGridObject(new Wall(), new Position(2,3));
+        startingGrid.setGridObject(new Wall(), new Position(5,3));
+        startingGrid.setGridObject(new Wall(), new Position(6,3));
+        startingGrid.setGridObject(new Wall(), new Position(7,3));
 
 
 
@@ -172,7 +179,7 @@ public class GameCanvasController {
 
         //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
         //around. The last 2 arguments here represent the starting-position for the player.
-        playerObject = new PlayerObject(startingGrid, new Position(2,1));
+        playerObject = new PlayerObject(startingGrid, new Position(2,4));
         playerObject.setAvatarImg(new Image (player.getSprite()));
 
 

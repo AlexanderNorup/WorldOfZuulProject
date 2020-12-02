@@ -140,7 +140,7 @@ public class Grid {
 
         //Then draw the background
         gc.save();
-        gc.translate((int) (windowWidth / 2 - (gameWidth / 2)),
+        gc.translate((int) (windowWidth / 2 - (gameWidth / 2)), //forklar tak
                 (int) (windowHeight / 2 - (gameHeight / 2)));
 
         gc.drawImage(background, 0, 0, gameWidth, gameHeight);
