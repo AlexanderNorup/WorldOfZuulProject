@@ -9,6 +9,7 @@ import javafx.scene.text.Font;
 import worldofzuul.PresentationLayer.GridObjects.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Grid {
     /**
@@ -61,10 +62,15 @@ public class Grid {
     public Grid(Canvas canvas, int gridWidth, int gridHeight, Image background) {
         //Starts off by filling the grid with null
         grid = new GridObject[gridWidth][gridHeight];
-        for (int x = 0; x < grid.length; x++) {
-            for (int y = 0; y < grid[x].length; y++) {
-                grid[x][y] = null;
-            }
+        //for (int x = 0; x < grid.length; x++) {
+        //    for (int y = 0; y < grid[x].length; y++) {
+        //        grid[x][y] = null;
+        //    }
+        //}
+
+        //COULD THIS WORK?
+        for (GridObject[] gridObjects : grid) {
+            Arrays.fill(gridObjects, null);
         }
 
         //Then grabs the GraphicsContext from the Canvas.
@@ -78,7 +84,7 @@ public class Grid {
 
         //tileSize is hardcoded for now. Represents how big each tile is.
         //Everything will scale accordingly.
-        this.tileSize = 75;
+        this.tileSize = 100;
         this.gameWidth = tileSize * gridWidth;
         this.gameHeight = tileSize * gridHeight;
 
@@ -118,6 +124,7 @@ public class Grid {
      * @param obj The GridObject to add.
      * @param pos Where on the grid to add it. Based on "Grid-Coordinates".
      */
+    //NON-ACCESSIBLE OBJECT IS EXPOSED ?
     public void setGridObject(GridObject obj, Position pos) {
         this.grid[pos.getX()][pos.getY()] = obj;
     }

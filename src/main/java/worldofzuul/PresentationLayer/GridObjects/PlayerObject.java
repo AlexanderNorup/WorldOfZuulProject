@@ -1,7 +1,11 @@
 package worldofzuul.PresentationLayer.GridObjects;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.PresentationLayer.Grid;
+import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
 /**
@@ -56,6 +60,17 @@ public class PlayerObject extends GridSprite {
             this.grid.setActive(true); //Start animating the new grid.
             this.setAnimating(false);
             return;
+        } else if(gridObjectAtNewPosition instanceof Cashier){
+            //TODO checkout
+            System.out.println("CASHIER");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("CHECKOUT");
+            alert.setHeaderText("do you want to checkout?");
+            alert.showAndWait().ifPresent(rs -> {
+                if (rs == ButtonType.OK) {
+                    MainGUI.game.doAction(CommandWord.CHECKOUT.toString(),null);
+                }
+            });
         }
 
         //If not moving onto the warp, then we just move by calling the grid.

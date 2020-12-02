@@ -97,14 +97,12 @@ public class Player implements IPlayer {
      * @return the item with the specified name; returns null if no such item exists
      */
     public Item getItem(String string) {
-        Item item = null;
         for (Item currentItem : inventory) {
             if (currentItem.getName().equalsIgnoreCase(string)) {
-
-                item = currentItem;
+                return currentItem;
             }
         }
-        return item;
+        return null;
     }
 
     public void removeItem(Item item) {
@@ -119,15 +117,12 @@ public class Player implements IPlayer {
         //We could do this as a lambda. But it's way better.
         //Item item = inventory.stream().filter(itemTemp -> itemTemp.getName().equals(itemName)).findFirst().orElse(null);
 
-        Item item = null;
         for (Item i : inventory) {
             if (itemName.equalsIgnoreCase(i.getName())) {
-                item = i;
-                break;
+                return i.toString();
             }
         }
-
-        return item != null ? item.toString() : "";
+        return "";
     }
 
     public void deleteInventory() {

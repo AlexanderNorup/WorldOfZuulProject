@@ -38,9 +38,8 @@ public class MainMenuController {
 
         Stage stage = (Stage) playGameLabel.getScene().getWindow();
 
-        Parent game = null;
         try {
-            game = FXMLLoader.load(MainGUI.class.getResource("/fxml/GameCanvas.fxml"));
+            Parent game = FXMLLoader.load(MainGUI.class.getResource("/fxml/GameCanvas.fxml"));
             stage.setScene(new Scene(game, 1280,720));
         } catch (IOException e) {
             playGameLabel.setText("There was en error starting the game!");

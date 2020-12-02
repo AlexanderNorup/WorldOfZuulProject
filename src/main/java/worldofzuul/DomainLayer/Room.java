@@ -14,10 +14,10 @@ public class Room implements IRoom {
 
     private final String description;
     private final HashMap<String, Room> exits;
-    private boolean canCheckout;
 
     private final ArrayList<IShelf> shelves;
     private final ArrayList<IWarp> warps;
+    private final ArrayList<ICashier> cashiers;
 
     private final int roomWidth,roomHeight;
     private final String background;
@@ -26,7 +26,7 @@ public class Room implements IRoom {
         this.shelves = new ArrayList<>();
         this.warps = new ArrayList<>();
         this.exits = new HashMap<>();
-        this.canCheckout = false;
+        this.cashiers = new ArrayList<>();
 
         this.roomHeight = roomHeight;
         this.roomWidth = roomWidth;
@@ -45,14 +45,13 @@ public class Room implements IRoom {
         exits.put(direction, neighbor);
     }
 
-    public void setCanCheckout(boolean checkout){
-        this.canCheckout = checkout;
+    public void addCashier(int xPosition, int yPosition){
+        cashiers.add(new Cashier(xPosition, yPosition));
     }
 
-    public boolean canCheckout(){ //boolean to verify if it's possible to checkout in the current room.
-        return canCheckout;
+    public boolean canCheckout(){
+        return false;
     }
-
 
     public ArrayList<Item> getItems() {
         ArrayList<Item> items = new ArrayList<>();
@@ -140,6 +139,11 @@ public class Room implements IRoom {
     @Override
     public ArrayList<IWarp> getWarps() {
         return this.warps;
+    }
+
+    @Override
+    public ArrayList<ICashier> getCashiers(){
+        return this.cashiers;
     }
 
     @Override

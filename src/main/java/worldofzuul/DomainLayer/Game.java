@@ -67,6 +67,7 @@ public class Game implements IGame {
         return player;
     }
 
+    @Override
     public String doAction(String firstWord, String secondWord) {
         CommandWords commands = new CommandWords();
         return processCommand(new Command(commands.getCommandWord(firstWord), secondWord));
