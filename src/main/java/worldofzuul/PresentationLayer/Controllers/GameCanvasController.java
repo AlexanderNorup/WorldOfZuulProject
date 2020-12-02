@@ -18,9 +18,11 @@ import worldofzuul.PresentationLayer.GridObjects.*;
 import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Is the controller for the main GameCanvas.
@@ -29,6 +31,8 @@ import java.util.Collections;
 public class GameCanvasController {
 
     private PlayerObject playerObject;
+    private HashMap<IRoom, Grid> gridMap;
+    private HashMap<Grid, IRoom> iRoomMap;
 
 
     @FXML
@@ -45,6 +49,103 @@ public class GameCanvasController {
 
     @FXML
     Pane shelfMenu;
+
+    /**
+     * This method gets called as soon as this Controller is loaded.
+     */
+    @FXML
+    public void initialize(){
+        //TODO: Canvas has width and height hardcoded. Do something about that, yes?
+
+        gridMap = new HashMap<>();
+        iRoomMap = new HashMap<>();
+        IPlayer player = MainGUI.game.getPlayer();
+
+        IRoom startingRoom = player.getStartingRoom();
+
+        //Make hashMap of rooms and grids
+        for(IRoom iRoom : MainGUI.game.getRooms()){
+            Grid grid = new Grid(gameCanvas, iRoom.getWidth(), iRoom.getHeight(),new Image(iRoom.getBackground()));
+
+            for(IRoomObject object : iRoom.getObjects()){
+                if(object instanceof IShelf){
+                    grid.setGridObject(new Shelf(((IShelf) object).getItems()),new Position(object.getXPosition(),object.getYPosition()));
+                }
+            }
+
+            for(IRoomObject object : iRoom.getObjects()){
+                if(object instanceof ICashier){
+                    grid.setGridObject(new Cashier(), new Position(object.getXPosition(), object.getYPosition()));
+                }
+            }
+
+            gridMap.put(iRoom,grid);
+            iRoomMap.put(grid,iRoom);
+        }
+
+
+        for(IRoom iRoom : gridMap.keySet()){
+            for(IRoomObject object : iRoom.getObjects()){
+                if(object instanceof IWarp){
+                    IWarp iWarp = (IWarp) object;
+                    Warp warp = new Warp(gridMap.get(iWarp.getDestination()),new Position(iWarp.getDestX(), iWarp.getDestY()));
+                    gridMap.get(iRoom).setGridObject(warp,new Position(iWarp.getXPosition(), iWarp.getYPosition()));
+                }
+            }
+        }
+
+        Grid startingGrid = gridMap.get(startingRoom);
+        startingGrid.setActive(true);
+        startingGrid.setGridObject(new Wall(), new Position(2,4));
+        startingGrid.setGridObject(new Wall(), new Position(1,4));
+        startingGrid.setActive(true);
+        startingGrid.setGridObject(new Wall(), new Position(0,3)); //2,4
+        startingGrid.setGridObject(new Wall(), new Position(1,3)); //1,4
+        startingGrid.setGridObject(new Wall(), new Position(2,3));
+        startingGrid.setGridObject(new Wall(), new Position(5,3));
+        startingGrid.setGridObject(new Wall(), new Position(6,3));
+        startingGrid.setGridObject(new Wall(), new Position(7,3));
+
+
+        //Makes the first grid.
+        Grid activeGrid = new Grid(gameCanvas, 4,6,new Image(MainGUI.class.getResource("/backgrounds/aisle_bakery_dairy.png").toString()));
+
+        //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
+        //around. The last 2 arguments here represent the starting-position for the player.
+        playerObject = new PlayerObject(startingGrid, new Position(2,4));
+        playerObject.setAvatarImg(new Image (player.getSprite()));
+
+
+        //Then we set some GridObjects. That could be anything that extends the GridObject class.
+        //These "Dog"s extend the GridSprite class, which in turn then extends the GridObject.
+        //GridSprites are objects that can be drawn to the screen in a tile.
+        //Here 2 dogs are created just as a test. They are each given a position on the board.
+        activeGrid.setGridObject(new Dog(), new Position(0,5));
+        activeGrid.setGridObject(new Dog(), new Position(3,5));
+
+        //Then we make another grid. It is created the excact same way as before.
+        //It also has a dog.
+        Grid anotherGrid = new Grid(gameCanvas, 9,6, new Image(MainGUI.class.getResource("/backgrounds/orange.png").toString()));
+        anotherGrid.setGridObject(new Dog(), new Position(4,5));
+
+        //Now we create a Warp
+        //A Warp is also a child of GridObject. It dosn't have a sprite (unless you enable debug-mode).
+        //A Warp takes 2 arguments: What grid to teleport to, and where the teleport should place the player.
+        //A Warp activates when the player is about to step onto it.
+        Warp activeToAnotherWarp = new Warp(activeGrid,new Position(3,3));
+        //We add the Warp the same way we add a ordinary GridObject
+        anotherGrid.setGridObject(activeToAnotherWarp, new Position(3,4));
+
+        //We create another warp. This one takes the player from the activeGrid to anotherGrid.
+        activeGrid.setGridObject(new Warp(anotherGrid,new Position(0,0)), new Position(3,2));
+
+
+        //Then we set the first grid as "active".
+        //This means that grid will be the one on screen.
+        //activeGrid.setActive(true); //Starts drawing and animations
+
+        root.setFocusTraversable(true); //Makes onKeyPressed() work.
+    }
 
     /**
      * This method runs every time the user pressed any key on their keyboard, while the game
@@ -91,6 +192,7 @@ public class GameCanvasController {
         }
         GridObject gridObjectAtNewPosition  = currentGrid.getGridObject(newPosition);
         if(gridObjectAtNewPosition instanceof Warp){
+            MainGUI.game.setCurrentRoom(iRoomMap.get(((Warp) gridObjectAtNewPosition).getGrid()));
             playerObject.setAnimating(true);
             Warp warp = (Warp) gridObjectAtNewPosition;
             currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
@@ -151,6 +253,7 @@ public class GameCanvasController {
             alert.setHeaderText("do you want to checkout?");
             alert.showAndWait().ifPresent(rs -> {
                 if (rs == ButtonType.OK) {
+
                     System.out.println(MainGUI.game.doAction(CommandWord.CHECKOUT.toString(),null));
                 }
             });
@@ -170,101 +273,6 @@ public class GameCanvasController {
         });
     }
 
-    /**
-     * This method gets called as soon as this Controller is loaded.
-     */
-    @FXML
-    public void initialize(){
-        //TODO: Canvas has width and height hardcoded. Do something about that, yes?
-
-        ArrayList<IRoom> rooms = MainGUI.game.getRooms();
-        ArrayList<Grid> grids = new ArrayList<>();
-        IPlayer player = MainGUI.game.getPlayer();
-
-        IRoom startingRoom = player.getStartingRoom();
-
-
-
-        for(IRoom iRoom : rooms){
-            Grid grid = new Grid(gameCanvas, iRoom.getWidth(), iRoom.getHeight(),new Image(iRoom.getBackground()));
-
-            for(IRoomObject object : iRoom.getObjects()){
-                if(object instanceof IShelf){
-                    grid.setGridObject(new Shelf(((IShelf) object).getItems()),new Position(object.getXPosition(),object.getYPosition()));
-                }
-            }
-
-            for(IRoomObject object : iRoom.getObjects()){
-                if(object instanceof ICashier){
-                    grid.setGridObject(new Cashier(), new Position(object.getXPosition(), object.getYPosition()));
-                }
-            }
-
-            grids.add(grid);
-        }
-
-        for(IRoom iRoom : rooms){
-            for(IRoomObject object : iRoom.getObjects()){
-                if(object instanceof IWarp){
-                    IWarp iWarp = (IWarp) object;
-                    Warp warp = new Warp(grids.get(rooms.indexOf(iWarp.getDestination())),new Position(iWarp.getDestX(), iWarp.getDestY()));
-                    grids.get(rooms.indexOf(iRoom)).setGridObject(warp,new Position(iWarp.getXPosition(), iWarp.getYPosition()));
-                }
-            }
-        }
-
-        Grid startingGrid = grids.get(rooms.indexOf(startingRoom));
-        startingGrid.setActive(true);
-        startingGrid.setGridObject(new Wall(), new Position(2,4));
-        startingGrid.setGridObject(new Wall(), new Position(1,4));
-        startingGrid.setActive(true);
-        startingGrid.setGridObject(new Wall(), new Position(0,3)); //2,4
-        startingGrid.setGridObject(new Wall(), new Position(1,3)); //1,4
-        startingGrid.setGridObject(new Wall(), new Position(2,3));
-        startingGrid.setGridObject(new Wall(), new Position(5,3));
-        startingGrid.setGridObject(new Wall(), new Position(6,3));
-        startingGrid.setGridObject(new Wall(), new Position(7,3));
-
-
-        //Makes the first grid.
-        Grid activeGrid = new Grid(gameCanvas, 4,6,new Image(MainGUI.class.getResource("/backgrounds/aisle_bakery_dairy.png").toString()));
-
-        //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
-        //around. The last 2 arguments here represent the starting-position for the player.
-        playerObject = new PlayerObject(startingGrid, new Position(2,4));
-        playerObject.setAvatarImg(new Image (player.getSprite()));
-
-
-        //Then we set some GridObjects. That could be anything that extends the GridObject class.
-        //These "Dog"s extend the GridSprite class, which in turn then extends the GridObject.
-        //GridSprites are objects that can be drawn to the screen in a tile.
-        //Here 2 dogs are created just as a test. They are each given a position on the board.
-        activeGrid.setGridObject(new Dog(), new Position(0,5));
-        activeGrid.setGridObject(new Dog(), new Position(3,5));
-
-        //Then we make another grid. It is created the excact same way as before.
-        //It also has a dog.
-        Grid anotherGrid = new Grid(gameCanvas, 9,6, new Image(MainGUI.class.getResource("/backgrounds/orange.png").toString()));
-        anotherGrid.setGridObject(new Dog(), new Position(4,5));
-
-        //Now we create a Warp
-        //A Warp is also a child of GridObject. It dosn't have a sprite (unless you enable debug-mode).
-        //A Warp takes 2 arguments: What grid to teleport to, and where the teleport should place the player.
-        //A Warp activates when the player is about to step onto it.
-        Warp activeToAnotherWarp = new Warp(activeGrid,new Position(3,3));
-        //We add the Warp the same way we add a ordinary GridObject
-        anotherGrid.setGridObject(activeToAnotherWarp, new Position(3,4));
-
-        //We create another warp. This one takes the player from the activeGrid to anotherGrid.
-        activeGrid.setGridObject(new Warp(anotherGrid,new Position(0,0)), new Position(3,2));
-
-
-        //Then we set the first grid as "active".
-        //This means that grid will be the one on screen.
-        //activeGrid.setActive(true); //Starts drawing and animations
-
-        root.setFocusTraversable(true); //Makes onKeyPressed() work.
-    }
 
 }
 

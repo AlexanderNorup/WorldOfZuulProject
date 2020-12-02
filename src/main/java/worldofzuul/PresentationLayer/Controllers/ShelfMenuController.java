@@ -11,7 +11,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.IItem;
+import worldofzuul.Main;
 import worldofzuul.PresentationLayer.MainGUI;
 
 import java.util.ArrayList;
@@ -46,15 +48,12 @@ public class ShelfMenuController {
             textArea.getParent().setVisible(true);
         });
 
-        take.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                IItem item = shelfMenuListView.getSelectionModel().getSelectedItem();
-                System.out.println("Taken");
-                MainGUI.game.doAction("take", item.getName());
-                ListView<IItem> sideMenuListView = (ListView<IItem>) shelfMenu.getParent().getScene().lookup("#sideMenu").lookup("#sideMenuListView");
-                sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
-            }
+        take.setOnAction(event -> {
+            IItem item = shelfMenuListView.getSelectionModel().getSelectedItem();
+            MainGUI.game.doAction(CommandWord.TAKE.toString(), item.getName());
+
+            ListView<IItem> sideMenuListView = (ListView<IItem>) shelfMenu.getParent().getScene().lookup("#sideMenu").lookup("#sideMenuListView");
+            sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
         });
 
         contextMenu.getItems().addAll(inspect, take);
