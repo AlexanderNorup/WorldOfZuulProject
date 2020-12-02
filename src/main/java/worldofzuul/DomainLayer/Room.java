@@ -14,7 +14,6 @@ public class Room implements IRoom {
 
     private final String description;
     private final HashMap<String, Room> exits;
-    private boolean canCheckout = false;
 
     private final ArrayList<IShelf> shelves;
     private final ArrayList<IWarp> warps;
@@ -50,12 +49,8 @@ public class Room implements IRoom {
         cashiers.add(new Cashier(xPosition, yPosition));
     }
 
-    public void setCanCheckout(){
-        canCheckout = true;
-    }
-
     public boolean canCheckout(){
-        return canCheckout;
+        return this.cashiers.size() > 0;
     }
 
     public ArrayList<Item> getItems() {
