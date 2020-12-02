@@ -98,9 +98,6 @@ public class SideMenuController {
                 Node textBox = sideMenu.getParent().getScene().lookup("#textBox");
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
-                } else if (sideMenu.isVisible()) {
-                    sideMenu.setVisible(false);
-                    sideMenu.setManaged(false);
                 }
                 break;
         }

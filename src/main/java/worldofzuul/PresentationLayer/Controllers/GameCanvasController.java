@@ -19,6 +19,8 @@ import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Is the controller for the main GameCanvas.
@@ -131,10 +133,15 @@ public class GameCanvasController {
         GridObject objectAbovePlayer = playerObject.getActiveGrid().getGridObject(new Position(playerObject.getPlayerPos().getX(), playerObject.getPlayerPos().getY()-1));
         // TODO check whether the player is standing in front of a shelf
         if (objectAbovePlayer instanceof Shelf) {
+            Shelf currentShelf = (Shelf) objectAbovePlayer;
+            Scene shelfScene = shelfMenu.getScene();
+            ListView<IItem> shelfMenuListView = (ListView<IItem>) shelfScene.lookup("#shelfMenuListView");
+            shelfMenuListView.getItems().setAll(currentShelf.getItems());
+
+            System.out.println(Arrays.toString(Collections.singletonList(currentShelf.getItems()).toArray()));
+
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
-            Scene shelfScene = shelfMenu.getScene();
-            ListView<Item> shelfMenuListView = (ListView<Item>) shelfScene.lookup("#shelfMenuListView");
             shelfMenuListView.requestFocus();
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
