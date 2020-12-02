@@ -1,24 +1,15 @@
 package worldofzuul.PresentationLayer.Controllers;
 
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import worldofzuul.DomainLayer.Commandhandling.CommandWord;
-import javafx.stage.Stage;
-import worldofzuul.DomainLayer.Extra;
-import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.Direction;
@@ -28,7 +19,6 @@ import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Is the controller for the main GameCanvas.
@@ -269,12 +259,5 @@ public class GameCanvasController {
         root.setFocusTraversable(true); //Makes onKeyPressed() work.
     }
 
-    private void tryMove(Direction direction){
-
-    }
-
-    private void interact(){}
-
-    private void Quit(){}
 }
 
