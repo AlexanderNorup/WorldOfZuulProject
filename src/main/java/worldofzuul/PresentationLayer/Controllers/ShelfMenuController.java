@@ -67,10 +67,8 @@ public class ShelfMenuController {
                 Node textBox = shelfMenu.getParent().getScene().lookup("#textBox");
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
-                } else if (shelfMenu.isVisible()){
-                    shelfMenu.setVisible(false);
-                    shelfMenu.setManaged(false);
                 }
+                break;
         }
     }
 }
