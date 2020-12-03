@@ -462,10 +462,10 @@ public class ContentGenerator {
         aisle2.addRoomObject(new Warp(1,0,aisle3,1,4));
         aisle2.addRoomObject(new Warp(2,0,aisle3,2,4));
         aisle2.addRoomObject(new Warp(3,0,aisle3,3,4));
-        aisle2.addRoomObject(new Warp(0,5,aisle1,0,1));
+        aisle2.addRoomObject(new Warp(0,5,aisle1,1,1));
         aisle2.addRoomObject(new Warp(1,5,aisle1,1,1));
         aisle2.addRoomObject(new Warp(2,5,aisle1,2,1));
-        aisle2.addRoomObject(new Warp(3,5,aisle1,3,1));
+        aisle2.addRoomObject(new Warp(3,5,aisle1,2,1));
 
         aisle3.addRoomObject(new Warp(0,2,bakery,6,2));
         aisle3.addRoomObject(new Warp(3,2,dairy,1,2));
@@ -473,10 +473,10 @@ public class ContentGenerator {
         aisle3.addRoomObject(new Warp(1,0,cashier,1,2));
         aisle3.addRoomObject(new Warp(2,0,cashier,2,2));
         aisle3.addRoomObject(new Warp(3,0,cashier,3,2));
-        aisle3.addRoomObject(new Warp(0,5,aisle2,6,2));
+        aisle3.addRoomObject(new Warp(0,5,aisle2,1,2));
         aisle3.addRoomObject(new Warp(1,5,aisle2,1,1));
         aisle3.addRoomObject(new Warp(2,5,aisle2,2,1));
-        aisle3.addRoomObject(new Warp(3,5,aisle2,3,1));
+        aisle3.addRoomObject(new Warp(3,5,aisle2,2,1));
 
         cashier.addRoomObject(new Warp(0,3,aisle3,1,1));
         cashier.addRoomObject(new Warp(1,3,aisle3,1,1));
@@ -498,6 +498,7 @@ public class ContentGenerator {
         outside.addRoomObject( new Wall(5,3));
         outside.addRoomObject( new Wall(6,3));
         outside.addRoomObject( new Wall(7,3));
+        outside.addRoomObject( new Wall(7,4));
 
         aisle1.addRoomObject(new Wall(0,1));
         aisle1.addRoomObject(new Wall(3,1));
