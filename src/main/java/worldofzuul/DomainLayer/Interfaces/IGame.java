@@ -13,8 +13,6 @@ public interface IGame {
      */
     ArrayList<IRoom> getRooms();
 
-    void setCurrentRoom(IRoom iRoom);
-
     /**
      * Returns an object of a class that implements the IPlayer interface
      * This has an inventory, and can return summes values from the inventory
@@ -24,14 +22,21 @@ public interface IGame {
      */
     IPlayer getPlayer();
 
-    /**
-     * roughly speaking, this lets a gui act as the Parser from the world of zuul game
-     * Sending commands to the Game class and getting the appropriate responses
-     * @param firstWord String describing the action to be done e.g. "take", "drop", "inspect"
-     * @param secondWord String describing details of the action. could be the item to take or drop
-     * @return a String which is a response to the action e.g. "you picked up 200g Salami"
-     */
-    String doAction(String firstWord, String secondWord);
+    boolean take(IItem item);
+
+    void drop(IItem item);
+
+    void resetGame();
+
+    String canCheckout();
+
+    ArrayList<String > Checkout();
+
+    String reactToResults();
+
+    void printWelcome();
+
+    String printPlayer();
 
 
     /**

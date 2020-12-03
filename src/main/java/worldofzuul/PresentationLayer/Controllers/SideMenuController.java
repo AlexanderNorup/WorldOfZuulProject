@@ -1,22 +1,16 @@
 package worldofzuul.PresentationLayer.Controllers;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.IItem;
-import worldofzuul.Main;
 import worldofzuul.PresentationLayer.MainGUI;
-
-import java.util.ArrayList;
 
 public class SideMenuController {
     @FXML
@@ -57,9 +51,22 @@ public class SideMenuController {
         inspect = new MenuItem("Inspect");
         drop = new MenuItem("Drop");
 
+        moneyBar.setProgress(0);
+        moneySpent.setText(Double.toString(0));
+        moneyGoal.setText(Double.toString(MainGUI.game.getPlayer().getBudget()));
+
         ObservableList<IItem> listViewList = FXCollections.observableArrayList();
         listViewList.addAll(MainGUI.game.getPlayer().getInventory());
         sideMenuListView.setItems(listViewList);
+        listViewList.addListener(new ListChangeListener<IItem>() {
+            @Override
+            public void onChanged(Change<? extends IItem> c) {
+                sideMenuCalorieLabel.setText(Double.toString(MainGUI.game.getPlayer().getInventoryCalories()));
+                sideMenuProteinLabel.setText(Double.toString(MainGUI.game.getPlayer().getInventoryProtein()));
+                moneyBar.setProgress(MainGUI.game.getPlayer().getInventoryValue()/MainGUI.game.getPlayer().getBudget());
+                moneySpent.setText(Double.toString(MainGUI.game.getPlayer().getInventoryValue()));
+            }
+        });
 
         inspect.setOnAction(event -> {
             //Finds the textArea node
@@ -75,7 +82,7 @@ public class SideMenuController {
         drop.setOnAction(event -> {
             IItem item = sideMenuListView.getSelectionModel().getSelectedItem();
             System.out.println("Dropped");
-            MainGUI.game.doAction(CommandWord.DROP.toString(), item.getName());
+            MainGUI.game.drop(item);
             listViewList.clear();
             listViewList.addAll(MainGUI.game.getPlayer().getInventory());
         });
@@ -83,6 +90,8 @@ public class SideMenuController {
         contextMenu.getItems().addAll(inspect, drop);
         sideMenuListView.setContextMenu(contextMenu);
     }
+
+
 
     public void listViewKey(KeyEvent keyEvent) {
         switch(keyEvent.getCode()){
@@ -97,6 +106,7 @@ public class SideMenuController {
                     textBox.setVisible(false);
                 }
                 break;
+
         }
     }
 }

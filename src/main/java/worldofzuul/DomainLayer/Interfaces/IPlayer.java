@@ -1,5 +1,7 @@
 package worldofzuul.DomainLayer.Interfaces;
 
+import worldofzuul.DomainLayer.PlayerType;
+
 import java.util.ArrayList;
 
 /**
@@ -42,4 +44,14 @@ public interface IPlayer {
      * @return string returning the sprite of the current playerType
      */
     String getSprite();
+
+    PlayerType getPlayerType();
+
+    boolean underBudget();
+
+    boolean overMinCalories();
+
+    String getInventoryString();
+
+    IItem getItem(String name);
 }
