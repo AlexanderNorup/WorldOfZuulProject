@@ -1,5 +1,7 @@
 package worldofzuul.PresentationLayer.Controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -9,16 +11,12 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
-import worldofzuul.PresentationLayer.Direction;
-import worldofzuul.PresentationLayer.Grid;
+import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.*;
-import worldofzuul.PresentationLayer.MainGUI;
-import worldofzuul.PresentationLayer.Position;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,6 +34,8 @@ public class GameCanvasController {
     private PlayerObject playerObject;
     private HashMap<IRoom, Grid> gridMap;
     private HashMap<Grid, IRoom> iRoomMap;
+    private Transition transitionScreen;
+    private boolean locked;
 
 
     @FXML
@@ -98,10 +98,8 @@ public class GameCanvasController {
         }
 
         Grid startingGrid = gridMap.get(startingRoom);
-        startingGrid.setActive(true);
         startingGrid.setGridObject(new Wall(), new Position(2,4));
         startingGrid.setGridObject(new Wall(), new Position(1,4));
-        startingGrid.setActive(true);
         startingGrid.setGridObject(new Wall(), new Position(0,3)); //2,4
         startingGrid.setGridObject(new Wall(), new Position(1,3)); //1,4
         startingGrid.setGridObject(new Wall(), new Position(2,3));
@@ -147,6 +145,23 @@ public class GameCanvasController {
         //This means that grid will be the one on screen.
         //activeGrid.setActive(true); //Starts drawing and animations
 
+
+
+        //Transition Work!
+        this.transitionScreen = new Transition(gameCanvas, new AnimationDoneHandler() {
+            @Override
+            public void animationDone() {
+                startingGrid.setActive(true);
+            }
+        });
+
+        this.transitionScreen.addLine("Welcome to WorldOfZhopping!");
+        this.transitionScreen.addLine("In this game you are going shopping\nas a given character.\n\nEach character has it's own needs that you\nneed to fulfill.");
+        this.transitionScreen.addLine("You are playing as a <PlayerType>.\nThis <PlayerType> needs to at least get 500 calories,\nand you hate <food-types>\nYour budget is DKK 150.");
+        this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
+        this.transitionScreen.setActive(true);
+
+
         root.setFocusTraversable(true); //Makes onKeyPressed() work.
     }
 
@@ -175,12 +190,14 @@ public class GameCanvasController {
             case SPACE -> toggleTextBox();
             case ENTER -> interact();
             case ESCAPE -> quit();
-
+            case E -> {
+                if(this.transitionScreen.isActive()){
+                    this.transitionScreen.advanceAnimationState();
+                }
+            }
         }
 
     }
-
-
 
     /**
      * Tries to move the player to a new position.
@@ -200,23 +217,23 @@ public class GameCanvasController {
             }
             GridObject gridObjectAtNewPosition = currentGrid.getGridObject(newPosition);
             if (gridObjectAtNewPosition instanceof Warp) {
-                MainGUI.game.setCurrentRoom(iRoomMap.get(((Warp) gridObjectAtNewPosition).getGrid()));
                 playerObject.setAnimating(true);
                 Warp warp = (Warp) gridObjectAtNewPosition;
                 currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
                 currentGrid.setActive(false); //Stop animating the current grid
+                playerObject.setPlayerPos(warp.getPlayerPos()); //Get the player position that the warp sends the player to
+                warp.getGrid().setGridObject(playerObject, warp.getPlayerPos()); //Add the player to the new grid
+                playerObject.setActiveGrid(warp.getGrid()); //Get the new grid that is being opened
+                playerObject.getActiveGrid().setActive(true);//Start animating the new grid.
+                playerObject.setAnimating(false);
+                return;
+            }
 
-            playerObject.setPlayerPos(warp.getPlayerPos()); //Get the player position that the warp sends the player to
-            warp.getGrid().setGridObject(playerObject, warp.getPlayerPos()); //Add the player to the new grid
-            playerObject.setActiveGrid(warp.getGrid()); //Get the new grid that is being opened
-            playerObject.getActiveGrid().setActive(true);//Start animating the new grid.
-            playerObject.setAnimating(false);
-            return;
-        }
 
-        //If not moving onto the warp, then we just move by calling the grid.
-        if (!playerObject.isAnimating() && playerObject.getActiveGrid().moveObject(playerObject.getPlayerPos(), newPosition)) {
-            playerObject.setPlayerPos(newPosition);
+            if (!playerObject.isAnimating() && playerObject.getActiveGrid().moveObject(playerObject.getPlayerPos(), newPosition)) {
+                playerObject.setPlayerPos(newPosition);
+                //If not moving onto the warp, then we just move by calling the grid.
+            }
         }
     }
 
@@ -254,6 +271,7 @@ public class GameCanvasController {
             sideMenu.setDisable(false);
             sideMenu.setVisible(false);
             textBox.setVisible(false);
+            locked = false;
         }
     }
 
@@ -273,6 +291,7 @@ public class GameCanvasController {
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
             shelfMenuListView.requestFocus();
+            locked = true;
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
             System.out.println("CASHIER");
@@ -289,6 +308,7 @@ public class GameCanvasController {
             checkoutmenu.lookup(".arrow").setStyle("-fx-background-color: red;");
             checkoutmenu.fire();
             checkoutmenu.lookup( ".arrow" ).setStyle( "-fx-background-insets: 0; -fx-padding: 0; -fx-shape: null;" );
+            locked = true;
         }
     }
 
@@ -308,10 +328,28 @@ public class GameCanvasController {
     public void checkoutButtonHandle(ActionEvent actionEvent) {
         if(actionEvent.getSource()==yesButton){
             checkoutmenu.setVisible(false);
+
+            //set timer for message.
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> close() );
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().add(keyFrame);
+
+            timeline.play();
+
+            String result = MainGUI.game.canCheckout();
+            if(result == null){
+                ArrayList<String> resultArray = MainGUI.game.Checkout();
+
+            }
         }
         else if(actionEvent.getSource() == noButton){
-            checkoutmenu.setVisible(false);
+            close();
         }
+    }
+
+    void close(){
+        checkoutmenu.setVisible(false);
+        locked = false;
     }
 }
 

@@ -47,6 +47,7 @@ public class Game implements IGame {
             // finishedGames Arraylist will be an empty list
             // This is the same as starting a new game
         }
+        reactToResults();
     }
 
     /**
