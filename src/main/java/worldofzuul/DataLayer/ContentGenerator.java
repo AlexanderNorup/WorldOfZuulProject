@@ -6,7 +6,9 @@ import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IShelf;
 import worldofzuul.DomainLayer.RoomObjects.Cashier;
 import worldofzuul.DomainLayer.RoomObjects.Shelf;
+import worldofzuul.DomainLayer.RoomObjects.Wall;
 import worldofzuul.DomainLayer.RoomObjects.Warp;
+import worldofzuul.PresentationLayer.Position;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -457,6 +459,15 @@ public class ContentGenerator {
         frozen.addRoomObject(new Warp(0,2,aisle2,2,2));
         dairy.addRoomObject(new Warp(0,2,aisle3,2,2));
 
+        //Walls
+        outside.addRoomObject( new Wall(2,4));
+
+        outside.addRoomObject( new Wall(0,3)); //2,4
+        outside.addRoomObject( new Wall(1,3)); //1,4
+        outside.addRoomObject( new Wall(2,3));
+        outside.addRoomObject( new Wall(5,3));
+        outside.addRoomObject( new Wall(6,3));
+        outside.addRoomObject( new Wall(7,3));
 
 
         ArrayList<Room> rooms = new ArrayList<>();
