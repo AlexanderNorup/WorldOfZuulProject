@@ -39,6 +39,7 @@ public class GameCanvasController {
     private HashMap<Grid, IRoom> iRoomMap;
     private Transition transitionScreen;
     private boolean locked;
+    private Grid startingGrid;
 
 
     @FXML
@@ -99,7 +100,7 @@ public class GameCanvasController {
             }
         }
 
-        Grid startingGrid = gridMap.get(startingRoom);
+        startingGrid = gridMap.get(startingRoom);
         startingGrid.setGridObject(new Wall(), new Position(2,4));
         startingGrid.setGridObject(new Wall(), new Position(1,4));
         startingGrid.setGridObject(new Wall(), new Position(0,3)); //2,4
@@ -164,7 +165,6 @@ public class GameCanvasController {
         this.transitionScreen.addLine("You are playing as a <PlayerType>.\nThis <PlayerType> needs to at least get 500 calories,\nand you hate <food-types>\nYour budget is DKK 150.");
         this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
         this.transitionScreen.setActive(true);
-        this.locked = true;
 
         root.setFocusTraversable(true); //Makes onKeyPressed() work.
     }
@@ -340,8 +340,19 @@ public class GameCanvasController {
             String result = MainGUI.game.canCheckout();
             if(result == null){
                 ArrayList<String> resultArray = MainGUI.game.Checkout();
-
                 this.transitionScreen.reset();
+                transitionScreen.setDoneHandler(new AnimationDoneHandler() {
+                    @Override
+                    public void animationDone() {
+                        playerObject.getActiveGrid().setActive(false);
+                        playerObject.getActiveGrid().setGridObject(null, playerObject.getPlayerPos());
+                        startingGrid.setActive(true);
+                        playerObject.setActiveGrid(startingGrid);
+                        playerObject.setPlayerPos(new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
+                        startingGrid.setGridObject(playerObject, new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
+                    }
+                });
+
                 this.transitionScreen.addText(resultArray);
                 this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
                 this.transitionScreen.addLine("Happy shopping!");
