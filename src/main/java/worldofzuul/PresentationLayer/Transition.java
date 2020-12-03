@@ -45,7 +45,7 @@ public class Transition {
 
     private AnimationDoneHandler doneHandler;
 
-    public Transition(Canvas canvas, AnimationDoneHandler doneHandler){
+    public Transition(Canvas canvas){
         this.gc = canvas.getGraphicsContext2D();
 
 
@@ -73,7 +73,7 @@ public class Transition {
             }
 
         };
-        this.doneHandler = doneHandler;
+        this.doneHandler = null;
     }
 
 
@@ -135,7 +135,9 @@ public class Transition {
             }else{
                 this.animationIsDone = true;
                 this.setActive(false);
-                this.doneHandler.animationDone();
+                if(this.doneHandler != null) {
+                    this.doneHandler.animationDone();
+                }
             }
 
             if(animationProgress > 2){
@@ -189,5 +191,8 @@ public class Transition {
         this.animationState = -1;
     }
 
+    public void setDoneHandler(AnimationDoneHandler doneHandler) {
+        this.doneHandler = doneHandler;
+    }
 }
 
