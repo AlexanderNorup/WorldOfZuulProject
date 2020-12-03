@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.IGame;
+import worldofzuul.PresentationLayer.Controllers.GameCanvasController;
 
 import java.net.URL;
 import java.util.HashMap;

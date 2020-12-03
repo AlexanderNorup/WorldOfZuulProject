@@ -12,16 +12,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import worldofzuul.DomainLayer.Interfaces.*;
-import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.*;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,7 +35,7 @@ public class GameCanvasController {
     private HashMap<IRoom, Grid> gridMap;
     private HashMap<Grid, IRoom> iRoomMap;
     private Transition transitionScreen;
-    private boolean locked;
+    private static boolean locked;
     private Grid startingGrid;
 
 
@@ -379,7 +374,6 @@ public class GameCanvasController {
        close();
 
         String result = MainGUI.game.canCheckout();
-        //if(result == null){
         ArrayList<String> resultArray = MainGUI.game.Checkout();
         this.transitionScreen.reset();
         transitionScreen.setDoneHandler(new AnimationDoneHandler() {
@@ -403,5 +397,10 @@ public class GameCanvasController {
         this.transitionScreen.setActive(true);
 
     }
+
+    public static void setLocked(boolean set){
+        locked = set;
+    }
+
 }
 
