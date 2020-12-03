@@ -160,9 +160,9 @@ public class GameCanvasController {
             }
         });
 
-        this.transitionScreen.addLine("Welcome to WorldOfZhopping!");
+        this.transitionScreen.addLine("Welcome to World Of Zhopping!");
         this.transitionScreen.addLine("In this game you are going shopping\nas a given character.\n\nEach character has it's own needs that you\nneed to fulfill.");
-        this.transitionScreen.addLine("You are playing as a <PlayerType>.\nThis <PlayerType> needs to at least get 500 calories,\nand you hate <food-types>\nYour budget is DKK 150.");
+        this.transitionScreen.addLine(MainGUI.game.getPlayerDescription());
         this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
         this.transitionScreen.setActive(true);
 
@@ -311,7 +311,9 @@ public class GameCanvasController {
             locked = true;
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
+
             System.out.println("CASHIER");
+            checkoutmenu.setText("Do you wanna checkout?");
             checkoutmenu.setVisible(true);
             checkoutmenu.lookup(".arrow").setStyle("-fx-background-color: red;");
             checkoutmenu.fire();
@@ -336,17 +338,31 @@ public class GameCanvasController {
 
     public void checkoutButtonHandle(ActionEvent actionEvent) {
         if(actionEvent.getSource()==yesButton){
-            checkoutmenu.setText("Thank you, come again!");
-            this.locked = true;
-            //set timer for message.
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> transition() );
-            Timeline timeline = new Timeline();
-            timeline.getKeyFrames().add(keyFrame);
+            String result= MainGUI.game.canCheckout();
 
-            timeline.play();
+            if(result == null) {
+
+                checkoutmenu.setText("Thank you, come again!");
+                this.locked = true;
+                //set timer for message.
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> transition());
+                Timeline timeline = new Timeline();
+                timeline.getKeyFrames().add(keyFrame);
+
+                timeline.play();
+            }
+            else {
+                checkoutmenu.setText(result);
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2),event -> close()
+                );
+                Timeline timeline = new Timeline();
+                timeline.getKeyFrames().add(keyFrame);
+                timeline.play();
+
+            }
 
 
-        //}
+            //}
         }
         else if(actionEvent.getSource() == noButton){
             close();
@@ -382,7 +398,7 @@ public class GameCanvasController {
         this.locked = true;
         this.transitionScreen.addText(resultArray);
         this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
-        this.transitionScreen.addLine("Happy shopping!");
+        this.transitionScreen.addLine("Happy shopping!\n\nYour game has been saved!");
         playerObject.getActiveGrid().setActive(false);
         this.transitionScreen.setActive(true);
 
