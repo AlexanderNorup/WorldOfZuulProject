@@ -1,7 +1,8 @@
-package worldofzuul.DomainLayer;
+package worldofzuul.DomainLayer.RoomObjects;
 
 import worldofzuul.DomainLayer.Interfaces.IRoom;
 import worldofzuul.DomainLayer.Interfaces.IWarp;
+import worldofzuul.DomainLayer.Interfaces.IRoomObject;
 
 /**
  * A warp describes a grid cell in the gui which "teleports" the player to another room
@@ -19,20 +20,6 @@ public class Warp implements IWarp {
         this.destination = destination;
         this.destX = destX;
         this.destY = destY;
-    }
-
-    /**
-     * @return x value of the warp position in the room
-     */
-    public int getX() {
-        return x;
-    }
-
-    /**
-     * @return y value of the warp position in the room
-     */
-    public int getY() {
-        return y;
     }
 
     /**
@@ -54,5 +41,15 @@ public class Warp implements IWarp {
      */
     public int getDestY() {
         return destY;
+    }
+
+    @Override
+    public int getXPosition() {
+        return x;
+    }
+
+    @Override
+    public int getYPosition() {
+        return y;
     }
 }

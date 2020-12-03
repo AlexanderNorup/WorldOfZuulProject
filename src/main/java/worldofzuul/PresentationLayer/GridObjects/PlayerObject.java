@@ -1,7 +1,11 @@
 package worldofzuul.PresentationLayer.GridObjects;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.PresentationLayer.Grid;
+import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
 /**
@@ -35,51 +39,6 @@ public class PlayerObject extends GridSprite {
         this.avatarImg = playerSprite;
     }
 
-    /**
-     * Tries to move the player to a new position.
-     * If the new position is a Warp, then the player changes the active Grid, and moves to the Warp's destination
-     * @param newPosition The position on the Grid the player should try and move to.
-     */
-    private void tryMove(Position newPosition) {
-        //Start by checking if we're moving onto a warp
-        GridObject gridObjectAtNewPosition  = grid.getGridObject(newPosition);
-        if(gridObjectAtNewPosition instanceof Warp){
-            this.setAnimating(true);
-            Warp warp = (Warp) gridObjectAtNewPosition;
-            this.grid.setGridObject(null, this.playerPos); //Remove the player from the current grid
-            this.grid.setActive(false); //Stop animating the current grid
-
-
-            this.playerPos = warp.getPlayerPos(); //Get the player position that the warp sends the player to
-            this.grid = warp.getGrid(); //Get the new grid that is being opened
-            this.grid.setGridObject(this, this.playerPos); //Add the player to the new grid
-            this.grid.setActive(true); //Start animating the new grid.
-            this.setAnimating(false);
-            return;
-        }
-
-        //If not moving onto the warp, then we just move by calling the grid.
-        if (!this.isAnimating() && grid.moveObject(playerPos, newPosition)) {
-            playerPos = newPosition;
-        }
-    }
-
-    public void moveDown() {
-        this.tryMove(new Position(playerPos.getX(), playerPos.getY() + 1));
-    }
-
-    public void moveUp() {
-        this.tryMove(new Position(playerPos.getX(), playerPos.getY() - 1));
-    }
-
-    public void moveRight() {
-        this.tryMove(new Position(playerPos.getX() + 1, playerPos.getY()));
-    }
-
-    public void moveLeft() {
-        this.tryMove(new Position(playerPos.getX() - 1, playerPos.getY()));
-    }
-
     @Override
     public Image getIdleSprite() {
         return avatarImg;
@@ -102,5 +61,17 @@ public class PlayerObject extends GridSprite {
      */
     public Grid getActiveGrid() {
         return grid;
+    }
+
+    public Position getPlayerPos(){
+        return playerPos;
+    }
+
+    public void setPlayerPos(Position newPosition){
+        this.playerPos = newPosition;
+    }
+
+    public void setActiveGrid(Grid newGrid){
+        grid = newGrid;
     }
 }

@@ -5,11 +5,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import worldofzuul.PresentationLayer.GridObjects.GridObject;
-import worldofzuul.PresentationLayer.GridObjects.GridSprite;
-import worldofzuul.PresentationLayer.GridObjects.Warp;
+import javafx.scene.text.Font;
+import worldofzuul.PresentationLayer.GridObjects.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Grid {
     /**
@@ -62,11 +62,6 @@ public class Grid {
     public Grid(Canvas canvas, int gridWidth, int gridHeight, Image background) {
         //Starts off by filling the grid with null
         grid = new GridObject[gridWidth][gridHeight];
-        for (int x = 0; x < grid.length; x++) {
-            for (int y = 0; y < grid[x].length; y++) {
-                grid[x][y] = null;
-            }
-        }
 
         //Then grabs the GraphicsContext from the Canvas.
         this.gc = canvas.getGraphicsContext2D();
@@ -79,7 +74,7 @@ public class Grid {
 
         //tileSize is hardcoded for now. Represents how big each tile is.
         //Everything will scale accordingly.
-        this.tileSize = 75;
+        this.tileSize = 100;
         this.gameWidth = tileSize * gridWidth;
         this.gameHeight = tileSize * gridHeight;
 
@@ -119,6 +114,7 @@ public class Grid {
      * @param obj The GridObject to add.
      * @param pos Where on the grid to add it. Based on "Grid-Coordinates".
      */
+    //NON-ACCESSIBLE OBJECT IS EXPOSED ?
     public void setGridObject(GridObject obj, Position pos) {
         this.grid[pos.getX()][pos.getY()] = obj;
     }
@@ -134,7 +130,7 @@ public class Grid {
 
         //Then draw the background
         gc.save();
-        gc.translate((int) (windowWidth / 2 - (gameWidth / 2)),
+        gc.translate((int) (windowWidth / 2 - (gameWidth / 2)), //forklar tak
                 (int) (windowHeight / 2 - (gameHeight / 2)));
 
         gc.drawImage(background, 0, 0, gameWidth, gameHeight);
@@ -156,6 +152,9 @@ public class Grid {
                         gameWidth, row * tileSize);
             }
 
+            gc.setFont(new Font(16));
+            gc.fillText("DEBUG VIEW IS ON (Press G)", 0, -16);
+
         }
         gc.restore(); //Restores the translation
 
@@ -168,9 +167,15 @@ public class Grid {
                         && !((GridSprite) grid[x][y]).isAnimating()) { //And that GridSprite isn't currently animating
                     //Draw the SpriteObject
                     this.drawObject(((GridSprite) grid[x][y]).getIdleSprite(), this.getPositionGrid(new Position(x, y)));
-                }else if(grid[x][y] instanceof Warp && this.showDebug){
-                    //If debug-mode is turned on, then draw the Warps using the "warp.png" image. s
-                    this.drawObject(new Image(getClass().getResource("/sprites/warp.png").toString()), this.getPositionGrid(new Position(x, y)));
+                }else if(this.showDebug){
+                    //If debug-mode is turned on, then draw some of the invisible things
+                    if(grid[x][y] instanceof Warp) {
+                        this.drawObject(new Image(getClass().getResource("/sprites/warp.png").toString()), this.getPositionGrid(new Position(x, y)));
+                    }else if(grid[x][y] instanceof Shelf) {
+                        this.drawObject(new Image(getClass().getResource("/sprites/shelf.png").toString()), this.getPositionGrid(new Position(x, y)));
+                    }else if(grid[x][y] instanceof Wall) {
+                        this.drawObject(new Image(getClass().getResource("/sprites/wall.png").toString()), this.getPositionGrid(new Position(x, y)));
+                    }
                 }
             }
         }
