@@ -18,7 +18,7 @@ public class Room implements IRoom {
     private final ArrayList<IRoomObject> roomObjects;
 
     private final int roomWidth,roomHeight;
-    private final String background;
+    private String background;
     public Room(String description, int roomWidth, int roomHeight, String background) {
         this.description = description;
         this.roomObjects = new ArrayList<>();
@@ -63,14 +63,10 @@ public class Room implements IRoom {
         return items;
     }
 
-    public String getShortDescription() {
-        return description;
-    }
-
     /**
      * @return String "You are #name of room#" followed by a list of items
      */
-    public String getLongDescription() {
+    public String getDescription() {
         String itemString = getItemsString();
         itemString = itemString == null ? "" : itemString + "\n";
         return "You are " + description + ".\n" + itemString + getExitString() + ".\n";
@@ -135,6 +131,9 @@ public class Room implements IRoom {
         return new ArrayList<>(this.roomObjects);
     }
 
+    public void setBackground(String newBackground) {
+        this.background = newBackground;
+    }
 
     @Override
     public String getBackground() {

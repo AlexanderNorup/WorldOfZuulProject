@@ -1,7 +1,7 @@
 package worldofzuul;
 
 import javafx.application.Application;
-import worldofzuul.DomainLayer.Game;
+import worldofzuul.CLILayer.CLIGame;
 import worldofzuul.PresentationLayer.MainGUI;
 
 import java.util.Arrays;
@@ -12,7 +12,7 @@ public class Main {
         if(args.length > 0 && Arrays.asList(args).contains("--cli")) {
             //Launches the CLI-version
             runningAsCLI = true;
-            Game game = new Game();
+            CLIGame game = new CLIGame();
             game.play();
             return;
         }

@@ -1,4 +1,4 @@
-package worldofzuul.DomainLayer.Commandhandling;
+package worldofzuul.CLILayer;
 
 import java.util.Scanner;
 

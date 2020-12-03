@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
@@ -183,6 +184,7 @@ public class GameCanvasController {
             case D, RIGHT -> tryMove(Direction.RIGHT);
             case G -> playerObject.getActiveGrid().setShowDebug(!playerObject.getActiveGrid().isShowDebug());
             case I -> toggleSideMenu();
+            case C -> closeShelfMenu();
             case SPACE -> toggleTextBox();
             case ENTER -> interact();
             case ESCAPE -> quit();
@@ -195,28 +197,31 @@ public class GameCanvasController {
 
     }
 
+
+
     /**
      * Tries to move the player to a new position.
      * If the new position is a Warp, then the player changes the active Grid, and moves to the Warp's destination
      * @param direction the direction the player should go.
      */
-    private void tryMove(Direction direction){
-        Grid currentGrid = playerObject.getActiveGrid();
-        Position currentPosition = playerObject.getPlayerPos();
-        Position newPosition = currentPosition;
-        switch (direction){
-            case UP -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() - 1);
-            case DOWN -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() + 1);
-            case LEFT -> newPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
-            case RIGHT -> newPosition = new Position(currentPosition.getX() + 1, currentPosition.getY());
-        }
-        GridObject gridObjectAtNewPosition  = currentGrid.getGridObject(newPosition);
-        if(gridObjectAtNewPosition instanceof Warp){
-            MainGUI.game.setCurrentRoom(iRoomMap.get(((Warp) gridObjectAtNewPosition).getGrid()));
-            playerObject.setAnimating(true);
-            Warp warp = (Warp) gridObjectAtNewPosition;
-            currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
-            currentGrid.setActive(false); //Stop animating the current grid
+    private void tryMove(Direction direction) {
+        if (!locked) {
+            Grid currentGrid = playerObject.getActiveGrid();
+            Position currentPosition = playerObject.getPlayerPos();
+            Position newPosition = currentPosition;
+            switch (direction) {
+                case UP -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() - 1);
+                case DOWN -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() + 1);
+                case LEFT -> newPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
+                case RIGHT -> newPosition = new Position(currentPosition.getX() + 1, currentPosition.getY());
+            }
+            GridObject gridObjectAtNewPosition = currentGrid.getGridObject(newPosition);
+            if (gridObjectAtNewPosition instanceof Warp) {
+                MainGUI.game.setCurrentRoom(iRoomMap.get(((Warp) gridObjectAtNewPosition).getGrid()));
+                playerObject.setAnimating(true);
+                Warp warp = (Warp) gridObjectAtNewPosition;
+                currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
+                currentGrid.setActive(false); //Stop animating the current grid
 
             playerObject.setPlayerPos(warp.getPlayerPos()); //Get the player position that the warp sends the player to
             warp.getGrid().setGridObject(playerObject, warp.getPlayerPos()); //Add the player to the new grid
@@ -233,20 +238,38 @@ public class GameCanvasController {
     }
 
     private void toggleSideMenu(){
-        if (sideMenu.isVisible()) {
-            sideMenu.setVisible(false);
-            sideMenu.setManaged(false);
-        } else {
-            sideMenu.setVisible(true);
-            sideMenu.setManaged(true);
-            Scene sideScene = sideMenu.getScene();
-            ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
-            sideMenuListView.requestFocus();
+        if (!shelfMenu.isVisible()) {
+            if (sideMenu.isVisible()) {
+                sideMenu.setVisible(false);
+                sideMenu.setManaged(false);
+            } else {
+                sideMenu.setVisible(true);
+                sideMenu.setManaged(true);
+                Scene sideScene = sideMenu.getScene();
+                ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
+                sideMenuListView.requestFocus();
+            }
         }
     }
 
     private void toggleTextBox(){
         if (textBox.isVisible()) {
+            textBox.setVisible(false);
+        }
+        shelfMenu.setVisible(false);
+        shelfMenu.setManaged(false);
+    }
+
+    public void toggleShelfMenu(){
+        textBox.setVisible(false);
+    }
+
+    public void closeShelfMenu() {
+        if (shelfMenu.isVisible()){
+            shelfMenu.setVisible(false);
+            shelfMenu.setManaged(false);
+            sideMenu.setDisable(false);
+            sideMenu.setVisible(false);
             textBox.setVisible(false);
         }
     }
@@ -262,6 +285,8 @@ public class GameCanvasController {
 
             System.out.println(Arrays.toString(Collections.singletonList(currentShelf.getItems()).toArray()));
 
+            sideMenu.setVisible(true);
+            sideMenu.setDisable(true);
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
             shelfMenuListView.requestFocus();

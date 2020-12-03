@@ -1,4 +1,4 @@
-package worldofzuul.DomainLayer.Commandhandling;
+package worldofzuul.CLILayer;
 
 /**
  * Contains the valid command type and their corresponding String value.

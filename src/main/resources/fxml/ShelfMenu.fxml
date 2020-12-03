@@ -16,7 +16,7 @@
             prefHeight="500" prefWidth="300">
 
     <top>
-        <Label maxWidth="-Infinity" prefHeight="30.0" text="Shelf"
+        <Label maxWidth="-Infinity" prefHeight="30.0" text="Shelf (press C to close)"
                BorderPane.alignment="CENTER"/>
     </top>
 
