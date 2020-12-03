@@ -80,8 +80,9 @@ public class Game implements IGame {
                 break;
             case "Mystery":
                 PlayerType newPicky = ContentGenerator.getPickyPlayerType();
-                newPicky.setPlayerSprite(Game.class.getResource("/sprites/Piggy.png").toString());
+                newPicky.setPlayerSprite(Game.class.getResource("/sprites/gurli.png").toString());
                 this.player.setPlayerType(newPicky);
+                newPicky.setValues(1200,7500,9000);
             default:
         }
     }
