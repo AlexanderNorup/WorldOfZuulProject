@@ -87,6 +87,11 @@ public class Game implements IGame {
         }
     }
 
+    @Override
+    public PlayerType getPlayerType(){
+        return player.getPlayerType();
+    }
+
 
     /**
      * prints the properties of the playerType
@@ -135,10 +140,9 @@ public class Game implements IGame {
 
         strings.add("You went to the register and checked out.\nThe day is over and you go back home to sleep.\n\n");
         //strings.add(player.getGameResult());
+        resetGame();
         strings.add(reactToResults());
         strings.add("It is a new day, you wake up and go to the store.");
-
-        resetGame();
 
         return strings;
     }
@@ -150,7 +154,7 @@ public class Game implements IGame {
         GameResult result = player.getGameResult();
         finishedGames.add(result); //adds the game result of the currently played game to an arraylist of results.
         player.deleteInventory(); // deletes all items in the inventory
-        player.setPlayerType((ContentGenerator.getStudentPlayerType()));
+        player.setPlayerType(getPlayerType());
         save();
     }
 
