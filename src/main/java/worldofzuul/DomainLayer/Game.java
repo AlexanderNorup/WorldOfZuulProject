@@ -298,14 +298,19 @@ public class Game implements IGame {
             returnString.append("The earth is a green and beautiful place\n");
         } else if (co2 < 10) {
             returnString.append("you notice your armpits are more stained than usual\n");
+            rooms.get(0).setBackground("supermarket1.png");
         } else if (co2 < 15) {
             returnString.append("it's to hot to walk barefoot\n");
+            rooms.get(0).setBackground("supermarket2.png");
         } else if (co2 < 20) {
             returnString.append("you can boil an egg in the ocean\n");
+            rooms.get(0).setBackground("supermarket3.png");
         } else if (co2 < 25) {
             returnString.append("you've sold your oven, as you don't need it\n");
+            rooms.get(0).setBackground("supermarket4.png");
         } else {
             returnString.append("the store is on fire\n");
+            rooms.get(0).setBackground("supermarket5.png");
         }
 
         if (happiness >= 0) {
@@ -313,7 +318,7 @@ public class Game implements IGame {
         } else if (happiness > -50) {
             returnString.append("you notice that you've started snapping at your friends\n");
         } else if (happiness > -100) {
-            returnString.append("you don't want to eat, even when your hungry\n");
+            returnString.append("you don't want to eat, even when you're hungry\n");
         } else if (happiness > -150) {
             returnString.append("you're wondering if theres a point to anything\n");
         } else if (happiness > -200) {
