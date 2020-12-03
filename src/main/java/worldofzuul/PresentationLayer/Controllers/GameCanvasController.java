@@ -150,7 +150,8 @@ public class GameCanvasController {
 
 
         //Transition Work!
-        this.transitionScreen = new Transition(gameCanvas, new AnimationDoneHandler() {
+        this.transitionScreen = new Transition(gameCanvas);
+        this.transitionScreen.setDoneHandler(new AnimationDoneHandler() {
             @Override
             public void animationDone() {
                 startingGrid.setActive(true);
@@ -162,7 +163,6 @@ public class GameCanvasController {
         this.transitionScreen.addLine("You are playing as a <PlayerType>.\nThis <PlayerType> needs to at least get 500 calories,\nand you hate <food-types>\nYour budget is DKK 150.");
         this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
         this.transitionScreen.setActive(true);
-
 
         root.setFocusTraversable(true); //Makes onKeyPressed() work.
     }
@@ -277,6 +277,7 @@ public class GameCanvasController {
             sideMenu.setVisible(false);
             textBox.setVisible(false);
             MainGUI.playSoundEffect("select.wav");
+            locked = false;
         }
     }
 
@@ -297,6 +298,7 @@ public class GameCanvasController {
             shelfMenu.setManaged(true);
             shelfMenuListView.requestFocus();
             MainGUI.playSoundEffect("select.wav");
+            locked = true;
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
             System.out.println("CASHIER");
@@ -305,6 +307,7 @@ public class GameCanvasController {
             checkoutmenu.fire();
             checkoutmenu.lookup( ".arrow" ).setStyle( "-fx-background-insets: 0; -fx-padding: 0; -fx-shape: null;" );
             MainGUI.playSoundEffect("select.wav");
+            locked = true;
         }
     }
 
@@ -335,6 +338,13 @@ public class GameCanvasController {
             String result = MainGUI.game.canCheckout();
             if(result == null){
                 ArrayList<String> resultArray = MainGUI.game.Checkout();
+
+                this.transitionScreen.reset();
+                this.transitionScreen.addText(resultArray);
+                this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
+                this.transitionScreen.addLine("Happy shopping!");
+                playerObject.getActiveGrid().setActive(false);
+                this.transitionScreen.setActive(true);
             }
         }
         else if(actionEvent.getSource() == noButton){
