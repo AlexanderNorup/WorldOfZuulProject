@@ -158,9 +158,9 @@ public class GameCanvasController {
             }
         });
 
-        this.transitionScreen.addLine("Welcome to WorldOfZhopping!");
+        this.transitionScreen.addLine("Welcome to World Of Zhopping!");
         this.transitionScreen.addLine("In this game you are going shopping\nas a given character.\n\nEach character has it's own needs that you\nneed to fulfill.");
-        this.transitionScreen.addLine("You are playing as a <PlayerType>.\nThis <PlayerType> needs to at least get 500 calories,\nand you hate <food-types>\nYour budget is DKK 150.");
+        this.transitionScreen.addLine(MainGUI.game.getPlayerDescription());
         this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
         this.transitionScreen.setActive(true);
 
@@ -380,7 +380,7 @@ public class GameCanvasController {
         this.locked = true;
         this.transitionScreen.addText(resultArray);
         this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
-        this.transitionScreen.addLine("Happy shopping!");
+        this.transitionScreen.addLine("Happy shopping!\n\nYour game has been saved!");
         playerObject.getActiveGrid().setActive(false);
         this.transitionScreen.setActive(true);
     }

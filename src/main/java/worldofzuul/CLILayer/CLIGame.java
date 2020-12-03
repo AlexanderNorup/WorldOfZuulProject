@@ -1,6 +1,5 @@
 package worldofzuul.CLILayer;
 
-import javafx.scene.control.CheckBox;
 import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.IGame;
 import worldofzuul.DomainLayer.Interfaces.IItem;
@@ -27,7 +26,7 @@ public class CLIGame {
      */
     public void play() {
         game.printWelcome();
-        System.out.println(game.printPlayer());
+        System.out.println(game.getPlayerDescription());
         while (true) {
             Command command = parser.getCommand();
             String output = processCommand(command);
@@ -201,7 +200,7 @@ public class CLIGame {
             return canCheckoutResult;
         }else {
             ArrayList<String> CheckoutResult = game.Checkout();
-            CheckoutResult.add(game.printPlayer());
+            CheckoutResult.add(game.getPlayerDescription());
             CheckoutResult.add(currentRoom.getDescription());
 
             StringBuilder returnString = new StringBuilder();
