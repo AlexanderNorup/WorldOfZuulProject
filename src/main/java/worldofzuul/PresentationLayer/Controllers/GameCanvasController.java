@@ -257,6 +257,7 @@ public class GameCanvasController {
             sideMenu.setDisable(false);
             sideMenu.setVisible(false);
             textBox.setVisible(false);
+            locked = false;
         }
     }
 
@@ -276,6 +277,7 @@ public class GameCanvasController {
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
             shelfMenuListView.requestFocus();
+            locked = true;
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
             System.out.println("CASHIER");
