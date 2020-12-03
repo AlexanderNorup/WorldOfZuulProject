@@ -53,7 +53,7 @@ public class SideMenuController {
 
         moneyBar.setProgress(0);
         moneySpent.setText(Double.toString(0));
-        moneyGoal.setText(Double.toString(MainGUI.game.getIPlayer().getBudget()));
+        moneyGoal.setText(Double.toString(MainGUI.game.getPlayer().getBudget()));
 
         ObservableList<IItem> listViewList = FXCollections.observableArrayList();
         listViewList.addAll(MainGUI.game.getPlayer().getInventory());
@@ -61,10 +61,10 @@ public class SideMenuController {
         listViewList.addListener(new ListChangeListener<IItem>() {
             @Override
             public void onChanged(Change<? extends IItem> c) {
-                sideMenuCalorieLabel.setText(Double.toString(MainGUI.game.getIPlayer().getInventoryCalories()));
-                sideMenuProteinLabel.setText(Double.toString(MainGUI.game.getIPlayer().getInventoryProtein()));
-                moneyBar.setProgress(MainGUI.game.getIPlayer().getInventoryValue()/MainGUI.game.getIPlayer().getBudget());
-                moneySpent.setText(Double.toString(MainGUI.game.getIPlayer().getInventoryValue()));
+                sideMenuCalorieLabel.setText(Double.toString(MainGUI.game.getPlayer().getInventoryCalories()));
+                sideMenuProteinLabel.setText(Double.toString(MainGUI.game.getPlayer().getInventoryProtein()));
+                moneyBar.setProgress(MainGUI.game.getPlayer().getInventoryValue()/MainGUI.game.getPlayer().getBudget());
+                moneySpent.setText(Double.toString(MainGUI.game.getPlayer().getInventoryValue()));
             }
         });
 
