@@ -33,6 +33,11 @@ public class Game implements IGame {
 
         finishedGames = new ArrayList<>();
         saveGame = new SaveFile("./saveFile.json");
+        loadGame();
+        reactToResults();
+    }
+
+    void loadGame() {
         try {
             ArrayList<GameResultData> loadedData = saveGame.load();
             for (GameResultData resultData : loadedData) {
@@ -47,7 +52,10 @@ public class Game implements IGame {
             // finishedGames Arraylist will be an empty list
             // This is the same as starting a new game
         }
-        reactToResults();
+    }
+
+    public void deleteSaveFile() {
+        saveGame.delete();
     }
 
     /**

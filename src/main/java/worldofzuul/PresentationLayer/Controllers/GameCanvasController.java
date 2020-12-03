@@ -328,7 +328,7 @@ public class GameCanvasController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Quit the game?");
         alert.setHeaderText("Do you want to quit the game?");
-        alert.setContentText("You will loose all progress!");
+        alert.setContentText("You will lose your unsaved progress");
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) {
                 System.exit(0); //0-exit code means "successfull".

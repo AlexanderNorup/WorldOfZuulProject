@@ -40,6 +40,7 @@ public interface IGame {
 
     String getPlayerDescription();
 
+    void deleteSaveFile();
 
     /**
      * Allows us to set the playerType, so the IPlayers getSprite() method returns the correct sprite for that playerType.
