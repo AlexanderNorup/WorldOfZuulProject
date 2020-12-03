@@ -11,9 +11,7 @@ public interface IGame {
      * they contain shelves with items, and they are connected with warp objects
      * @return the rooms in the world of zuul game
      */
-    ArrayList<IRoom> getRooms();
-
-    void setCurrentRoom(IRoom iRoom);
+    ArrayList<IRoom> getIRooms();
 
     /**
      * Returns an object of a class that implements the IPlayer interface
@@ -22,16 +20,15 @@ public interface IGame {
      * and the players initial position in this room
      * @return An object that implements IPlayer
      */
-    IPlayer getPlayer();
+    IPlayer getIPlayer();
 
-    /**
-     * roughly speaking, this lets a gui act as the Parser from the world of zuul game
-     * Sending commands to the Game class and getting the appropriate responses
-     * @param firstWord String describing the action to be done e.g. "take", "drop", "inspect"
-     * @param secondWord String describing details of the action. could be the item to take or drop
-     * @return a String which is a response to the action e.g. "you picked up 200g Salami"
-     */
-    String doAction(String firstWord, String secondWord);
+    boolean take(IItem item);
+
+    void drop(IItem item);
+
+    void resetGame();
+
+    String reactToResults();
 
 
     /**

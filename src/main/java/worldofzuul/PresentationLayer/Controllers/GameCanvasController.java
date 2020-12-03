@@ -8,7 +8,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.Direction;
@@ -17,8 +16,6 @@ import worldofzuul.PresentationLayer.GridObjects.*;
 import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,12 +58,12 @@ public class GameCanvasController {
 
         gridMap = new HashMap<>();
         iRoomMap = new HashMap<>();
-        IPlayer player = MainGUI.game.getPlayer();
+        IPlayer player = MainGUI.game.getIPlayer();
 
         IRoom startingRoom = player.getStartingRoom();
 
         //Make hashMap of rooms and grids
-        for(IRoom iRoom : MainGUI.game.getRooms()){
+        for(IRoom iRoom : MainGUI.game.getIRooms()){
             Grid grid = new Grid(gameCanvas, iRoom.getWidth(), iRoom.getHeight(),new Image(iRoom.getBackground()));
 
             for(IRoomObject object : iRoom.getObjects()){
@@ -194,7 +191,6 @@ public class GameCanvasController {
         }
         GridObject gridObjectAtNewPosition  = currentGrid.getGridObject(newPosition);
         if(gridObjectAtNewPosition instanceof Warp){
-            MainGUI.game.setCurrentRoom(iRoomMap.get(((Warp) gridObjectAtNewPosition).getGrid()));
             playerObject.setAnimating(true);
             Warp warp = (Warp) gridObjectAtNewPosition;
             currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
