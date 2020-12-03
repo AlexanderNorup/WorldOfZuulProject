@@ -6,13 +6,13 @@
 
 <BorderPane fx:id="sideMenu" focusTraversable="true" prefHeight="500" prefWidth="200" style="-fx-background-color: white" visible="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="worldofzuul.PresentationLayer.Controllers.SideMenuController">
     <top>
-        <Label fx:id="sideMenuTitleLabel" maxWidth="-Infinity" prefHeight="30.0" text="Test" BorderPane.alignment="CENTER" />
+        <Label fx:id="sideMenuTitleLabel" maxWidth="-Infinity" prefHeight="30.0" text="Inventory" BorderPane.alignment="CENTER" />
     </top>
     <center>
         <ListView fx:id="sideMenuListView" onKeyPressed="#listViewKey" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
     </center>
     <bottom>
-        <GridPane BorderPane.alignment="CENTER" fx:id="labelsGrid">
+        <GridPane fx:id="labelsGrid" BorderPane.alignment="CENTER">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
