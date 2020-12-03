@@ -1,5 +1,7 @@
 package worldofzuul.PresentationLayer.Controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -42,6 +44,7 @@ public class ShelfMenuController {
 
             //Sets visibility of textBox (parent of textArea) to true
             textArea.getParent().setVisible(true);
+            MainGUI.playSoundEffect("select.wav");
         });
 
         take.setOnAction(event -> {
@@ -49,10 +52,16 @@ public class ShelfMenuController {
             MainGUI.game.take(item);
             ListView<IItem> sideMenuListView = (ListView<IItem>) shelfMenu.getParent().getScene().lookup("#sideMenu").lookup("#sideMenuListView");
             sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
+            MainGUI.playSoundEffect("select.wav");
         });
 
         contextMenu.getItems().addAll(inspect, take);
         shelfMenuListView.setContextMenu(contextMenu);
+
+        shelfMenuListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            MainGUI.playSoundEffect("select.wav");
+        });
+
     }
 
     public void listViewKey(KeyEvent keyEvent) {
@@ -60,12 +69,14 @@ public class ShelfMenuController {
             case ENTER:
                 Bounds bounds = shelfMenuListView.localToScreen(shelfMenuListView.getBoundsInLocal());
                 contextMenu.show(shelfMenuListView, bounds.getMaxX() - 50, bounds.getMinY());
+                MainGUI.playSoundEffect("select.wav");
                 break;
             case ESCAPE:
                 //"Close" textBox, if textBox is "open". If textBox is not "open", but sideMenu is, "close" sideMenu
                 Node textBox = shelfMenu.getParent().getScene().lookup("#textBox");
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
+                    MainGUI.playSoundEffect("select.wav");
                 }
                 break;
         }

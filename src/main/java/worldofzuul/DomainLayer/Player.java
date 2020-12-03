@@ -37,12 +37,12 @@ public class Player implements IPlayer {
 
     @Override
     public int getStartingX() {
-        return 0;
+        return 2;
     }
 
     @Override
     public int getStartingY() {
-        return 0;
+        return 4;
     }
 
     @Override
