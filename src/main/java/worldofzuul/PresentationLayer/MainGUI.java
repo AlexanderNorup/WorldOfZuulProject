@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.IGame;
 
+import java.net.URL;
+
 
 public class MainGUI extends Application {
     Scene s;
@@ -35,4 +37,14 @@ public class MainGUI extends Application {
         primaryStage.getIcons().add(new Image(MainGUI.class.getResource("/sprites/logo.png").toString()));
         primaryStage.show();
     }
+
+    public static void playSoundEffect(String sound){
+        URL url = MainGUI.class.getResource("/music/"+sound);
+        if(url != null) {
+            Media media = new Media(url.toString());  //plays sound effect
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+        }
+    }
+
 }

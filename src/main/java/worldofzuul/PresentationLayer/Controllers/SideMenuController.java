@@ -89,6 +89,9 @@ public class SideMenuController {
 
         contextMenu.getItems().addAll(inspect, drop);
         sideMenuListView.setContextMenu(contextMenu);
+        sideMenuListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            MainGUI.playSoundEffect("select.wav");
+        });
     }
 
 

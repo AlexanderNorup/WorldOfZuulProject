@@ -10,12 +10,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.*;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,7 +62,6 @@ public class GameCanvasController {
     @FXML
     public void initialize(){
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
-
         gridMap = new HashMap<>();
         iRoomMap = new HashMap<>();
         IPlayer player = MainGUI.game.getPlayer();
@@ -234,11 +236,14 @@ public class GameCanvasController {
                 playerObject.setPlayerPos(newPosition);
                 //If not moving onto the warp, then we just move by calling the grid.
             }
+        }else{
+            MainGUI.playSoundEffect("select.wav");
         }
     }
 
     private void toggleSideMenu(){
         if (!shelfMenu.isVisible()) {
+            MainGUI.playSoundEffect("inventory.wav");
             if (sideMenu.isVisible()) {
                 sideMenu.setVisible(false);
                 sideMenu.setManaged(false);
@@ -271,6 +276,7 @@ public class GameCanvasController {
             sideMenu.setDisable(false);
             sideMenu.setVisible(false);
             textBox.setVisible(false);
+            MainGUI.playSoundEffect("select.wav");
         }
     }
 
@@ -290,22 +296,15 @@ public class GameCanvasController {
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
             shelfMenuListView.requestFocus();
+            MainGUI.playSoundEffect("select.wav");
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
             System.out.println("CASHIER");
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("CHECKOUT");
-            alert.setHeaderText("do you want to checkout?");
-            /*alert.showAndWait().ifPresent(rs -> {
-                if (rs == ButtonType.OK) {
-
-                    System.out.println(MainGUI.game.doAction(CommandWord.CHECKOUT.toString(),null));
-                }
-            });*/
             checkoutmenu.setVisible(true);
             checkoutmenu.lookup(".arrow").setStyle("-fx-background-color: red;");
             checkoutmenu.fire();
             checkoutmenu.lookup( ".arrow" ).setStyle( "-fx-background-insets: 0; -fx-padding: 0; -fx-shape: null;" );
+            MainGUI.playSoundEffect("select.wav");
         }
     }
 
@@ -336,12 +335,12 @@ public class GameCanvasController {
             String result = MainGUI.game.canCheckout();
             if(result == null){
                 ArrayList<String> resultArray = MainGUI.game.Checkout();
-
             }
         }
         else if(actionEvent.getSource() == noButton){
             close();
         }
+        MainGUI.playSoundEffect("select.wav");
     }
 
     void close(){
