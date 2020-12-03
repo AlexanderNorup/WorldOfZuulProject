@@ -1,5 +1,7 @@
 package worldofzuul.PresentationLayer.Controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -9,7 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-import worldofzuul.DomainLayer.Commandhandling.CommandWord;
+
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.Direction;
@@ -36,6 +38,7 @@ public class GameCanvasController {
     private PlayerObject playerObject;
     private HashMap<IRoom, Grid> gridMap;
     private HashMap<Grid, IRoom> iRoomMap;
+    private boolean locked;
 
 
     @FXML
@@ -196,24 +199,27 @@ public class GameCanvasController {
             }
             GridObject gridObjectAtNewPosition = currentGrid.getGridObject(newPosition);
             if (gridObjectAtNewPosition instanceof Warp) {
-                MainGUI.game.setCurrentRoom(iRoomMap.get(((Warp) gridObjectAtNewPosition).getGrid()));
                 playerObject.setAnimating(true);
                 Warp warp = (Warp) gridObjectAtNewPosition;
                 currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
                 currentGrid.setActive(false); //Stop animating the current grid
 
-            playerObject.setPlayerPos(warp.getPlayerPos()); //Get the player position that the warp sends the player to
-            warp.getGrid().setGridObject(playerObject, warp.getPlayerPos()); //Add the player to the new grid
-            playerObject.setActiveGrid(warp.getGrid()); //Get the new grid that is being opened
-            playerObject.getActiveGrid().setActive(true);//Start animating the new grid.
-            playerObject.setAnimating(false);
-            return;
+                playerObject.setPlayerPos(warp.getPlayerPos()); //Get the player position that the warp sends the player to
+                warp.getGrid().setGridObject(playerObject, warp.getPlayerPos()); //Add the player to the new grid
+                playerObject.setActiveGrid(warp.getGrid()); //Get the new grid that is being opened
+                playerObject.getActiveGrid().setActive(true);//Start animating the new grid.
+                playerObject.setAnimating(false);
+                return;
+            }
+
+            if (!playerObject.isAnimating() && playerObject.getActiveGrid().moveObject(playerObject.getPlayerPos(), newPosition)) {
+                playerObject.setPlayerPos(newPosition);
+                //If not moving onto the warp, then we just move by calling the grid.
+            }
         }
 
-        //If not moving onto the warp, then we just move by calling the grid.
-        if (!playerObject.isAnimating() && playerObject.getActiveGrid().moveObject(playerObject.getPlayerPos(), newPosition)) {
-            playerObject.setPlayerPos(newPosition);
-        }
+
+
     }
 
     private void toggleSideMenu(){
@@ -283,11 +289,23 @@ public class GameCanvasController {
 
     public void checkoutButtonHandle(ActionEvent actionEvent) {
         if(actionEvent.getSource()==yesButton){
-            checkoutmenu.setVisible(false);
+            checkoutmenu.setText("Thank you, come again!");
+            //set timer for message.
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> close() );
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().add(keyFrame);
+
+            timeline.play();
         }
         else if(actionEvent.getSource() == noButton){
-            checkoutmenu.setVisible(false);
+            close();
         }
     }
+
+    void close(){
+        checkoutmenu.setVisible(false);
+        locked = false;
+    }
+
 }
 
