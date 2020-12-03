@@ -38,7 +38,7 @@ public interface IGame {
 
     void printWelcome();
 
-    String printPlayer();
+    String getPlayerDescription();
 
 
     /**
