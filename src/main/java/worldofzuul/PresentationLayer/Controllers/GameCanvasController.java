@@ -158,7 +158,7 @@ public class GameCanvasController {
         this.transitionScreen.addLine("Welcome to World Of Zhopping!");
         this.transitionScreen.addLine("In this game you are going shopping\nas a given character.\n\nEach character has it's own needs that you\nneed to fulfill.");
         this.transitionScreen.addLine(MainGUI.game.getPlayerDescription());
-        this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
+        this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nPress 'I' to open your inventory.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
         this.transitionScreen.setActive(true);
 
         root.setFocusTraversable(true); //Makes onKeyPressed() work.
