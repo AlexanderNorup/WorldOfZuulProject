@@ -2,6 +2,8 @@ package worldofzuul.PresentationLayer.Controllers;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -251,8 +253,12 @@ public class GameCanvasController {
                 sideMenu.setVisible(true);
                 sideMenu.setManaged(true);
                 Scene sideScene = sideMenu.getScene();
-                ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
+                ListView<IItem> sideMenuListView = (ListView<IItem>) sideScene.lookup("#sideMenuListView");
                 sideMenuListView.requestFocus();
+                ObservableList<IItem> listViewList = FXCollections.observableArrayList();
+                listViewList.addAll(MainGUI.game.getPlayer().getInventory());
+                sideMenuListView.setItems(listViewList);
+
             }
         }
     }
@@ -337,11 +343,6 @@ public class GameCanvasController {
             timeline.play();
 
 
-
-
-
-
-
         //}
         }
         else if(actionEvent.getSource() == noButton){
@@ -365,6 +366,7 @@ public class GameCanvasController {
         transitionScreen.setDoneHandler(new AnimationDoneHandler() {
             @Override
             public void animationDone() {
+
                 playerObject.getActiveGrid().setActive(false);
                 playerObject.getActiveGrid().setGridObject(null, playerObject.getPlayerPos());
                 startingGrid.setActive(true);
@@ -380,6 +382,7 @@ public class GameCanvasController {
         this.transitionScreen.addLine("Happy shopping!");
         playerObject.getActiveGrid().setActive(false);
         this.transitionScreen.setActive(true);
+
     }
 }
 
