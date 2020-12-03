@@ -1,8 +1,7 @@
 package worldofzuul;
 
 import javafx.application.Application;
-import worldofzuul.DomainLayer.CLIGame;
-import worldofzuul.DomainLayer.Game;
+import worldofzuul.CLILayer.CLIGame;
 import worldofzuul.PresentationLayer.MainGUI;
 
 import java.util.Arrays;

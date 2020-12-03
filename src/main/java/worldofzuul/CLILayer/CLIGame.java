@@ -1,16 +1,19 @@
-package worldofzuul.DomainLayer;
+package worldofzuul.CLILayer;
 
-import worldofzuul.DataLayer.ContentGenerator;
-import worldofzuul.DomainLayer.Commandhandling.Command;
-import worldofzuul.DomainLayer.Commandhandling.CommandWord;
-import worldofzuul.DomainLayer.Commandhandling.Parser;
+import javafx.scene.control.CheckBox;
+import worldofzuul.DomainLayer.Game;
+import worldofzuul.DomainLayer.Interfaces.IGame;
+import worldofzuul.DomainLayer.Interfaces.IItem;
+import worldofzuul.DomainLayer.Interfaces.IRoom;
+
+import java.util.ArrayList;
 
 public class CLIGame {
 
-    private Room currentRoom;
+    private IRoom currentRoom;
 
     private final Parser parser;
-    Game game;
+    IGame game;
 
     public CLIGame(){
         game =  new Game();
@@ -68,9 +71,9 @@ public class CLIGame {
             }
         } else {
             StringBuilder returnString = new StringBuilder();
-            returnString.append("You are out shopping as a " + game.getIPlayer().getPlayerType().getName() + "\n");
-            returnString.append("| Your budget is " + game.getIPlayer().getPlayerType().getBudgetMax() + " dkk." + "  ||  " +
-                    "Your minimum calorie goal is " + game.getIPlayer().getPlayerType().getCalorieMin() + "  |\n");
+            returnString.append("You are out shopping as a " + game.getPlayer().getPlayerType().getName() + "\n");
+            returnString.append("| Your budget is " + game.getPlayer().getPlayerType().getBudgetMax() + " dkk." + "  ||  " +
+                    "Your minimum calorie goal is " + game.getPlayer().getPlayerType().getCalorieMin() + "  |\n");
             returnString.append("\n");
             returnString.append("Your command words are:\n");
             returnString.append(parser.showCommands());
@@ -114,10 +117,7 @@ public class CLIGame {
      * @param command second word should be the name of the item the player wants to pick up
      */
     private String take(Command command) {
-        System.out.println("COMMAND - take");
-        System.out.println("item name: " + command.getSecondWord());
-        Item item = currentRoom.getItem(command.getSecondWord());
-        System.out.println("item null: " + (item == null));
+        IItem item = currentRoom.getItem(command.getSecondWord());
         if (item != null) {
             game.take(item);
             return "You picked up " + item.getName();
@@ -136,13 +136,13 @@ public class CLIGame {
 
         String direction = command.getSecondWord();
 
-        Room nextRoom = currentRoom.getExit(direction);
+        IRoom nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             return "There is no door!";
         } else {
             currentRoom = nextRoom;
-            return currentRoom.getLongDescription();
+            return currentRoom.getDescription();
         }
     }
 
@@ -179,7 +179,7 @@ public class CLIGame {
      * @param command second word should be the name of the item the player wants to inspect
      */
     private String inspect(Command command) {
-        Item item = currentRoom.getItem(command.getSecondWord());
+        IItem item = currentRoom.getItem(command.getSecondWord());
         return item != null ? item.toString() : "item not found";
     }
 
@@ -190,32 +190,28 @@ public class CLIGame {
      * if everything is alright adds a new gameResult to the list of results and restarts the game
      */
     private String checkout() {
-        System.out.println("checkout");
 
         if (!currentRoom.canCheckout()) { //checks if it is possible to checkout in the current room.
             return "You can't checkout here, go to the cashier.";
         }
-        if (!game.getPlayer().underBudget()) {
-            return "You are over budget. Drop some items (use \"drop\" command)";
+
+        String canCheckoutResult = game.canCheckout();
+
+        if(canCheckoutResult != null){
+            return canCheckoutResult;
+        }else {
+            ArrayList<String> CheckoutResult = game.Checkout();
+            CheckoutResult.add(game.printPlayer());
+            CheckoutResult.add(currentRoom.getDescription());
+
+            StringBuilder returnString = new StringBuilder();
+            for(String string : CheckoutResult){
+                setStartPosition();
+                returnString.append(string);
+                returnString.append("\n");
+            }
+            return returnString.toString();
         }
-        if (!game.getPlayer().overMinCalories()) {
-            return "You are under your calorie requirements. Pick up some items (use \"take\" command)";
-        }
-
-        //TODO implement correct checkout procedure
-
-        StringBuilder returnString = new StringBuilder();
-        returnString.append("You went to the register and checked out.");
-        returnString.append("The day is over and you go back home to sleep.");
-        returnString.append(resetGame()); //resets the game and starts anew.
-
-        returnString.append(game.reactToResults());
-        setStartPosition(); //creates the rooms again and fills them with items
-        returnString.append(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + ".");
-        returnString.append("It is a new day, you wake up and go to the store.");
-        returnString.append(game.printPlayer());
-        returnString.append(currentRoom.getLongDescription());
-        return returnString.toString();
     }
 
 
@@ -225,24 +221,12 @@ public class CLIGame {
      * Sets the current room
      */
     private void setStartPosition() {
-        currentRoom = game.getRooms().get(0); //this sets the starting position to the first room. (Which will always be outside).
+        currentRoom = game.getPlayer().getStartingRoom(); //this sets the starting position to the first room. (Which will always be outside).
     }
 
     /**
      * Takes care of resetting player and rooms and prints stuff to the user
      */
-    private String resetGame() {
-        StringBuilder returnString = new StringBuilder();
-        returnString.append(game.reactToResults());
-        game.getPlayer().deleteInventory(); // deletes all items in the inventory
-        setStartPosition(); //creates the rooms again and fills them with items
-        returnString.append(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + ".");
-        game.getPlayer().setPlayerType((ContentGenerator.getStudentPlayerType()));
-        returnString.append("It is a new day, you wake up and go to the store.");
-        returnString.append(game.printPlayer());
-        returnString.append(currentRoom.getLongDescription());
-        return returnString.toString();
-    }
 
     /**
      * Removes an item from the players inventory
@@ -252,7 +236,7 @@ public class CLIGame {
     private String drop(Command command) {
 
         //get item from user
-        Item item = game.getPlayer().getItem(command.getSecondWord());
+        IItem item = game.getPlayer().getItem(command.getSecondWord());
 
         //if item not null, remove item from inventory and add to store
         if (item != null) {

@@ -1,10 +1,7 @@
 package worldofzuul.DomainLayer;
 
 import worldofzuul.DataLayer.*;
-import worldofzuul.DomainLayer.Commandhandling.Command;
-import worldofzuul.DomainLayer.Commandhandling.CommandWord;
-import worldofzuul.DomainLayer.Commandhandling.CommandWords;
-import worldofzuul.DomainLayer.Commandhandling.Parser;
+import worldofzuul.CLILayer.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.IGame;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IPlayer;
@@ -56,20 +53,12 @@ public class Game implements IGame {
      * parsing arraylist of Rooms to an arraylist of IRoom and returns it
      */
     @Override
-    public ArrayList<IRoom> getIRooms() {
+    public ArrayList<IRoom> getRooms() {
         return new ArrayList<>(rooms);
     }
 
-    public ArrayList<Room> getRooms() {
-        return rooms;
-    }
-
     @Override
-    public IPlayer getIPlayer(){
-        return player;
-    }
-
-    public Player getPlayer(){
+    public IPlayer getPlayer(){
         return player;
     }
 
@@ -113,7 +102,7 @@ public class Game implements IGame {
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(rooms.get(0).getLongDescription());
+        System.out.println(rooms.get(0).getDescription());
     }
 
     private void save() {
@@ -123,10 +112,34 @@ public class Game implements IGame {
         }
         try {
             saveGame.save(resultData);
-            System.out.println("Game saved successfully");
+            System.out.println("Game saved successfully\n");
         } catch (SaveGameException e) {
             System.out.println("An error occurred when saving the game");
         }
+    }
+
+    public String canCheckout(){
+        if (!getPlayer().underBudget()) {
+            return "You are over budget. Drop some items (use \"drop\" command)";
+        }
+        if (!getPlayer().overMinCalories()) {
+            return "You are under your calorie requirements. Pick up some items (use \"take\" command)";
+        }
+        return null;
+    }
+
+    public ArrayList<String> Checkout(){
+        ArrayList<String> strings = new ArrayList<>();
+
+        strings.add("You went to the register and checked out.\nThe day is over and you go back home to sleep.\n\n");
+        //strings.add(player.getGameResult());
+        strings.add(reactToResults());
+        strings.add(".  .  .  .  .  .  .");
+        strings.add("It is a new day, you wake up and go to the store.");
+
+        resetGame();
+
+        return strings;
     }
 
     /**

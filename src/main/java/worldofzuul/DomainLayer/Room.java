@@ -63,14 +63,10 @@ public class Room implements IRoom {
         return items;
     }
 
-    public String getShortDescription() {
-        return description;
-    }
-
     /**
      * @return String "You are #name of room#" followed by a list of items
      */
-    public String getLongDescription() {
+    public String getDescription() {
         String itemString = getItemsString();
         itemString = itemString == null ? "" : itemString + "\n";
         return "You are " + description + ".\n" + itemString + getExitString() + ".\n";

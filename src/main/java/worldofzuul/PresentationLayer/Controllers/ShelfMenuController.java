@@ -9,7 +9,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.PresentationLayer.MainGUI;
 
@@ -49,7 +48,7 @@ public class ShelfMenuController {
             IItem item = shelfMenuListView.getSelectionModel().getSelectedItem();
             MainGUI.game.take(item);
             ListView<IItem> sideMenuListView = (ListView<IItem>) shelfMenu.getParent().getScene().lookup("#sideMenu").lookup("#sideMenuListView");
-            sideMenuListView.getItems().setAll(MainGUI.game.getIPlayer().getInventory());
+            sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
         });
 
         contextMenu.getItems().addAll(inspect, take);

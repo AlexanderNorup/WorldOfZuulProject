@@ -26,4 +26,14 @@ public interface IRoom {
      * @return a reference to the resource to be used as the rooms background
      */
     String getBackground();
+
+    boolean canCheckout();
+
+    String getDescription();
+
+    IItem getItem(String name);
+
+    String getItemsString();
+
+    IRoom getExit(String direction);
 }
