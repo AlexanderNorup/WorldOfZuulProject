@@ -171,12 +171,16 @@ public class GameCanvasController {
             case D, RIGHT -> tryMove(Direction.RIGHT);
             case G -> playerObject.getActiveGrid().setShowDebug(!playerObject.getActiveGrid().isShowDebug());
             case I -> toggleSideMenu();
+            case C -> closeShelfMenu();
             case SPACE -> toggleTextBox();
             case ENTER -> interact();
             case ESCAPE -> quit();
+
         }
 
     }
+
+
 
     /**
      * Tries to move the player to a new position.
@@ -217,20 +221,38 @@ public class GameCanvasController {
     }
 
     private void toggleSideMenu(){
-        if (sideMenu.isVisible()) {
-            sideMenu.setVisible(false);
-            sideMenu.setManaged(false);
-        } else {
-            sideMenu.setVisible(true);
-            sideMenu.setManaged(true);
-            Scene sideScene = sideMenu.getScene();
-            ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
-            sideMenuListView.requestFocus();
+        if (!shelfMenu.isVisible()) {
+            if (sideMenu.isVisible()) {
+                sideMenu.setVisible(false);
+                sideMenu.setManaged(false);
+            } else {
+                sideMenu.setVisible(true);
+                sideMenu.setManaged(true);
+                Scene sideScene = sideMenu.getScene();
+                ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
+                sideMenuListView.requestFocus();
+            }
         }
     }
 
     private void toggleTextBox(){
         if (textBox.isVisible()) {
+            textBox.setVisible(false);
+        }
+        shelfMenu.setVisible(false);
+        shelfMenu.setManaged(false);
+    }
+
+    public void toggleShelfMenu(){
+        textBox.setVisible(false);
+    }
+
+    public void closeShelfMenu() {
+        if (shelfMenu.isVisible()){
+            shelfMenu.setVisible(false);
+            shelfMenu.setManaged(false);
+            sideMenu.setDisable(false);
+            sideMenu.setVisible(false);
             textBox.setVisible(false);
         }
     }
@@ -246,6 +268,8 @@ public class GameCanvasController {
 
             System.out.println(Arrays.toString(Collections.singletonList(currentShelf.getItems()).toArray()));
 
+            sideMenu.setVisible(true);
+            sideMenu.setDisable(true);
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
             shelfMenuListView.requestFocus();

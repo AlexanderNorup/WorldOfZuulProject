@@ -106,6 +106,7 @@ public class SideMenuController {
                     textBox.setVisible(false);
                 }
                 break;
+
         }
     }
 }
