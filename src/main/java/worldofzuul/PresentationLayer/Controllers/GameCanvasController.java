@@ -1,13 +1,17 @@
 package worldofzuul.PresentationLayer.Controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
@@ -35,6 +39,8 @@ public class GameCanvasController {
     private PlayerObject playerObject;
     private HashMap<IRoom, Grid> gridMap;
     private HashMap<Grid, IRoom> iRoomMap;
+    private Grid grid;
+    private boolean locked;
 
 
     @FXML
@@ -58,6 +64,7 @@ public class GameCanvasController {
     @FXML
     public void initialize(){
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
+        locked = false;
 
         gridMap = new HashMap<>();
         iRoomMap = new HashMap<>();
@@ -182,35 +189,37 @@ public class GameCanvasController {
      * If the new position is a Warp, then the player changes the active Grid, and moves to the Warp's destination
      * @param direction the direction the player should go.
      */
-    private void tryMove(Direction direction){
-        Grid currentGrid = playerObject.getActiveGrid();
-        Position currentPosition = playerObject.getPlayerPos();
-        Position newPosition = currentPosition;
-        switch (direction){
-            case UP -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() - 1);
-            case DOWN -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() + 1);
-            case LEFT -> newPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
-            case RIGHT -> newPosition = new Position(currentPosition.getX() + 1, currentPosition.getY());
-        }
-        GridObject gridObjectAtNewPosition  = currentGrid.getGridObject(newPosition);
-        if(gridObjectAtNewPosition instanceof Warp){
-            MainGUI.game.setCurrentRoom(iRoomMap.get(((Warp) gridObjectAtNewPosition).getGrid()));
-            playerObject.setAnimating(true);
-            Warp warp = (Warp) gridObjectAtNewPosition;
-            currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
-            currentGrid.setActive(false); //Stop animating the current grid
+    private void tryMove(Direction direction) {
+        if (!locked) {
+            Grid currentGrid = playerObject.getActiveGrid();
+            Position currentPosition = playerObject.getPlayerPos();
+            Position newPosition = currentPosition;
+            switch (direction) {
+                case UP -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() - 1);
+                case DOWN -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() + 1);
+                case LEFT -> newPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
+                case RIGHT -> newPosition = new Position(currentPosition.getX() + 1, currentPosition.getY());
+            }
+            GridObject gridObjectAtNewPosition = currentGrid.getGridObject(newPosition);
+            if (gridObjectAtNewPosition instanceof Warp) {
+                MainGUI.game.setCurrentRoom(iRoomMap.get(((Warp) gridObjectAtNewPosition).getGrid()));
+                playerObject.setAnimating(true);
+                Warp warp = (Warp) gridObjectAtNewPosition;
+                currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
+                currentGrid.setActive(false); //Stop animating the current grid
 
-            playerObject.setPlayerPos(warp.getPlayerPos()); //Get the player position that the warp sends the player to
-            warp.getGrid().setGridObject(playerObject, warp.getPlayerPos()); //Add the player to the new grid
-            playerObject.setActiveGrid(warp.getGrid()); //Get the new grid that is being opened
-            playerObject.getActiveGrid().setActive(true);//Start animating the new grid.
-            playerObject.setAnimating(false);
-            return;
-        }
+                playerObject.setPlayerPos(warp.getPlayerPos()); //Get the player position that the warp sends the player to
+                warp.getGrid().setGridObject(playerObject, warp.getPlayerPos()); //Add the player to the new grid
+                playerObject.setActiveGrid(warp.getGrid()); //Get the new grid that is being opened
+                playerObject.getActiveGrid().setActive(true);//Start animating the new grid.
+                playerObject.setAnimating(false);
+                return;
+            }
 
-        //If not moving onto the warp, then we just move by calling the grid.
-        if (!playerObject.isAnimating() && playerObject.getActiveGrid().moveObject(playerObject.getPlayerPos(), newPosition)) {
-            playerObject.setPlayerPos(newPosition);
+            //If not moving onto the warp, then we just move by calling the grid.
+            if (!playerObject.isAnimating() && playerObject.getActiveGrid().moveObject(playerObject.getPlayerPos(), newPosition)) {
+                playerObject.setPlayerPos(newPosition);
+            }
         }
     }
 
@@ -249,6 +258,7 @@ public class GameCanvasController {
             shelfMenuListView.requestFocus();
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
+            locked = true;
             System.out.println("CASHIER");
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("CHECKOUT");
@@ -260,6 +270,7 @@ public class GameCanvasController {
                 }
             });*/
             checkoutmenu.setVisible(true);
+            checkoutmenu.setText("Do you wanna checkout?");
             checkoutmenu.lookup(".arrow").setStyle("-fx-background-color: red;");
             checkoutmenu.fire();
             checkoutmenu.lookup( ".arrow" ).setStyle( "-fx-background-insets: 0; -fx-padding: 0; -fx-shape: null;" );
@@ -268,6 +279,7 @@ public class GameCanvasController {
 
     private void quit(){
         //Prompts the user if they want to exit.
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Quit the game?");
         alert.setHeaderText("Do you want to quit the game?");
@@ -279,13 +291,36 @@ public class GameCanvasController {
         });
     }
 
-    public void checkoutButtonHandle(ActionEvent actionEvent) {
+
+
+    public void checkoutButtonHandle(ActionEvent actionEvent) throws InterruptedException {
         if(actionEvent.getSource()==yesButton){
-            checkoutmenu.setVisible(false);
+            checkoutmenu.setText("Thank you, come again!");
+            //set timer for message.
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2),event -> close() );
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().add(keyFrame);
+
+            timeline.play();
+
+
+
+
+
+
+
         }
         else if(actionEvent.getSource() == noButton){
             checkoutmenu.setVisible(false);
+            locked = false;
+
         }
     }
+
+    void close(){
+        checkoutmenu.setVisible(false);
+        locked = false;
+    }
+
 }
 
