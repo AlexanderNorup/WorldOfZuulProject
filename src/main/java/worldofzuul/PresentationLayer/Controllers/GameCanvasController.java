@@ -8,6 +8,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
+import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.Direction;
@@ -16,6 +18,8 @@ import worldofzuul.PresentationLayer.GridObjects.*;
 import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -183,22 +187,24 @@ public class GameCanvasController {
      * If the new position is a Warp, then the player changes the active Grid, and moves to the Warp's destination
      * @param direction the direction the player should go.
      */
-    private void tryMove(Direction direction){
-        Grid currentGrid = playerObject.getActiveGrid();
-        Position currentPosition = playerObject.getPlayerPos();
-        Position newPosition = currentPosition;
-        switch (direction){
-            case UP -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() - 1);
-            case DOWN -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() + 1);
-            case LEFT -> newPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
-            case RIGHT -> newPosition = new Position(currentPosition.getX() + 1, currentPosition.getY());
-        }
-        GridObject gridObjectAtNewPosition  = currentGrid.getGridObject(newPosition);
-        if(gridObjectAtNewPosition instanceof Warp){
-            playerObject.setAnimating(true);
-            Warp warp = (Warp) gridObjectAtNewPosition;
-            currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
-            currentGrid.setActive(false); //Stop animating the current grid
+    private void tryMove(Direction direction) {
+        if (!locked) {
+            Grid currentGrid = playerObject.getActiveGrid();
+            Position currentPosition = playerObject.getPlayerPos();
+            Position newPosition = currentPosition;
+            switch (direction) {
+                case UP -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() - 1);
+                case DOWN -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() + 1);
+                case LEFT -> newPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
+                case RIGHT -> newPosition = new Position(currentPosition.getX() + 1, currentPosition.getY());
+            }
+            GridObject gridObjectAtNewPosition = currentGrid.getGridObject(newPosition);
+            if (gridObjectAtNewPosition instanceof Warp) {
+                MainGUI.game.setCurrentRoom(iRoomMap.get(((Warp) gridObjectAtNewPosition).getGrid()));
+                playerObject.setAnimating(true);
+                Warp warp = (Warp) gridObjectAtNewPosition;
+                currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
+                currentGrid.setActive(false); //Stop animating the current grid
 
             playerObject.setPlayerPos(warp.getPlayerPos()); //Get the player position that the warp sends the player to
             warp.getGrid().setGridObject(playerObject, warp.getPlayerPos()); //Add the player to the new grid
