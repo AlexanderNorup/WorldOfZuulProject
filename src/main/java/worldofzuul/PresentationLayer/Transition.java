@@ -141,7 +141,7 @@ public class Transition {
             }
 
             if(animationProgress > 2){
-                gc.setGlobalAlpha(animationProgress-2);
+                gc.setGlobalAlpha(Math.min(animationProgress-2, 0.8));
                 String helpText = "Press 'E' to continue";
                 gc.setFont(new Font("Consolas", 16));
 

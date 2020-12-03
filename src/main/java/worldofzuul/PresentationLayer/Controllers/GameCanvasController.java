@@ -10,12 +10,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.*;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +63,6 @@ public class GameCanvasController {
     @FXML
     public void initialize(){
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
-
         gridMap = new HashMap<>();
         iRoomMap = new HashMap<>();
         IPlayer player = MainGUI.game.getPlayer();
@@ -109,8 +111,42 @@ public class GameCanvasController {
         startingGrid.setGridObject(new Wall(), new Position(7,3));
 
 
-        playerObject = new PlayerObject(startingGrid, new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
+        //Makes the first grid.
+        Grid activeGrid = new Grid(gameCanvas, 4,6,new Image(MainGUI.class.getResource("/backgrounds/aisle_bakery_dairy.png").toString()));
+
+        //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
+        //around. The last 2 arguments here represent the starting-position for the player.
+        playerObject = new PlayerObject(startingGrid, new Position(2,4));
         playerObject.setAvatarImg(new Image (player.getSprite()));
+
+
+        //Then we set some GridObjects. That could be anything that extends the GridObject class.
+        //These "Dog"s extend the GridSprite class, which in turn then extends the GridObject.
+        //GridSprites are objects that can be drawn to the screen in a tile.
+        //Here 2 dogs are created just as a test. They are each given a position on the board.
+        activeGrid.setGridObject(new Dog(), new Position(0,5));
+        activeGrid.setGridObject(new Dog(), new Position(3,5));
+
+        //Then we make another grid. It is created the excact same way as before.
+        //It also has a dog.
+        Grid anotherGrid = new Grid(gameCanvas, 9,6, new Image(MainGUI.class.getResource("/backgrounds/orange.png").toString()));
+        anotherGrid.setGridObject(new Dog(), new Position(4,5));
+
+        //Now we create a Warp
+        //A Warp is also a child of GridObject. It dosn't have a sprite (unless you enable debug-mode).
+        //A Warp takes 2 arguments: What grid to teleport to, and where the teleport should place the player.
+        //A Warp activates when the player is about to step onto it.
+        Warp activeToAnotherWarp = new Warp(activeGrid,new Position(3,3));
+        //We add the Warp the same way we add a ordinary GridObject
+        anotherGrid.setGridObject(activeToAnotherWarp, new Position(3,4));
+
+        //We create another warp. This one takes the player from the activeGrid to anotherGrid.
+        activeGrid.setGridObject(new Warp(anotherGrid,new Position(0,0)), new Position(3,2));
+
+
+        //Then we set the first grid as "active".
+        //This means that grid will be the one on screen.
+        //activeGrid.setActive(true); //Starts drawing and animations
 
 
 
@@ -120,6 +156,7 @@ public class GameCanvasController {
             @Override
             public void animationDone() {
                 startingGrid.setActive(true);
+                locked = false;
             }
         });
 
@@ -201,11 +238,14 @@ public class GameCanvasController {
                 playerObject.setPlayerPos(newPosition);
                 //If not moving onto the warp, then we just move by calling the grid.
             }
+        }else{
+            MainGUI.playSoundEffect("select.wav");
         }
     }
 
     private void toggleSideMenu(){
         if (!shelfMenu.isVisible()) {
+            MainGUI.playSoundEffect("inventory.wav");
             if (sideMenu.isVisible()) {
                 sideMenu.setVisible(false);
                 sideMenu.setManaged(false);
@@ -238,6 +278,7 @@ public class GameCanvasController {
             sideMenu.setDisable(false);
             sideMenu.setVisible(false);
             textBox.setVisible(false);
+            MainGUI.playSoundEffect("select.wav");
             locked = false;
         }
     }
@@ -258,23 +299,16 @@ public class GameCanvasController {
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
             shelfMenuListView.requestFocus();
+            MainGUI.playSoundEffect("select.wav");
             locked = true;
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
             System.out.println("CASHIER");
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("CHECKOUT");
-            alert.setHeaderText("do you want to checkout?");
-            /*alert.showAndWait().ifPresent(rs -> {
-                if (rs == ButtonType.OK) {
-
-                    System.out.println(MainGUI.game.doAction(CommandWord.CHECKOUT.toString(),null));
-                }
-            });*/
             checkoutmenu.setVisible(true);
             checkoutmenu.lookup(".arrow").setStyle("-fx-background-color: red;");
             checkoutmenu.fire();
             checkoutmenu.lookup( ".arrow" ).setStyle( "-fx-background-insets: 0; -fx-padding: 0; -fx-shape: null;" );
+            MainGUI.playSoundEffect("select.wav");
             locked = true;
         }
     }
@@ -294,7 +328,7 @@ public class GameCanvasController {
 
     public void checkoutButtonHandle(ActionEvent actionEvent) {
         if(actionEvent.getSource()==yesButton){
-            checkoutmenu.setVisible(false);
+            checkoutmenu.setText("Thank you, come again!");
 
             //set timer for message.
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> close() );
@@ -329,6 +363,7 @@ public class GameCanvasController {
         else if(actionEvent.getSource() == noButton){
             close();
         }
+        MainGUI.playSoundEffect("select.wav");
     }
 
     void close(){
