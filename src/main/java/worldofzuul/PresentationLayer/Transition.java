@@ -57,7 +57,7 @@ public class Transition {
 
 
         this.animationStart = 0;
-        this.animationTime = 2000;
+        this.animationTime = 1000;
         this.animationState = -1;
         this.animationIsDone = false;
         this.textFont = new Font("Consolas", 36 );
@@ -113,6 +113,7 @@ public class Transition {
             gc.setGlobalAlpha(animationProgress);
             gc.fillRect(0,0,windowWidth, windowHeight);
             if(animationProgress >= 1){
+                this.animationTime = 2000;
                 this.advanceAnimationState();
             }
         }else{
@@ -150,6 +151,10 @@ public class Transition {
 
     }
 
+    /**
+     * Advances the state to show the next text.
+     * Also calls the doneCallback if done.
+     */
     public void advanceAnimationState(){
         this.animationState++;
         this.animationStart = System.currentTimeMillis();
@@ -175,11 +180,13 @@ public class Transition {
         return this.animationIsDone;
     }
 
+    /**
+     * Completely resets the Transition so it can be used agian.
+     */
     public void reset(){
         this.clearLines();
         this.setActive(false);
         this.animationState = -1;
-
     }
 
 }
