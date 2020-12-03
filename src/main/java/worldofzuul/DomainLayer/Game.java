@@ -181,9 +181,9 @@ public class Game implements IGame {
             happiness += finishedGame.getHappiness();
             co2 += finishedGame.getCo2();
         }
-        returnString.append("Your results for today:\n\n");
+        returnString.append("Your results for today\n\n");
         returnString.append("CO2: ").append(co2).append("\n");
-        returnString.append("happiness: ").append(happiness).append("\n\n\n");
+        returnString.append("Happiness: ").append(happiness).append("\n\n\n");
 
         if (co2 < 5) {
             returnString.append("The earth is a green and beautiful place\n");
