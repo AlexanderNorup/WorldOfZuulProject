@@ -1,9 +1,12 @@
 package worldofzuul.CLILayer;
 
+import javafx.scene.control.CheckBox;
 import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.IGame;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IRoom;
+
+import java.util.ArrayList;
 
 public class CLIGame {
 
@@ -114,10 +117,7 @@ public class CLIGame {
      * @param command second word should be the name of the item the player wants to pick up
      */
     private String take(Command command) {
-        System.out.println("COMMAND - take");
-        System.out.println("item name: " + command.getSecondWord());
         IItem item = currentRoom.getItem(command.getSecondWord());
-        System.out.println("item null: " + (item == null));
         if (item != null) {
             game.take(item);
             return "You picked up " + item.getName();
@@ -190,32 +190,28 @@ public class CLIGame {
      * if everything is alright adds a new gameResult to the list of results and restarts the game
      */
     private String checkout() {
-        System.out.println("checkout");
 
         if (!currentRoom.canCheckout()) { //checks if it is possible to checkout in the current room.
             return "You can't checkout here, go to the cashier.";
         }
-        if (!game.getPlayer().underBudget()) {
-            return "You are over budget. Drop some items (use \"drop\" command)";
+
+        String canCheckoutResult = game.canCheckout();
+
+        if(canCheckoutResult != null){
+            return canCheckoutResult;
+        }else {
+            ArrayList<String> CheckoutResult = game.Checkout();
+            CheckoutResult.add(game.printPlayer());
+            CheckoutResult.add(currentRoom.getDescription());
+
+            StringBuilder returnString = new StringBuilder();
+            for(String string : CheckoutResult){
+                setStartPosition();
+                returnString.append(string);
+                returnString.append("\n");
+            }
+            return returnString.toString();
         }
-        if (!game.getPlayer().overMinCalories()) {
-            return "You are under your calorie requirements. Pick up some items (use \"take\" command)";
-        }
-
-        //TODO implement correct checkout procedure
-
-        StringBuilder returnString = new StringBuilder();
-        returnString.append("You went to the register and checked out.");
-        returnString.append("The day is over and you go back home to sleep.");
-        returnString.append(resetGame()); //resets the game and starts anew.
-
-        returnString.append(game.reactToResults());
-        setStartPosition(); //creates the rooms again and fills them with items
-        returnString.append(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + ".");
-        returnString.append("It is a new day, you wake up and go to the store.");
-        returnString.append(game.printPlayer());
-        returnString.append(currentRoom.getDescription());
-        return returnString.toString();
     }
 
 
@@ -225,21 +221,12 @@ public class CLIGame {
      * Sets the current room
      */
     private void setStartPosition() {
-        currentRoom = game.getRooms().get(0); //this sets the starting position to the first room. (Which will always be outside).
+        currentRoom = game.getPlayer().getStartingRoom(); //this sets the starting position to the first room. (Which will always be outside).
     }
 
     /**
      * Takes care of resetting player and rooms and prints stuff to the user
      */
-    private String resetGame() {
-        StringBuilder returnString = new StringBuilder();
-        returnString.append(game.reactToResults());
-        setStartPosition(); //creates the rooms again and fills them with items
-        returnString.append(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + ".");
-        returnString.append("It is a new day, you wake up and go to the store.");
-        returnString.append(game.printPlayer());
-        return returnString.toString();
-    }
 
     /**
      * Removes an item from the players inventory

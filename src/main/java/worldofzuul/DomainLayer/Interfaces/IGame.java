@@ -28,6 +28,10 @@ public interface IGame {
 
     void resetGame();
 
+    String canCheckout();
+
+    ArrayList<String > Checkout();
+
     String reactToResults();
 
     void printWelcome();

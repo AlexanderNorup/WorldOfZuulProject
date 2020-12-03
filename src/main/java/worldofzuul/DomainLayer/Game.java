@@ -112,10 +112,34 @@ public class Game implements IGame {
         }
         try {
             saveGame.save(resultData);
-            System.out.println("Game saved successfully");
+            System.out.println("Game saved successfully\n");
         } catch (SaveGameException e) {
             System.out.println("An error occurred when saving the game");
         }
+    }
+
+    public String canCheckout(){
+        if (!getPlayer().underBudget()) {
+            return "You are over budget. Drop some items (use \"drop\" command)";
+        }
+        if (!getPlayer().overMinCalories()) {
+            return "You are under your calorie requirements. Pick up some items (use \"take\" command)";
+        }
+        return null;
+    }
+
+    public ArrayList<String> Checkout(){
+        ArrayList<String> strings = new ArrayList<>();
+
+        strings.add("You went to the register and checked out.\nThe day is over and you go back home to sleep.\n\n");
+        //strings.add(player.getGameResult());
+        strings.add(reactToResults());
+        strings.add(".  .  .  .  .  .  .");
+        strings.add("It is a new day, you wake up and go to the store.");
+
+        resetGame();
+
+        return strings;
     }
 
     /**
