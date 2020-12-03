@@ -230,6 +230,7 @@ public class GameCanvasController {
                 playerObject.setActiveGrid(warp.getGrid()); //Get the new grid that is being opened
                 playerObject.getActiveGrid().setActive(true);//Start animating the new grid.
                 playerObject.setAnimating(false);
+                MainGUI.playSoundEffect("door.wav");
                 return;
             }
 
@@ -237,6 +238,8 @@ public class GameCanvasController {
             if (!playerObject.isAnimating() && playerObject.getActiveGrid().moveObject(playerObject.getPlayerPos(), newPosition)) {
                 playerObject.setPlayerPos(newPosition);
                 //If not moving onto the warp, then we just move by calling the grid.
+            }else{
+                MainGUI.playSoundEffect("block.wav");
             }
         }else{
             MainGUI.playSoundEffect("select.wav");
