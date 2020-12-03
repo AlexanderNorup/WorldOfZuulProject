@@ -11,7 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.IItem;
+import worldofzuul.Main;
 import worldofzuul.PresentationLayer.MainGUI;
 
 import java.util.ArrayList;
@@ -56,31 +58,26 @@ public class SideMenuController {
         drop = new MenuItem("Drop");
 
         ObservableList<IItem> listViewList = FXCollections.observableArrayList();
+        listViewList.addAll(MainGUI.game.getPlayer().getInventory());
         sideMenuListView.setItems(listViewList);
 
-        inspect.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                //Finds the textArea node
-                TextArea textArea = (TextArea) sideMenu.getParent().getScene().lookup("#textBox").lookup("#textArea");
+        inspect.setOnAction(event -> {
+            //Finds the textArea node
+            TextArea textArea = (TextArea) sideMenu.getParent().getScene().lookup("#textBox").lookup("#textArea");
 
-                //Sets textArea's text to currently selected item in listView
-                textArea.setText(sideMenuListView.getSelectionModel().getSelectedItem().getDescription());
+            //Sets textArea's text to currently selected item in listView
+            textArea.setText(sideMenuListView.getSelectionModel().getSelectedItem().getDescription());
 
-                //Sets visibility of textBox (parent of textArea) to true
-                textArea.getParent().setVisible(true);
-            }
+            //Sets visibility of textBox (parent of textArea) to true
+            textArea.getParent().setVisible(true);
         });
 
-        drop.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                IItem item = sideMenuListView.getSelectionModel().getSelectedItem();
-                System.out.println("Dropped");
-                MainGUI.game.doAction("drop", item.getName());
-                listViewList.clear();
-                listViewList.addAll(MainGUI.game.getPlayer().getInventory());
-            }
+        drop.setOnAction(event -> {
+            IItem item = sideMenuListView.getSelectionModel().getSelectedItem();
+            System.out.println("Dropped");
+            MainGUI.game.doAction(CommandWord.DROP.toString(), item.getName());
+            listViewList.clear();
+            listViewList.addAll(MainGUI.game.getPlayer().getInventory());
         });
 
         contextMenu.getItems().addAll(inspect, drop);

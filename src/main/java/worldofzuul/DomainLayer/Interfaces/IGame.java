@@ -13,6 +13,8 @@ public interface IGame {
      */
     ArrayList<IRoom> getRooms();
 
+    void setCurrentRoom(IRoom iRoom);
+
     /**
      * Returns an object of a class that implements the IPlayer interface
      * This has an inventory, and can return summes values from the inventory

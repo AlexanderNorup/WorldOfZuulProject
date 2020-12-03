@@ -6,6 +6,7 @@ import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Commandhandling.CommandWords;
 import worldofzuul.DomainLayer.Commandhandling.Parser;
 import worldofzuul.DomainLayer.Interfaces.IGame;
+import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IPlayer;
 import worldofzuul.DomainLayer.Interfaces.IRoom;
 
@@ -60,6 +61,13 @@ public class Game implements IGame {
     @Override
     public ArrayList<IRoom> getRooms() {
         return new ArrayList<>(rooms);
+    }
+
+    @Override
+    public void setCurrentRoom(IRoom iRoom) {
+        if(iRoom instanceof Room){
+            currentRoom = (Room) iRoom;
+        }
     }
 
     @Override
@@ -164,7 +172,7 @@ public class Game implements IGame {
             case DROP -> output = drop(command);
             case TAKE -> output = take(command);
             case CHECK -> output = check(command);
-            case CHECKOUT -> output = checkout();
+            case CHECKOUT -> output = _checkout();
 
             default -> output = "processCommand -> unregistered command!";
         }
@@ -177,7 +185,7 @@ public class Game implements IGame {
      * calorie goal without using up their budget
      * if everything is alright adds a new gameResult to the list of results and restarts the game
      */
-    private String checkout() {
+    private String _checkout() {
         System.out.println("checkout");
 
         if (!currentRoom.canCheckout()) { //checks if it is possible to checkout in the current room.
@@ -402,7 +410,10 @@ public class Game implements IGame {
      * @param command second word should be the name of the item the player wants to pick up
      */
     private String take(Command command) {
+        System.out.println("COMMAND - take");
+        System.out.println("item name: " + command.getSecondWord());
         Item item = currentRoom.getItem(command.getSecondWord());
+        System.out.println("item null: " + (item == null));
         if (item != null) {
             player.addItem(item);
             return "You picked up " + item.getName();
