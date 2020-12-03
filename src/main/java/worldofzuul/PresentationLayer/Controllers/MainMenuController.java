@@ -5,9 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -56,6 +54,21 @@ public class MainMenuController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    public void deleteSaveFile() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete saveFile");
+        alert.setHeaderText("Do you want to delete your saved game");
+        alert.setContentText("You will loose all progress!");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                MainGUI.game.deleteSaveFile();
+            }
+        });
+
+    }
+
     @FXML
     public void quitGame(){
         quitGameLabel.setText("Bye!");

@@ -54,6 +54,10 @@ public class Game implements IGame {
         }
     }
 
+    public void deleteSaveFile() {
+        saveGame.delete();
+    }
+
     /**
      * parsing arraylist of Rooms to an arraylist of IRoom and returns it
      */
