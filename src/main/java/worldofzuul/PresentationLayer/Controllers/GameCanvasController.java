@@ -155,6 +155,7 @@ public class GameCanvasController {
             @Override
             public void animationDone() {
                 startingGrid.setActive(true);
+                locked = false;
             }
         });
 
@@ -163,6 +164,7 @@ public class GameCanvasController {
         this.transitionScreen.addLine("You are playing as a <PlayerType>.\nThis <PlayerType> needs to at least get 500 calories,\nand you hate <food-types>\nYour budget is DKK 150.");
         this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
         this.transitionScreen.setActive(true);
+        this.locked = true;
 
         root.setFocusTraversable(true); //Makes onKeyPressed() work.
     }
