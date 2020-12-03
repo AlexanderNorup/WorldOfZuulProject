@@ -16,7 +16,7 @@ import java.util.Random;
 
 /**
  * Creates the Arraylist of items for each room as well as
- * the differenct player types
+ * the different player types
  *
  */
 public class ContentGenerator {
