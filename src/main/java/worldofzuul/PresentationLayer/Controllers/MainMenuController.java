@@ -59,8 +59,8 @@ public class MainMenuController {
     public void deleteSaveFile() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete saveFile");
-        alert.setHeaderText("Do you want to delete your saved game");
-        alert.setContentText("You will loose all progress!");
+        alert.setHeaderText("Do you want to delete your saved game?");
+        alert.setContentText("You will lose all progress!");
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) {
                 MainGUI.game.deleteSaveFile();
