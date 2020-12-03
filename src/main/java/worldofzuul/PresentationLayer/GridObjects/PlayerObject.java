@@ -1,11 +1,7 @@
 package worldofzuul.PresentationLayer.GridObjects;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
-import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.PresentationLayer.Grid;
-import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
 /**

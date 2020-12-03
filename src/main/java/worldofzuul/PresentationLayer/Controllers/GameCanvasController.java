@@ -58,12 +58,12 @@ public class GameCanvasController {
 
         gridMap = new HashMap<>();
         iRoomMap = new HashMap<>();
-        IPlayer player = MainGUI.game.getIPlayer();
+        IPlayer player = MainGUI.game.getPlayer();
 
         IRoom startingRoom = player.getStartingRoom();
 
         //Make hashMap of rooms and grids
-        for(IRoom iRoom : MainGUI.game.getIRooms()){
+        for(IRoom iRoom : MainGUI.game.getRooms()){
             Grid grid = new Grid(gameCanvas, iRoom.getWidth(), iRoom.getHeight(),new Image(iRoom.getBackground()));
 
             for(IRoomObject object : iRoom.getObjects()){

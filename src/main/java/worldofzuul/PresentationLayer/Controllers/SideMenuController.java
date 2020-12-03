@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.PresentationLayer.MainGUI;
 
@@ -52,7 +51,7 @@ public class SideMenuController {
         drop = new MenuItem("Drop");
 
         ObservableList<IItem> listViewList = FXCollections.observableArrayList();
-        listViewList.addAll(MainGUI.game.getIPlayer().getInventory());
+        listViewList.addAll(MainGUI.game.getPlayer().getInventory());
         sideMenuListView.setItems(listViewList);
 
         inspect.setOnAction(event -> {
@@ -71,7 +70,7 @@ public class SideMenuController {
             System.out.println("Dropped");
             MainGUI.game.drop(item);
             listViewList.clear();
-            listViewList.addAll(MainGUI.game.getIPlayer().getInventory());
+            listViewList.addAll(MainGUI.game.getPlayer().getInventory());
         });
 
         contextMenu.getItems().addAll(inspect, drop);
