@@ -2,21 +2,15 @@ package worldofzuul.PresentationLayer.Controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.IItem;
-import worldofzuul.Main;
 import worldofzuul.PresentationLayer.MainGUI;
-
-import java.util.ArrayList;
 
 public class SideMenuController {
     @FXML
@@ -58,7 +52,7 @@ public class SideMenuController {
         drop = new MenuItem("Drop");
 
         ObservableList<IItem> listViewList = FXCollections.observableArrayList();
-        listViewList.addAll(MainGUI.game.getPlayer().getInventory());
+        listViewList.addAll(MainGUI.game.getIPlayer().getInventory());
         sideMenuListView.setItems(listViewList);
 
         inspect.setOnAction(event -> {
@@ -75,9 +69,9 @@ public class SideMenuController {
         drop.setOnAction(event -> {
             IItem item = sideMenuListView.getSelectionModel().getSelectedItem();
             System.out.println("Dropped");
-            MainGUI.game.doAction(CommandWord.DROP.toString(), item.getName());
+            MainGUI.game.drop(item);
             listViewList.clear();
-            listViewList.addAll(MainGUI.game.getPlayer().getInventory());
+            listViewList.addAll(MainGUI.game.getIPlayer().getInventory());
         });
 
         contextMenu.getItems().addAll(inspect, drop);
