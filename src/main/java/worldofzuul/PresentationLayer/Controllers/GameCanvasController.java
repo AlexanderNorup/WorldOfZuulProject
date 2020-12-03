@@ -173,6 +173,7 @@ public class GameCanvasController {
             case D, RIGHT -> tryMove(Direction.RIGHT);
             case G -> playerObject.getActiveGrid().setShowDebug(!playerObject.getActiveGrid().isShowDebug());
             case I -> toggleSideMenu();
+            case C -> closeShelfMenu();
             case SPACE -> toggleTextBox();
             case ENTER -> interact();
             case ESCAPE -> quit();
