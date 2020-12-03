@@ -1,7 +1,5 @@
 package worldofzuul.PresentationLayer.Controllers;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -13,7 +11,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.IItem;
-import worldofzuul.Main;
 import worldofzuul.PresentationLayer.MainGUI;
 
 import java.util.ArrayList;
@@ -50,10 +47,9 @@ public class ShelfMenuController {
 
         take.setOnAction(event -> {
             IItem item = shelfMenuListView.getSelectionModel().getSelectedItem();
-            MainGUI.game.doAction(CommandWord.TAKE.toString(), item.getName());
-
+            MainGUI.game.take(item);
             ListView<IItem> sideMenuListView = (ListView<IItem>) shelfMenu.getParent().getScene().lookup("#sideMenu").lookup("#sideMenuListView");
-            sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
+            sideMenuListView.getItems().setAll(MainGUI.game.getIPlayer().getInventory());
         });
 
         contextMenu.getItems().addAll(inspect, take);
