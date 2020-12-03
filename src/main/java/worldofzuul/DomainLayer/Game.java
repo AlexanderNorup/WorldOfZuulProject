@@ -1,10 +1,7 @@
 package worldofzuul.DomainLayer;
 
 import worldofzuul.DataLayer.*;
-import worldofzuul.DomainLayer.Commandhandling.Command;
-import worldofzuul.DomainLayer.Commandhandling.CommandWord;
-import worldofzuul.DomainLayer.Commandhandling.CommandWords;
-import worldofzuul.DomainLayer.Commandhandling.Parser;
+import worldofzuul.CLILayer.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.IGame;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IPlayer;
@@ -56,20 +53,12 @@ public class Game implements IGame {
      * parsing arraylist of Rooms to an arraylist of IRoom and returns it
      */
     @Override
-    public ArrayList<IRoom> getIRooms() {
+    public ArrayList<IRoom> getRooms() {
         return new ArrayList<>(rooms);
     }
 
-    public ArrayList<Room> getRooms() {
-        return rooms;
-    }
-
     @Override
-    public IPlayer getIPlayer(){
-        return player;
-    }
-
-    public Player getPlayer(){
+    public IPlayer getPlayer(){
         return player;
     }
 
@@ -113,7 +102,7 @@ public class Game implements IGame {
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(rooms.get(0).getLongDescription());
+        System.out.println(rooms.get(0).getDescription());
     }
 
     private void save() {

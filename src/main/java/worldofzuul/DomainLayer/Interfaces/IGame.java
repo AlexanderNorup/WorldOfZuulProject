@@ -11,7 +11,7 @@ public interface IGame {
      * they contain shelves with items, and they are connected with warp objects
      * @return the rooms in the world of zuul game
      */
-    ArrayList<IRoom> getIRooms();
+    ArrayList<IRoom> getRooms();
 
     /**
      * Returns an object of a class that implements the IPlayer interface
@@ -20,7 +20,7 @@ public interface IGame {
      * and the players initial position in this room
      * @return An object that implements IPlayer
      */
-    IPlayer getIPlayer();
+    IPlayer getPlayer();
 
     boolean take(IItem item);
 
@@ -29,6 +29,10 @@ public interface IGame {
     void resetGame();
 
     String reactToResults();
+
+    void printWelcome();
+
+    String printPlayer();
 
 
     /**

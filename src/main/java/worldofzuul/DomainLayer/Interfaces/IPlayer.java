@@ -50,4 +50,8 @@ public interface IPlayer {
     boolean underBudget();
 
     boolean overMinCalories();
+
+    String getInventoryString();
+
+    IItem getItem(String name);
 }

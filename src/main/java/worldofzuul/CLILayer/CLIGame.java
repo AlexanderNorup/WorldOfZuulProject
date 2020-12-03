@@ -1,16 +1,16 @@
-package worldofzuul.DomainLayer;
+package worldofzuul.CLILayer;
 
-import worldofzuul.DataLayer.ContentGenerator;
-import worldofzuul.DomainLayer.Commandhandling.Command;
-import worldofzuul.DomainLayer.Commandhandling.CommandWord;
-import worldofzuul.DomainLayer.Commandhandling.Parser;
+import worldofzuul.DomainLayer.Game;
+import worldofzuul.DomainLayer.Interfaces.IGame;
+import worldofzuul.DomainLayer.Interfaces.IItem;
+import worldofzuul.DomainLayer.Interfaces.IRoom;
 
 public class CLIGame {
 
-    private Room currentRoom;
+    private IRoom currentRoom;
 
     private final Parser parser;
-    Game game;
+    IGame game;
 
     public CLIGame(){
         game =  new Game();
@@ -68,9 +68,9 @@ public class CLIGame {
             }
         } else {
             StringBuilder returnString = new StringBuilder();
-            returnString.append("You are out shopping as a " + game.getIPlayer().getPlayerType().getName() + "\n");
-            returnString.append("| Your budget is " + game.getIPlayer().getPlayerType().getBudgetMax() + " dkk." + "  ||  " +
-                    "Your minimum calorie goal is " + game.getIPlayer().getPlayerType().getCalorieMin() + "  |\n");
+            returnString.append("You are out shopping as a " + game.getPlayer().getPlayerType().getName() + "\n");
+            returnString.append("| Your budget is " + game.getPlayer().getPlayerType().getBudgetMax() + " dkk." + "  ||  " +
+                    "Your minimum calorie goal is " + game.getPlayer().getPlayerType().getCalorieMin() + "  |\n");
             returnString.append("\n");
             returnString.append("Your command words are:\n");
             returnString.append(parser.showCommands());
@@ -116,7 +116,7 @@ public class CLIGame {
     private String take(Command command) {
         System.out.println("COMMAND - take");
         System.out.println("item name: " + command.getSecondWord());
-        Item item = currentRoom.getItem(command.getSecondWord());
+        IItem item = currentRoom.getItem(command.getSecondWord());
         System.out.println("item null: " + (item == null));
         if (item != null) {
             game.take(item);
@@ -136,13 +136,13 @@ public class CLIGame {
 
         String direction = command.getSecondWord();
 
-        Room nextRoom = currentRoom.getExit(direction);
+        IRoom nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             return "There is no door!";
         } else {
             currentRoom = nextRoom;
-            return currentRoom.getLongDescription();
+            return currentRoom.getDescription();
         }
     }
 
@@ -179,7 +179,7 @@ public class CLIGame {
      * @param command second word should be the name of the item the player wants to inspect
      */
     private String inspect(Command command) {
-        Item item = currentRoom.getItem(command.getSecondWord());
+        IItem item = currentRoom.getItem(command.getSecondWord());
         return item != null ? item.toString() : "item not found";
     }
 
@@ -214,7 +214,7 @@ public class CLIGame {
         returnString.append(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + ".");
         returnString.append("It is a new day, you wake up and go to the store.");
         returnString.append(game.printPlayer());
-        returnString.append(currentRoom.getLongDescription());
+        returnString.append(currentRoom.getDescription());
         return returnString.toString();
     }
 
@@ -234,13 +234,10 @@ public class CLIGame {
     private String resetGame() {
         StringBuilder returnString = new StringBuilder();
         returnString.append(game.reactToResults());
-        game.getPlayer().deleteInventory(); // deletes all items in the inventory
         setStartPosition(); //creates the rooms again and fills them with items
         returnString.append(".\n" + ".\n" + ".\n" + ".\n" + ".\n" + ".");
-        game.getPlayer().setPlayerType((ContentGenerator.getStudentPlayerType()));
         returnString.append("It is a new day, you wake up and go to the store.");
         returnString.append(game.printPlayer());
-        returnString.append(currentRoom.getLongDescription());
         return returnString.toString();
     }
 
@@ -252,7 +249,7 @@ public class CLIGame {
     private String drop(Command command) {
 
         //get item from user
-        Item item = game.getPlayer().getItem(command.getSecondWord());
+        IItem item = game.getPlayer().getItem(command.getSecondWord());
 
         //if item not null, remove item from inventory and add to store
         if (item != null) {
