@@ -107,4 +107,9 @@ public class SaveFile implements ISaveGame {
 
         return toReturn;
     }
+
+    public void delete() {
+        File file = new File(path);
+        file.delete();
+    }
 }
