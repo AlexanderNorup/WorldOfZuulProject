@@ -331,34 +331,19 @@ public class GameCanvasController {
             checkoutmenu.setText("Thank you, come again!");
 
             //set timer for message.
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> close() );
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> transition() );
             Timeline timeline = new Timeline();
             timeline.getKeyFrames().add(keyFrame);
 
             timeline.play();
 
-            String result = MainGUI.game.canCheckout();
-            if(result == null){
-                ArrayList<String> resultArray = MainGUI.game.Checkout();
-                this.transitionScreen.reset();
-                transitionScreen.setDoneHandler(new AnimationDoneHandler() {
-                    @Override
-                    public void animationDone() {
-                        playerObject.getActiveGrid().setActive(false);
-                        playerObject.getActiveGrid().setGridObject(null, playerObject.getPlayerPos());
-                        startingGrid.setActive(true);
-                        playerObject.setActiveGrid(startingGrid);
-                        playerObject.setPlayerPos(new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
-                        startingGrid.setGridObject(playerObject, new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
-                    }
-                });
 
-                this.transitionScreen.addText(resultArray);
-                this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
-                this.transitionScreen.addLine("Happy shopping!");
-                playerObject.getActiveGrid().setActive(false);
-                this.transitionScreen.setActive(true);
-            }
+
+
+
+
+
+          // }
         }
         else if(actionEvent.getSource() == noButton){
             close();
@@ -369,6 +354,32 @@ public class GameCanvasController {
     void close(){
         checkoutmenu.setVisible(false);
         locked = false;
+    }
+
+    void transition(){
+       close();
+
+        String result = MainGUI.game.canCheckout();
+        //if(result == null){
+        ArrayList<String> resultArray = MainGUI.game.Checkout();
+        this.transitionScreen.reset();
+        transitionScreen.setDoneHandler(new AnimationDoneHandler() {
+            @Override
+            public void animationDone() {
+                playerObject.getActiveGrid().setActive(false);
+                playerObject.getActiveGrid().setGridObject(null, playerObject.getPlayerPos());
+                startingGrid.setActive(true);
+                playerObject.setActiveGrid(startingGrid);
+                playerObject.setPlayerPos(new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
+                startingGrid.setGridObject(playerObject, new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
+            }
+        });
+
+        this.transitionScreen.addText(resultArray);
+        this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
+        this.transitionScreen.addLine("Happy shopping!");
+        playerObject.getActiveGrid().setActive(false);
+        this.transitionScreen.setActive(true);
     }
 }
 
