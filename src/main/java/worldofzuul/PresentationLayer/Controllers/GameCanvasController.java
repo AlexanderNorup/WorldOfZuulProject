@@ -271,6 +271,7 @@ public class GameCanvasController {
             sideMenu.setDisable(false);
             sideMenu.setVisible(false);
             textBox.setVisible(false);
+            locked = false;
         }
     }
 
@@ -290,6 +291,7 @@ public class GameCanvasController {
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
             shelfMenuListView.requestFocus();
+            locked = true;
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
             System.out.println("CASHIER");
@@ -306,6 +308,7 @@ public class GameCanvasController {
             checkoutmenu.lookup(".arrow").setStyle("-fx-background-color: red;");
             checkoutmenu.fire();
             checkoutmenu.lookup( ".arrow" ).setStyle( "-fx-background-insets: 0; -fx-padding: 0; -fx-shape: null;" );
+            locked = true;
         }
     }
 
