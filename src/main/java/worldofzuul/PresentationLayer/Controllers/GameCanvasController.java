@@ -16,6 +16,8 @@ import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.*;
 
+import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -197,8 +199,6 @@ public class GameCanvasController {
 
     }
 
-
-
     /**
      * Tries to move the player to a new position.
      * If the new position is a Warp, then the player changes the active Grid, and moves to the Warp's destination
@@ -235,9 +235,6 @@ public class GameCanvasController {
                 //If not moving onto the warp, then we just move by calling the grid.
             }
         }
-
-
-
     }
 
     private void toggleSideMenu(){
@@ -327,13 +324,20 @@ public class GameCanvasController {
 
     public void checkoutButtonHandle(ActionEvent actionEvent) {
         if(actionEvent.getSource()==yesButton){
-            checkoutmenu.setText("Thank you, come again!");
+            checkoutmenu.setVisible(false);
+
             //set timer for message.
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> close() );
             Timeline timeline = new Timeline();
             timeline.getKeyFrames().add(keyFrame);
 
             timeline.play();
+
+            String result = MainGUI.game.canCheckout();
+            if(result == null){
+                ArrayList<String> resultArray = MainGUI.game.Checkout();
+
+            }
         }
         else if(actionEvent.getSource() == noButton){
             close();
@@ -344,6 +348,5 @@ public class GameCanvasController {
         checkoutmenu.setVisible(false);
         locked = false;
     }
-
 }
 
