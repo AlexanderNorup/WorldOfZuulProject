@@ -70,7 +70,7 @@ public class Player implements IPlayer {
         double totalCalories = 0.0;
 
         for (Item item : inventory) {
-            totalCalories += item.getProtein();
+            totalCalories += item.getCalories();
         }
 
         return totalCalories;
