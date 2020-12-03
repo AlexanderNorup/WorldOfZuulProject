@@ -11,11 +11,8 @@ import javafx.scene.layout.Pane;
 import worldofzuul.DomainLayer.Commandhandling.CommandWord;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
-import worldofzuul.PresentationLayer.Direction;
-import worldofzuul.PresentationLayer.Grid;
+import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.*;
-import worldofzuul.PresentationLayer.MainGUI;
-import worldofzuul.PresentationLayer.Position;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -35,6 +32,7 @@ public class GameCanvasController {
     private PlayerObject playerObject;
     private HashMap<IRoom, Grid> gridMap;
     private HashMap<Grid, IRoom> iRoomMap;
+    private Transition transitionScreen;
 
 
     @FXML
@@ -97,10 +95,8 @@ public class GameCanvasController {
         }
 
         Grid startingGrid = gridMap.get(startingRoom);
-        startingGrid.setActive(true);
         startingGrid.setGridObject(new Wall(), new Position(2,4));
         startingGrid.setGridObject(new Wall(), new Position(1,4));
-        startingGrid.setActive(true);
         startingGrid.setGridObject(new Wall(), new Position(0,3)); //2,4
         startingGrid.setGridObject(new Wall(), new Position(1,3)); //1,4
         startingGrid.setGridObject(new Wall(), new Position(2,3));
@@ -146,6 +142,23 @@ public class GameCanvasController {
         //This means that grid will be the one on screen.
         //activeGrid.setActive(true); //Starts drawing and animations
 
+
+
+        //Transition Work!
+        this.transitionScreen = new Transition(gameCanvas, new AnimationDoneHandler() {
+            @Override
+            public void animationDone() {
+                startingGrid.setActive(true);
+            }
+        });
+
+        this.transitionScreen.addLine("Welcome to WorldOfZhopping!");
+        this.transitionScreen.addLine("In this game you are going shopping\nas a given character.\n\nEach character has it's own needs that you\nneed to fulfill.");
+        this.transitionScreen.addLine("You are playing as a <PlayerType>.\nThis <PlayerType> needs to at least get 500 calories,\nand you hate <food-types>\nYour budget is DKK 150.");
+        this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
+        this.transitionScreen.setActive(true);
+
+
         root.setFocusTraversable(true); //Makes onKeyPressed() work.
     }
 
@@ -173,6 +186,11 @@ public class GameCanvasController {
             case SPACE -> toggleTextBox();
             case ENTER -> interact();
             case ESCAPE -> quit();
+            case E -> {
+                if(this.transitionScreen.isActive()){
+                    this.transitionScreen.advanceAnimationState();
+                }
+            }
         }
 
     }
