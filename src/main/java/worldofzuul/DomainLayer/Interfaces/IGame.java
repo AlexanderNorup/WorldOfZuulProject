@@ -1,5 +1,7 @@
 package worldofzuul.DomainLayer.Interfaces;
 
+import worldofzuul.DomainLayer.PlayerType;
+
 import java.util.ArrayList;
 
 /**
@@ -44,4 +46,6 @@ public interface IGame {
      * @param playerType String of the playerType, i.e. Student
      */
     void setPlayerType(String playerType);
+
+    PlayerType getPlayerType();
 }
