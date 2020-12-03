@@ -1,6 +1,7 @@
 package worldofzuul.PresentationLayer.Controllers;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
@@ -50,9 +51,22 @@ public class SideMenuController {
         inspect = new MenuItem("Inspect");
         drop = new MenuItem("Drop");
 
+        moneyBar.setProgress(0);
+        moneySpent.setText(Double.toString(0));
+        moneyGoal.setText(Double.toString(MainGUI.game.getPlayer().getBudget()));
+
         ObservableList<IItem> listViewList = FXCollections.observableArrayList();
         listViewList.addAll(MainGUI.game.getPlayer().getInventory());
         sideMenuListView.setItems(listViewList);
+        listViewList.addListener(new ListChangeListener<IItem>() {
+            @Override
+            public void onChanged(Change<? extends IItem> c) {
+                sideMenuCalorieLabel.setText(Double.toString(MainGUI.game.getPlayer().getInventoryCalories()));
+                sideMenuProteinLabel.setText(Double.toString(MainGUI.game.getPlayer().getInventoryProtein()));
+                moneyBar.setProgress(MainGUI.game.getPlayer().getInventoryValue()/MainGUI.game.getPlayer().getBudget());
+                moneySpent.setText(Double.toString(MainGUI.game.getPlayer().getInventoryValue()));
+            }
+        });
 
         inspect.setOnAction(event -> {
             //Finds the textArea node
@@ -77,6 +91,8 @@ public class SideMenuController {
         sideMenuListView.setContextMenu(contextMenu);
     }
 
+
+
     public void listViewKey(KeyEvent keyEvent) {
         switch(keyEvent.getCode()){
             case ENTER:
@@ -90,6 +106,7 @@ public class SideMenuController {
                     textBox.setVisible(false);
                 }
                 break;
+
         }
     }
 }
