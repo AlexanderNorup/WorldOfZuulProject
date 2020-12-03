@@ -36,6 +36,7 @@ public class GameCanvasController {
     private HashMap<Grid, IRoom> iRoomMap;
     private Transition transitionScreen;
     private boolean locked;
+    private Grid startingGrid;
 
 
     @FXML
@@ -97,7 +98,7 @@ public class GameCanvasController {
             }
         }
 
-        Grid startingGrid = gridMap.get(startingRoom);
+        startingGrid = gridMap.get(startingRoom);
         startingGrid.setGridObject(new Wall(), new Position(2,4));
         startingGrid.setGridObject(new Wall(), new Position(1,4));
         startingGrid.setGridObject(new Wall(), new Position(0,3)); //2,4
@@ -108,42 +109,8 @@ public class GameCanvasController {
         startingGrid.setGridObject(new Wall(), new Position(7,3));
 
 
-        //Makes the first grid.
-        Grid activeGrid = new Grid(gameCanvas, 4,6,new Image(MainGUI.class.getResource("/backgrounds/aisle_bakery_dairy.png").toString()));
-
-        //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
-        //around. The last 2 arguments here represent the starting-position for the player.
-        playerObject = new PlayerObject(startingGrid, new Position(2,4));
+        playerObject = new PlayerObject(startingGrid, new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
         playerObject.setAvatarImg(new Image (player.getSprite()));
-
-
-        //Then we set some GridObjects. That could be anything that extends the GridObject class.
-        //These "Dog"s extend the GridSprite class, which in turn then extends the GridObject.
-        //GridSprites are objects that can be drawn to the screen in a tile.
-        //Here 2 dogs are created just as a test. They are each given a position on the board.
-        activeGrid.setGridObject(new Dog(), new Position(0,5));
-        activeGrid.setGridObject(new Dog(), new Position(3,5));
-
-        //Then we make another grid. It is created the excact same way as before.
-        //It also has a dog.
-        Grid anotherGrid = new Grid(gameCanvas, 9,6, new Image(MainGUI.class.getResource("/backgrounds/orange.png").toString()));
-        anotherGrid.setGridObject(new Dog(), new Position(4,5));
-
-        //Now we create a Warp
-        //A Warp is also a child of GridObject. It dosn't have a sprite (unless you enable debug-mode).
-        //A Warp takes 2 arguments: What grid to teleport to, and where the teleport should place the player.
-        //A Warp activates when the player is about to step onto it.
-        Warp activeToAnotherWarp = new Warp(activeGrid,new Position(3,3));
-        //We add the Warp the same way we add a ordinary GridObject
-        anotherGrid.setGridObject(activeToAnotherWarp, new Position(3,4));
-
-        //We create another warp. This one takes the player from the activeGrid to anotherGrid.
-        activeGrid.setGridObject(new Warp(anotherGrid,new Position(0,0)), new Position(3,2));
-
-
-        //Then we set the first grid as "active".
-        //This means that grid will be the one on screen.
-        //activeGrid.setActive(true); //Starts drawing and animations
 
 
 
@@ -340,6 +307,17 @@ public class GameCanvasController {
             if(result == null){
                 ArrayList<String> resultArray = MainGUI.game.Checkout();
                 this.transitionScreen.reset();
+                transitionScreen.setDoneHandler(new AnimationDoneHandler() {
+                    @Override
+                    public void animationDone() {
+                        playerObject.getActiveGrid().setActive(false);
+                        playerObject.getActiveGrid().setGridObject(null, playerObject.getPlayerPos());
+                        startingGrid.setActive(true);
+                        playerObject.setActiveGrid(startingGrid);
+                        playerObject.setPlayerPos(new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
+                        startingGrid.setGridObject(playerObject, new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
+                    }
+                });
 
                 this.transitionScreen.addText(resultArray);
                 this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
