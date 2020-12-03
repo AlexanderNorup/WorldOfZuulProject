@@ -328,7 +328,7 @@ public class GameCanvasController {
 
     public void checkoutButtonHandle(ActionEvent actionEvent) {
         if(actionEvent.getSource()==yesButton){
-            checkoutmenu.setVisible(false);
+            checkoutmenu.setText("Thank you, come again!");
 
             //set timer for message.
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> close() );
