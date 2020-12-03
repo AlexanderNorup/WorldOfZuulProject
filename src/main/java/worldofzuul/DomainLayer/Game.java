@@ -46,9 +46,9 @@ public class Game implements IGame {
                         ContentGenerator.getPlayerTypeByName(resultData.getPlayerTypeName()));
                 finishedGames.add(result);
             }
-            System.out.println("Your saved game was loaded");
+            System.out.println("Your saved game was loaded.");
         } catch (SaveGameException e) {
-            System.out.println("No saved game found - created new game");
+            System.out.println("No saved game found - a new game has been created");
             // finishedGames Arraylist will be an empty list
             // This is the same as starting a new game
         }
@@ -56,6 +56,7 @@ public class Game implements IGame {
 
     public void deleteSaveFile() {
         saveGame.delete();
+        loadGame();
     }
 
     /**
@@ -177,45 +178,48 @@ public class Game implements IGame {
         StringBuilder returnString = new StringBuilder();
         int happiness = 0;
         double co2 = 0;
+        int timesPlayed=0; // to count how many times the game has played
         for (GameResult finishedGame : finishedGames) {
             happiness += finishedGame.getHappiness();
             co2 += finishedGame.getCo2();
+            timesPlayed++;
         }
         returnString.append("Your results for today:\n\n");
         returnString.append("CO2: ").append(co2).append("\n");
         returnString.append("happiness: ").append(happiness).append("\n\n\n");
+        returnString.append("You have played: ").append(timesPlayed).append(" times. \n");
 
         if (co2 < 5) {
-            returnString.append("The earth is a green and beautiful place\n");
+            returnString.append("The earth is still a green and beautiful place\n");
         } else if (co2 < 10) {
-            returnString.append("You notice your armpits are more stained than usual\n");
+            returnString.append("You notice your armpits are more stained than usual.\n People seem to be rioting.");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket1.png").toString());
         } else if (co2 < 15) {
-            returnString.append("It's to hot to walk barefoot\n");
+            returnString.append("It's getting hot outside and you notice that plants are dying around you. \n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket2.png").toString());
         } else if (co2 < 20) {
-            returnString.append("You can boil an egg in the ocean\n");
+            returnString.append("It's too hot to walk barefoot. \n You notice everything sets on fire.");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket3.png").toString());
         } else if (co2 < 25) {
-            returnString.append("You've sold your oven, as you don't need it\n");
+            returnString.append("All the glaciers have melted and the ocean has risen. \n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket4.png").toString());
         } else {
-            returnString.append("The store is on fire\n");
+            returnString.append("The world is burning down and the store is set on fire.\n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket5.png").toString());
         }
 
         if (happiness >= 0) {
-            returnString.append("You're ok...\n");
+            returnString.append("You're feeling fine. \n");
         } else if (happiness > -50) {
-            returnString.append("You notice that you've started snapping at your friends\n");
+            returnString.append("You notice that you've started snapping at your friends.\n");
         } else if (happiness > -100) {
-            returnString.append("You don't want to eat, even when you're hungry\n");
+            returnString.append("You don't want to eat anymore. You hate yourself.\n");
         } else if (happiness > -150) {
-            returnString.append("you're wondering if theres a point to anything\n");
+            returnString.append("You're beginning to wonder if there's a point to anything. \n");
         } else if (happiness > -200) {
-            returnString.append("You've joined a fascist movement\n");
+            returnString.append("You've joined a fascist movement.\n");
         } else {
-            returnString.append("You have successfully toppled the government,\n gasoline is the only currency\n");
+            returnString.append("You have successfully overthrown the government. \n Bottle caps are now the only currency. \n");
         }
         return returnString.toString();
     }
