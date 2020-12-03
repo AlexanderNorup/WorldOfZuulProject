@@ -491,14 +491,19 @@ public class ContentGenerator {
         dairy.addRoomObject(new Warp(0,2,aisle3,2,2));
 
         //Walls
-        outside.addRoomObject( new Wall(2,4));
-
         outside.addRoomObject( new Wall(0,3)); //2,4
         outside.addRoomObject( new Wall(1,3)); //1,4
         outside.addRoomObject( new Wall(2,3));
         outside.addRoomObject( new Wall(5,3));
         outside.addRoomObject( new Wall(6,3));
         outside.addRoomObject( new Wall(7,3));
+
+        aisle1.addRoomObject(new Wall(0,1));
+        aisle1.addRoomObject(new Wall(3,1));
+        aisle2.addRoomObject(new Wall(0,1));
+        aisle2.addRoomObject(new Wall(3,1));
+        aisle3.addRoomObject(new Wall(0,1));
+        aisle3.addRoomObject(new Wall(3,1));
 
 
         ArrayList<Room> rooms = new ArrayList<>();

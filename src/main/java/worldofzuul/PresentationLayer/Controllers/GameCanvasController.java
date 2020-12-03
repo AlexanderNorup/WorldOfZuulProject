@@ -85,6 +85,12 @@ public class GameCanvasController {
                 }
             }
 
+            for(IRoomObject object : iRoom.getObjects()){
+                if(object instanceof IWall){
+                    grid.setGridObject(new Wall(), new Position(object.getXPosition(), object.getYPosition()));
+                }
+            }
+
             gridMap.put(iRoom,grid);
             iRoomMap.put(grid,iRoom);
         }
@@ -101,14 +107,6 @@ public class GameCanvasController {
         }
 
         startingGrid = gridMap.get(startingRoom);
-        startingGrid.setGridObject(new Wall(), new Position(2,4));
-        startingGrid.setGridObject(new Wall(), new Position(1,4));
-        startingGrid.setGridObject(new Wall(), new Position(0,3)); //2,4
-        startingGrid.setGridObject(new Wall(), new Position(1,3)); //1,4
-        startingGrid.setGridObject(new Wall(), new Position(2,3));
-        startingGrid.setGridObject(new Wall(), new Position(5,3));
-        startingGrid.setGridObject(new Wall(), new Position(6,3));
-        startingGrid.setGridObject(new Wall(), new Position(7,3));
 
 
         //Makes the first grid.
