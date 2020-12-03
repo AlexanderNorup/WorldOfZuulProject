@@ -18,7 +18,7 @@ public class Room implements IRoom {
     private final ArrayList<IRoomObject> roomObjects;
 
     private final int roomWidth,roomHeight;
-    private final String background;
+    private String background;
     public Room(String description, int roomWidth, int roomHeight, String background) {
         this.description = description;
         this.roomObjects = new ArrayList<>();
@@ -131,6 +131,9 @@ public class Room implements IRoom {
         return new ArrayList<>(this.roomObjects);
     }
 
+    public void setBackground(String newBackground) {
+        this.background = newBackground;
+    }
 
     @Override
     public String getBackground() {
