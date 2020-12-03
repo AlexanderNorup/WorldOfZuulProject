@@ -381,6 +381,9 @@ public class GameCanvasController {
         String result = MainGUI.game.canCheckout();
         //if(result == null){
         ArrayList<String> resultArray = MainGUI.game.Checkout();
+        // Set this as "outside" background
+        IRoom outside = MainGUI.game.getRooms().get(0);
+        gridMap.get(outside).setBackground(new Image(outside.getBackground()));
         this.transitionScreen.reset();
         transitionScreen.setDoneHandler(new AnimationDoneHandler() {
             @Override
