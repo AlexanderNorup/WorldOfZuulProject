@@ -101,6 +101,7 @@ public class Transition {
      */
     private void draw() {
         gc.clearRect(0,0, windowWidth, windowHeight);
+        gc.save();
         gc.setFill(Color.WHITE);
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
@@ -150,7 +151,7 @@ public class Transition {
 
         }
 
-
+        gc.restore();
     }
 
     /**
