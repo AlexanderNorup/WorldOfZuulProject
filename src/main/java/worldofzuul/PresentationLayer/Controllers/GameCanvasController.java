@@ -339,7 +339,13 @@ public class GameCanvasController {
             String result = MainGUI.game.canCheckout();
             if(result == null){
                 ArrayList<String> resultArray = MainGUI.game.Checkout();
+                this.transitionScreen.reset();
 
+                this.transitionScreen.addText(resultArray);
+                this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
+                this.transitionScreen.addLine("Happy shopping!");
+                playerObject.getActiveGrid().setActive(false);
+                this.transitionScreen.setActive(true);
             }
         }
         else if(actionEvent.getSource() == noButton){

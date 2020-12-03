@@ -281,8 +281,8 @@ public class ContentGenerator {
     }
 
     public static PlayerType getStudentPlayerType(){
-        PlayerType type = new PlayerType(STUDENT_NAME, "The student is poor. You need to minimize the amount of money you use.\n" +
-                "You need around 2200 calories per day, and the student cares about the enviroment. Focus on organic items, and please try not to make the world explode.");
+        PlayerType type = new PlayerType(STUDENT_NAME, "The student is poor.\n You need to minimize the amount of money you use.\n" +
+                "You need around 2200 calories per day, and the student cares about the enviroment.\n Focus on organic items, and please try not to make the world explode.");
         type.setFactors(1,7,2);
         type.setValues(50,1000,2200);
         type.setPlayerSprite(Game.class.getResource("/sprites/student.png").toString());
@@ -292,8 +292,8 @@ public class ContentGenerator {
     }
 
     public static PlayerType getBodybuilderPlayerType(){
-        PlayerType type = new PlayerType(BODYBUILDER_NAME,"The body builder needs loads of protein!" +
-                "You should get 3000 calories per day, and as much protein as possible, but try not to make the world explode");
+        PlayerType type = new PlayerType(BODYBUILDER_NAME,"The body builder needs loads of protein!\n" +
+                "You should get 3000 calories per day, and as much protein as possible,\n but try not to make the world explode");
         type.setFactors(6,1,3);
         type.setValues(75,1200,3000);
         type.setPlayerSprite(Game.class.getResource("/sprites/BodyBuilderTight.png").toString());
@@ -301,7 +301,7 @@ public class ContentGenerator {
     }
 
     public static PlayerType getPickyPlayerType(){
-        PlayerType type = new PlayerType(PICKY_NAME,"The picky player type has a lot of money, but he is very Picky and needs the optimal amount of calories.");
+        PlayerType type = new PlayerType(PICKY_NAME,"The picky player type has a lot of money,\n but he is very Picky and needs the optimal amount of calories.");
         type.setFactors(1,1,8);
         type.setValues(100,1500,2000);
         type.addNegativeExtra(Extra.CONTAINS_GLUTEN);

@@ -80,8 +80,9 @@ public class Game implements IGame {
                 break;
             case "Mystery":
                 PlayerType newPicky = ContentGenerator.getPickyPlayerType();
-                newPicky.setPlayerSprite(Game.class.getResource("/sprites/Piggy.png").toString());
+                newPicky.setPlayerSprite(Game.class.getResource("/sprites/gurli.png").toString());
                 this.player.setPlayerType(newPicky);
+                newPicky.setValues(1200,7500,9000);
             default:
         }
     }
@@ -135,7 +136,6 @@ public class Game implements IGame {
         strings.add("You went to the register and checked out.\nThe day is over and you go back home to sleep.\n\n");
         //strings.add(player.getGameResult());
         strings.add(reactToResults());
-        strings.add(".  .  .  .  .  .  .");
         strings.add("It is a new day, you wake up and go to the store.");
 
         resetGame();
@@ -170,25 +170,26 @@ public class Game implements IGame {
             co2 += finishedGame.getCo2();
         }
 
-        returnString.append("CO2: ").append(co2);
+        returnString.append("CO2: ").append(co2).append("\n");
+        returnString.append("happiness: ").append(happiness).append("\n\n");
 
         if (co2 < 5) {
             returnString.append("The earth is a green and beautiful place\n");
         } else if (co2 < 10) {
             returnString.append("you notice your armpits are more stained than usual\n");
-            rooms.get(0).setBackground("supermarket1.png");
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket1.png").toString());
         } else if (co2 < 15) {
             returnString.append("it's to hot to walk barefoot\n");
-            rooms.get(0).setBackground("supermarket2.png");
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket2.png").toString());
         } else if (co2 < 20) {
             returnString.append("you can boil an egg in the ocean\n");
-            rooms.get(0).setBackground("supermarket3.png");
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket3.png").toString());
         } else if (co2 < 25) {
             returnString.append("you've sold your oven, as you don't need it\n");
-            rooms.get(0).setBackground("supermarket4.png");
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket4.png").toString());
         } else {
             returnString.append("the store is on fire\n");
-            rooms.get(0).setBackground("supermarket5.png");
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket5.png").toString());
         }
 
         if (happiness >= 0) {
@@ -202,7 +203,7 @@ public class Game implements IGame {
         } else if (happiness > -200) {
             returnString.append("you've joined a fascist movement\n");
         } else {
-            returnString.append("you have successfully toppled the government, gasoline is the only currency\n");
+            returnString.append("you have successfully toppled the government,\n gasoline is the only currency\n");
         }
         return returnString.toString();
     }
