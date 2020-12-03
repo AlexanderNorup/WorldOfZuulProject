@@ -1,5 +1,7 @@
 package worldofzuul.PresentationLayer.Controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -8,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.Direction;
@@ -16,6 +19,7 @@ import worldofzuul.PresentationLayer.GridObjects.*;
 import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
+import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,6 +37,7 @@ public class GameCanvasController {
     private PlayerObject playerObject;
     private HashMap<IRoom, Grid> gridMap;
     private HashMap<Grid, IRoom> iRoomMap;
+    private boolean locked;
 
 
     @FXML
@@ -180,52 +185,72 @@ public class GameCanvasController {
      * If the new position is a Warp, then the player changes the active Grid, and moves to the Warp's destination
      * @param direction the direction the player should go.
      */
-    private void tryMove(Direction direction){
-        Grid currentGrid = playerObject.getActiveGrid();
-        Position currentPosition = playerObject.getPlayerPos();
-        Position newPosition = currentPosition;
-        switch (direction){
-            case UP -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() - 1);
-            case DOWN -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() + 1);
-            case LEFT -> newPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
-            case RIGHT -> newPosition = new Position(currentPosition.getX() + 1, currentPosition.getY());
-        }
-        GridObject gridObjectAtNewPosition  = currentGrid.getGridObject(newPosition);
-        if(gridObjectAtNewPosition instanceof Warp){
-            playerObject.setAnimating(true);
-            Warp warp = (Warp) gridObjectAtNewPosition;
-            currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
-            currentGrid.setActive(false); //Stop animating the current grid
+    private void tryMove(Direction direction) {
+        if (!locked) {
+            Grid currentGrid = playerObject.getActiveGrid();
+            Position currentPosition = playerObject.getPlayerPos();
+            Position newPosition = currentPosition;
+            switch (direction) {
+                case UP -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() - 1);
+                case DOWN -> newPosition = new Position(currentPosition.getX(), currentPosition.getY() + 1);
+                case LEFT -> newPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
+                case RIGHT -> newPosition = new Position(currentPosition.getX() + 1, currentPosition.getY());
+            }
+            GridObject gridObjectAtNewPosition = currentGrid.getGridObject(newPosition);
+            if (gridObjectAtNewPosition instanceof Warp) {
+                playerObject.setAnimating(true);
+                Warp warp = (Warp) gridObjectAtNewPosition;
+                currentGrid.setGridObject(null, currentPosition); //Remove the player from the current grid
+                currentGrid.setActive(false); //Stop animating the current grid
+                playerObject.setPlayerPos(warp.getPlayerPos()); //Get the player position that the warp sends the player to
+                warp.getGrid().setGridObject(playerObject, warp.getPlayerPos()); //Add the player to the new grid
+                playerObject.setActiveGrid(warp.getGrid()); //Get the new grid that is being opened
+                playerObject.getActiveGrid().setActive(true);//Start animating the new grid.
+                playerObject.setAnimating(false);
+                return;
+            }
 
-            playerObject.setPlayerPos(warp.getPlayerPos()); //Get the player position that the warp sends the player to
-            warp.getGrid().setGridObject(playerObject, warp.getPlayerPos()); //Add the player to the new grid
-            playerObject.setActiveGrid(warp.getGrid()); //Get the new grid that is being opened
-            playerObject.getActiveGrid().setActive(true);//Start animating the new grid.
-            playerObject.setAnimating(false);
-            return;
-        }
 
-        //If not moving onto the warp, then we just move by calling the grid.
-        if (!playerObject.isAnimating() && playerObject.getActiveGrid().moveObject(playerObject.getPlayerPos(), newPosition)) {
-            playerObject.setPlayerPos(newPosition);
+            if (!playerObject.isAnimating() && playerObject.getActiveGrid().moveObject(playerObject.getPlayerPos(), newPosition)) {
+                playerObject.setPlayerPos(newPosition);
+                //If not moving onto the warp, then we just move by calling the grid.
+            }
         }
     }
 
     private void toggleSideMenu(){
-        if (sideMenu.isVisible()) {
-            sideMenu.setVisible(false);
-            sideMenu.setManaged(false);
-        } else {
-            sideMenu.setVisible(true);
-            sideMenu.setManaged(true);
-            Scene sideScene = sideMenu.getScene();
-            ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
-            sideMenuListView.requestFocus();
+        if (!shelfMenu.isVisible()) {
+            if (sideMenu.isVisible()) {
+                sideMenu.setVisible(false);
+                sideMenu.setManaged(false);
+            } else {
+                sideMenu.setVisible(true);
+                sideMenu.setManaged(true);
+                Scene sideScene = sideMenu.getScene();
+                ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
+                sideMenuListView.requestFocus();
+            }
         }
     }
 
     private void toggleTextBox(){
         if (textBox.isVisible()) {
+            textBox.setVisible(false);
+        }
+        shelfMenu.setVisible(false);
+        shelfMenu.setManaged(false);
+    }
+
+    public void toggleShelfMenu(){
+        textBox.setVisible(false);
+    }
+
+    public void closeShelfMenu() {
+        if (shelfMenu.isVisible()){
+            shelfMenu.setVisible(false);
+            shelfMenu.setManaged(false);
+            sideMenu.setDisable(false);
+            sideMenu.setVisible(false);
             textBox.setVisible(false);
         }
     }
@@ -241,6 +266,8 @@ public class GameCanvasController {
 
             System.out.println(Arrays.toString(Collections.singletonList(currentShelf.getItems()).toArray()));
 
+            sideMenu.setVisible(true);
+            sideMenu.setDisable(true);
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
             shelfMenuListView.requestFocus();
@@ -280,6 +307,13 @@ public class GameCanvasController {
         if(actionEvent.getSource()==yesButton){
             checkoutmenu.setVisible(false);
 
+            //set timer for message.
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> close() );
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().add(keyFrame);
+
+            timeline.play();
+
             String result = MainGUI.game.canCheckout();
             if(result == null){
                 ArrayList<String> resultArray = MainGUI.game.Checkout();
@@ -287,8 +321,13 @@ public class GameCanvasController {
             }
         }
         else if(actionEvent.getSource() == noButton){
-            checkoutmenu.setVisible(false);
+            close();
         }
+    }
+
+    void close(){
+        checkoutmenu.setVisible(false);
+        locked = false;
     }
 }
 
