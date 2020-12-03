@@ -209,7 +209,7 @@ public class GameCanvasController {
      * @param direction the direction the player should go.
      */
     private void tryMove(Direction direction) {
-        if (!locked) {
+        if (!locked && this.transitionScreen.isAnimationDone()) {
             Grid currentGrid = playerObject.getActiveGrid();
             Position currentPosition = playerObject.getPlayerPos();
             Position newPosition = currentPosition;
@@ -284,6 +284,7 @@ public class GameCanvasController {
     }
 
     private void interact(){
+        if(locked){return;}
         GridObject objectAbovePlayer = playerObject.getActiveGrid().getGridObject(new Position(playerObject.getPlayerPos().getX(), playerObject.getPlayerPos().getY()-1));
         // TODO check whether the player is standing in front of a shelf
         if (objectAbovePlayer instanceof Shelf) {
@@ -329,7 +330,7 @@ public class GameCanvasController {
     public void checkoutButtonHandle(ActionEvent actionEvent) {
         if(actionEvent.getSource()==yesButton){
             checkoutmenu.setText("Thank you, come again!");
-
+            this.locked = true;
             //set timer for message.
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> transition() );
             Timeline timeline = new Timeline();
@@ -343,7 +344,7 @@ public class GameCanvasController {
 
 
 
-          // }
+        //}
         }
         else if(actionEvent.getSource() == noButton){
             close();
@@ -372,9 +373,10 @@ public class GameCanvasController {
                 playerObject.setActiveGrid(startingGrid);
                 playerObject.setPlayerPos(new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
                 startingGrid.setGridObject(playerObject, new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
+                locked = false;
             }
         });
-
+        this.locked = true;
         this.transitionScreen.addText(resultArray);
         this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
         this.transitionScreen.addLine("Happy shopping!");
