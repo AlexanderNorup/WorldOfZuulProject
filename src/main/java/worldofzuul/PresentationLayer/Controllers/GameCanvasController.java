@@ -2,6 +2,8 @@ package worldofzuul.PresentationLayer.Controllers;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -85,6 +87,12 @@ public class GameCanvasController {
                 }
             }
 
+            for(IRoomObject object : iRoom.getObjects()){
+                if(object instanceof IWall){
+                    grid.setGridObject(new Wall(), new Position(object.getXPosition(), object.getYPosition()));
+                }
+            }
+
             gridMap.put(iRoom,grid);
             iRoomMap.put(grid,iRoom);
         }
@@ -101,14 +109,6 @@ public class GameCanvasController {
         }
 
         startingGrid = gridMap.get(startingRoom);
-        startingGrid.setGridObject(new Wall(), new Position(2,4));
-        startingGrid.setGridObject(new Wall(), new Position(1,4));
-        startingGrid.setGridObject(new Wall(), new Position(0,3)); //2,4
-        startingGrid.setGridObject(new Wall(), new Position(1,3)); //1,4
-        startingGrid.setGridObject(new Wall(), new Position(2,3));
-        startingGrid.setGridObject(new Wall(), new Position(5,3));
-        startingGrid.setGridObject(new Wall(), new Position(6,3));
-        startingGrid.setGridObject(new Wall(), new Position(7,3));
 
 
         //Makes the first grid.
@@ -209,7 +209,7 @@ public class GameCanvasController {
      * @param direction the direction the player should go.
      */
     private void tryMove(Direction direction) {
-        if (!locked) {
+        if (!locked && this.transitionScreen.isAnimationDone()) {
             Grid currentGrid = playerObject.getActiveGrid();
             Position currentPosition = playerObject.getPlayerPos();
             Position newPosition = currentPosition;
@@ -230,6 +230,7 @@ public class GameCanvasController {
                 playerObject.setActiveGrid(warp.getGrid()); //Get the new grid that is being opened
                 playerObject.getActiveGrid().setActive(true);//Start animating the new grid.
                 playerObject.setAnimating(false);
+                MainGUI.playSoundEffect("door.wav");
                 return;
             }
 
@@ -237,6 +238,8 @@ public class GameCanvasController {
             if (!playerObject.isAnimating() && playerObject.getActiveGrid().moveObject(playerObject.getPlayerPos(), newPosition)) {
                 playerObject.setPlayerPos(newPosition);
                 //If not moving onto the warp, then we just move by calling the grid.
+            }else{
+                MainGUI.playSoundEffect("block.wav");
             }
         }else{
             MainGUI.playSoundEffect("select.wav");
@@ -253,8 +256,12 @@ public class GameCanvasController {
                 sideMenu.setVisible(true);
                 sideMenu.setManaged(true);
                 Scene sideScene = sideMenu.getScene();
-                ListView<Item> sideMenuListView = (ListView<Item>) sideScene.lookup("#sideMenuListView");
+                ListView<IItem> sideMenuListView = (ListView<IItem>) sideScene.lookup("#sideMenuListView");
                 sideMenuListView.requestFocus();
+                ObservableList<IItem> listViewList = FXCollections.observableArrayList();
+                listViewList.addAll(MainGUI.game.getPlayer().getInventory());
+                sideMenuListView.setItems(listViewList);
+
             }
         }
     }
@@ -284,6 +291,7 @@ public class GameCanvasController {
     }
 
     private void interact(){
+        if(locked){return;}
         GridObject objectAbovePlayer = playerObject.getActiveGrid().getGridObject(new Position(playerObject.getPlayerPos().getX(), playerObject.getPlayerPos().getY()-1));
         // TODO check whether the player is standing in front of a shelf
         if (objectAbovePlayer instanceof Shelf) {
@@ -329,36 +337,16 @@ public class GameCanvasController {
     public void checkoutButtonHandle(ActionEvent actionEvent) {
         if(actionEvent.getSource()==yesButton){
             checkoutmenu.setText("Thank you, come again!");
-
+            this.locked = true;
             //set timer for message.
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> close() );
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> transition() );
             Timeline timeline = new Timeline();
             timeline.getKeyFrames().add(keyFrame);
 
             timeline.play();
 
-            String result = MainGUI.game.canCheckout();
-            if(result == null){
-                ArrayList<String> resultArray = MainGUI.game.Checkout();
-                this.transitionScreen.reset();
-                transitionScreen.setDoneHandler(new AnimationDoneHandler() {
-                    @Override
-                    public void animationDone() {
-                        playerObject.getActiveGrid().setActive(false);
-                        playerObject.getActiveGrid().setGridObject(null, playerObject.getPlayerPos());
-                        startingGrid.setActive(true);
-                        playerObject.setActiveGrid(startingGrid);
-                        playerObject.setPlayerPos(new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
-                        startingGrid.setGridObject(playerObject, new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
-                    }
-                });
 
-                this.transitionScreen.addText(resultArray);
-                this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
-                this.transitionScreen.addLine("Happy shopping!");
-                playerObject.getActiveGrid().setActive(false);
-                this.transitionScreen.setActive(true);
-            }
+        //}
         }
         else if(actionEvent.getSource() == noButton){
             close();
@@ -369,6 +357,35 @@ public class GameCanvasController {
     void close(){
         checkoutmenu.setVisible(false);
         locked = false;
+    }
+
+    void transition(){
+       close();
+
+        String result = MainGUI.game.canCheckout();
+        //if(result == null){
+        ArrayList<String> resultArray = MainGUI.game.Checkout();
+        this.transitionScreen.reset();
+        transitionScreen.setDoneHandler(new AnimationDoneHandler() {
+            @Override
+            public void animationDone() {
+
+                playerObject.getActiveGrid().setActive(false);
+                playerObject.getActiveGrid().setGridObject(null, playerObject.getPlayerPos());
+                startingGrid.setActive(true);
+                playerObject.setActiveGrid(startingGrid);
+                playerObject.setPlayerPos(new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
+                startingGrid.setGridObject(playerObject, new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
+                locked = false;
+            }
+        });
+        this.locked = true;
+        this.transitionScreen.addText(resultArray);
+        this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
+        this.transitionScreen.addLine("Happy shopping!");
+        playerObject.getActiveGrid().setActive(false);
+        this.transitionScreen.setActive(true);
+
     }
 }
 

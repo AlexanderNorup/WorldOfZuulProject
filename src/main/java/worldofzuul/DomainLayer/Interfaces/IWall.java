@@ -1,4 +1,4 @@
 package worldofzuul.DomainLayer.Interfaces;
 
-public interface IWall {
+public interface IWall extends IRoomObject{
 }
