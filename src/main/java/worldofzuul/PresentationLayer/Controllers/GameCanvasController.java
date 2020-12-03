@@ -338,7 +338,7 @@ public class GameCanvasController {
             String result= MainGUI.game.canCheckout();
 
             if(result == null) {
-
+                //TODO reset SideMenu to update list and addListener
 
                 checkoutmenu.setText("Thank you, come again!");
                 this.locked = true;
