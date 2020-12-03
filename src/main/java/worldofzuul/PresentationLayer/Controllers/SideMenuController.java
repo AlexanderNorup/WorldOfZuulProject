@@ -62,7 +62,7 @@ public class SideMenuController {
             @Override
             public void onChanged(Change<? extends IItem> c) {
                 sideMenuCalorieLabel.setText(Integer.toString((int)(MainGUI.game.getPlayer().getInventoryCalories())));
-                sideMenuProteinLabel.setText(Integer.toString((int)(MainGUI.game.getPlayer().getInventoryProtein())) + " g");
+                sideMenuProteinLabel.setText((int) (MainGUI.game.getPlayer().getInventoryProtein()) + " g");
                 moneyBar.setProgress(MainGUI.game.getPlayer().getInventoryValue()/MainGUI.game.getPlayer().getBudget());
                 moneySpent.setText(String.format("%4.2f", MainGUI.game.getPlayer().getInventoryValue()));
             }
