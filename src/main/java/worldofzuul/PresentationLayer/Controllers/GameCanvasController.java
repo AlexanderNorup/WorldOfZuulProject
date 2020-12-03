@@ -309,10 +309,12 @@ public class GameCanvasController {
             shelfMenuListView.requestFocus();
             MainGUI.playSoundEffect("select.wav");
             locked = true;
+
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
 
             System.out.println("CASHIER");
+            checkoutmenu.setPrefWidth(160);
             checkoutmenu.setText("Do you wanna checkout?");
             checkoutmenu.setVisible(true);
             checkoutmenu.lookup(".arrow").setStyle("-fx-background-color: red;");
@@ -342,22 +344,27 @@ public class GameCanvasController {
 
             if(result == null) {
 
+
                 checkoutmenu.setText("Thank you, come again!");
                 this.locked = true;
                 //set timer for message.
-                KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> transition());
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> transition());
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(keyFrame);
 
                 timeline.play();
             }
             else {
-                checkoutmenu.setText(result);
-                KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2),event -> close()
+                TextArea textArea = (TextArea) gameCanvas.getParent().getScene().lookup("#textBox").lookup("#textArea");
+                textArea.setText(result);
+                textArea.getParent().setVisible(true);
+                checkoutmenu.setText("You can't checkout!");
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5),event -> close()
                 );
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(keyFrame);
                 timeline.play();
+
 
             }
 
