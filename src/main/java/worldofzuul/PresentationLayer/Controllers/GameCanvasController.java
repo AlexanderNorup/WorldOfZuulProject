@@ -1,11 +1,10 @@
 package worldofzuul.PresentationLayer.Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -28,6 +27,9 @@ import java.util.Collections;
  */
 public class GameCanvasController {
 
+    public MenuButton checkoutmenu; //et alternativ til checkout, synes det ser mere in-game ud end en alertbox
+    public MenuItem yesButton;
+    public MenuItem noButton;
     private PlayerObject playerObject;
 
 
@@ -149,11 +151,15 @@ public class GameCanvasController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("CHECKOUT");
             alert.setHeaderText("do you want to checkout?");
-            alert.showAndWait().ifPresent(rs -> {
+            /*alert.showAndWait().ifPresent(rs -> {
                 if (rs == ButtonType.OK) {
                     System.out.println(MainGUI.game.doAction(CommandWord.CHECKOUT.toString(),null));
                 }
-            });
+            });*/
+            checkoutmenu.setVisible(true);
+            checkoutmenu.lookup(".arrow").setStyle("-fx-background-color: red;");
+            checkoutmenu.fire();
+            checkoutmenu.lookup( ".arrow" ).setStyle( "-fx-background-insets: 0; -fx-padding: 0; -fx-shape: null;" );
         }
     }
 
@@ -176,6 +182,8 @@ public class GameCanvasController {
     @FXML
     public void initialize(){
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
+
+
 
         ArrayList<IRoom> rooms = MainGUI.game.getRooms();
         ArrayList<Grid> grids = new ArrayList<>();
@@ -266,5 +274,13 @@ public class GameCanvasController {
         root.setFocusTraversable(true); //Makes onKeyPressed() work.
     }
 
+    public void checkoutButtonHandle(ActionEvent actionEvent) {
+        if(actionEvent.getSource()==yesButton){
+            checkoutmenu.setVisible(false);
+        }
+        else if(actionEvent.getSource() == noButton){
+            checkoutmenu.setVisible(false);
+        }
+    }
 }
 
