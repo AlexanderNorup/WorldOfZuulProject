@@ -76,8 +76,16 @@ public class ShelfMenuController {
                 Node textBox = shelfMenu.getParent().getScene().lookup("#textBox");
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
-                    MainGUI.playSoundEffect("select.wav");
+                }else{
+                    Node sideMenu = shelfMenu.getParent().getScene().lookup("#sideMenu");
+                    shelfMenu.setVisible(false);
+                    shelfMenu.setManaged(false);
+                    sideMenu.setDisable(false);
+                    sideMenu.setVisible(false);
+                    textBox.setVisible(false);
+                    GameCanvasController.setLocked(false);
                 }
+                MainGUI.playSoundEffect("select.wav");
                 break;
         }
     }
