@@ -311,7 +311,9 @@ public class GameCanvasController {
             locked = true;
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
+
             System.out.println("CASHIER");
+            checkoutmenu.setText("Do you wanna checkout?");
             checkoutmenu.setVisible(true);
             checkoutmenu.lookup(".arrow").setStyle("-fx-background-color: red;");
             checkoutmenu.fire();
@@ -336,17 +338,31 @@ public class GameCanvasController {
 
     public void checkoutButtonHandle(ActionEvent actionEvent) {
         if(actionEvent.getSource()==yesButton){
-            checkoutmenu.setText("Thank you, come again!");
-            this.locked = true;
-            //set timer for message.
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> transition() );
-            Timeline timeline = new Timeline();
-            timeline.getKeyFrames().add(keyFrame);
+            String result= MainGUI.game.canCheckout();
 
-            timeline.play();
+            if(result == null) {
+
+                checkoutmenu.setText("Thank you, come again!");
+                this.locked = true;
+                //set timer for message.
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> transition());
+                Timeline timeline = new Timeline();
+                timeline.getKeyFrames().add(keyFrame);
+
+                timeline.play();
+            }
+            else {
+                checkoutmenu.setText(result);
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2),event -> close()
+                );
+                Timeline timeline = new Timeline();
+                timeline.getKeyFrames().add(keyFrame);
+                timeline.play();
+
+            }
 
 
-        //}
+            //}
         }
         else if(actionEvent.getSource() == noButton){
             close();
