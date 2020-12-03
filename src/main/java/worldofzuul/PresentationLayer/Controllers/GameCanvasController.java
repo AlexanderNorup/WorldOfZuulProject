@@ -16,6 +16,7 @@ import worldofzuul.PresentationLayer.GridObjects.*;
 import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -278,6 +279,12 @@ public class GameCanvasController {
     public void checkoutButtonHandle(ActionEvent actionEvent) {
         if(actionEvent.getSource()==yesButton){
             checkoutmenu.setVisible(false);
+
+            String result = MainGUI.game.canCheckout();
+            if(result == null){
+                ArrayList<String> resultArray = MainGUI.game.Checkout();
+
+            }
         }
         else if(actionEvent.getSource() == noButton){
             checkoutmenu.setVisible(false);
