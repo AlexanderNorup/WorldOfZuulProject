@@ -25,19 +25,20 @@ public class MainGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //Pathen til resourcen er relativt fra /src/main/resources/
         soundCache = new HashMap<>();
+        //Pathen til resourcen er relativt fra /src/main/resources/
         Parent mainMenu = FXMLLoader.load(MainGUI.class.getResource("/fxml/mainmenu.fxml"));
         s = new Scene(mainMenu, 1280,720);
-
-        Media media = new Media(MainGUI.class.getResource("/music/tendo.mp3").toString());  //plays music
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
-        mediaPlayer.setOnEndOfMedia(new Runnable() {
-            public void run() {
-                mediaPlayer.seek(Duration.ZERO);
-            }
-        });
+        if(!this.getParameters().getRaw().contains("--mute")) {
+            Media media = new Media(MainGUI.class.getResource("/music/tendo.mp3").toString());  //plays music
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+            mediaPlayer.setOnEndOfMedia(new Runnable() {
+                public void run() {
+                    mediaPlayer.seek(Duration.ZERO);
+                }
+            });
+        }
 
         game = new Game();
 
