@@ -169,7 +169,7 @@ public class ContentGenerator {
         //Non-organic items
         ArrayList<IItem> liquids = new ArrayList<>();
         liquids.add(new Item("1L Milk",9,1,35,380,new Extra[]{Extra.CONTAINS_LACTOSE}));
-        liquids.add(new Item("1L Oat milk",16,1,48,580,new Extra[]{Extra.CONTAINS_LACTOSE}));
+        liquids.add(new Item("1L Oat milk",16,1,48,580,new Extra[]{}));
         liquids.add(new Item("1L Yogurt",15,1.1,38,630,new Extra[]{Extra.CONTAINS_LACTOSE}));
         liquids.add(new Item("0.2L Yogurt",6,0.3,7.6,126,new Extra[]{Extra.CONTAINS_LACTOSE}));
 
@@ -180,6 +180,7 @@ public class ContentGenerator {
         nonLiquids.add(new Item("200g Margarine",7,0.3,0,1450,new Extra[]{Extra.VEGAN}));
         nonLiquids.add(new Item("500g Margarine",16,0.7,0,3625,new Extra[]{Extra.VEGAN}));
         nonLiquids.add(new Item("10 eggs",22,1,68,750,new Extra[]{}));
+        nonLiquids.add(new Item("6 eggs",14,0.6,34,375,new Extra[]{}));
 
         shelves.add(new Shelf(0,1,nonLiquids));
         shelves.add(new Shelf(1,1,nonLiquids));
@@ -349,10 +350,12 @@ public class ContentGenerator {
         type.addNegativeExtra(Extra.CONTAINS_GLUTEN);
         type.addNegativeExtra(Extra.CONTAINS_LACTOSE);
         type.addNegativeExtra(Extra.CONTAINS_SOY);
+        type.addNegativeExtra(Extra.FROZEN);
+        type.addNegativeExtra(Extra.CANNED);
         type.addPositiveExtra(Extra.ORGANIC);
         type.addFaveItems("Gluten Free White Bread Organic", "Gluten Free Pastry Organic",
                 "Salmon Organic","Lamb Chop Organic", "Salami Organic","Almonds Organic",
-                "Blueberries Organic","Mango Organic","Gluten Free White Bread");
+                "Blueberries Organic","Mango Organic","Pasta Organic");
         type.addHateItems("Margarine","Pork Rib","Ground Beef","Oatmeal","Rice","Chicken","Roast Beef","Potatoes","Oat milk");
         type.randomizeFaveHateItems();
 
