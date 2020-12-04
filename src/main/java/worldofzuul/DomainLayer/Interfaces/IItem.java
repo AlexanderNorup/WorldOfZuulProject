@@ -11,4 +11,6 @@ public interface IItem {
      * @return A description of the item (Name, price etc. )
      */
     String getDescription();
+
+     double getCo2();
 }
