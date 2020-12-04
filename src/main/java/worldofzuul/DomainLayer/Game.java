@@ -43,7 +43,8 @@ public class Game implements IGame {
             for (GameResultData resultData : loadedData) {
                 GameResult result = new GameResult(resultData.getCo2(),
                         resultData.getHappiness(),
-                        ContentGenerator.getPlayerTypeByName(resultData.getPlayerTypeName()));
+                        ContentGenerator.getPlayerTypeByName(resultData.getPlayerTypeName()),
+                        resultData.getItemsBought());
                 finishedGames.add(result);
             }
             System.out.println("Your saved game was loaded.");
@@ -124,7 +125,7 @@ public class Game implements IGame {
     private void save() {
         ArrayList<GameResultData> resultData = new ArrayList<>();
         for (GameResult result : finishedGames) {
-            resultData.add(new GameResultData(result.getCo2(), result.getHappiness(), result.getPlayerType().getName()));
+            resultData.add(new GameResultData(result.getCo2(), result.getHappiness(), result.getPlayerType().getName(),result.getItemsBought()));
         }
         try {
             saveGame.save(resultData);

@@ -144,11 +144,13 @@ public class Player implements IPlayer {
      */
     public GameResult getGameResult() {
         double totalC02 = 0.0;
+        ArrayList<String> itemsBought = new ArrayList<>();
         for (Item item : inventory) {
             totalC02 += item.getCo2();
+            itemsBought.add(item.getName());
         }
 
-        return new GameResult(totalC02, type.getHappiness(inventory), type);
+        return new GameResult(totalC02, type.getHappiness(inventory), type, itemsBought);
     }
 
     /**

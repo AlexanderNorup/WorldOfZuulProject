@@ -22,14 +22,16 @@ public class SaveFile implements ISaveGame {
     private static final String CO2_STRING = "co2";
     private static final String HAPPINESS_STRING = "happiness";
     private static final String PLAYERTYPE_STRING = "playerType";
+    private static final String ITEMS_BOUGHT_LIST = "itemsBought";
 
-    public SaveFile(String path){
+    public SaveFile(String path) {
         this.path = path;
     }
 
     /**
      * Saves the given Arraylist to a JSON file
      * Will create the JSON file if it doesn't already exist
+     *
      * @param gameResults
      * @throws SaveGameException JSON or FileNotFound-Exceptions will be chained to a SaveGameException and thrown
      */
@@ -43,7 +45,12 @@ public class SaveFile implements ISaveGame {
                 o.put(CO2_STRING, g.getCo2());
                 o.put(HAPPINESS_STRING, g.getHappiness());
                 o.put(PLAYERTYPE_STRING, g.getPlayerTypeName());
-            } catch (JSONException e){
+                JSONArray itemsBoughtArray = new JSONArray();
+                for (String item : g.getItemsBought()) {
+                    itemsBoughtArray.put(item);
+                }
+                o.put(ITEMS_BOUGHT_LIST, itemsBoughtArray);
+            } catch (JSONException e) {
                 throw new SaveGameException("JSON Exception when saving game", e);
             }
 
@@ -60,10 +67,11 @@ public class SaveFile implements ISaveGame {
 
     /**
      * Loads data from a saved file
+     *
      * @return
      * @throws SaveGameException JSON, IO or FileNotFound-Exceptions will be chained to a SaveGameException and thrown
      */
-    public ArrayList<GameResultData> load() throws SaveGameException{
+    public ArrayList<GameResultData> load() throws SaveGameException {
         ArrayList<GameResultData> toReturn = new ArrayList<>();
 
         File file = new File(path);
@@ -88,7 +96,16 @@ public class SaveFile implements ISaveGame {
                     co2 = o.getDouble(CO2_STRING);
                     happiness = o.getDouble(HAPPINESS_STRING);
                     playerTypeName = o.getString(PLAYERTYPE_STRING);
-                    toReturn.add(new GameResultData(co2, happiness, playerTypeName));
+
+                    ArrayList<String> itemsBought = new ArrayList<>();
+                    JSONArray itemsBoughtArray = o.getJSONArray(ITEMS_BOUGHT_LIST);
+                    if(itemsBoughtArray !=  null) { //If it dosn't exist, from loading an older save file.
+                        for (int j = 0; j < itemsBoughtArray.length(); j++) {
+                            itemsBought.add(itemsBoughtArray.getString(j));
+                        }
+                    }
+
+                    toReturn.add(new GameResultData(co2, happiness, playerTypeName, itemsBought));
                 }
 
             } else {
@@ -100,7 +117,7 @@ public class SaveFile implements ISaveGame {
         } catch (JSONException e) {
             throw new SaveGameException("JSONException when loading game", e);
         } finally {
-            if (s != null){
+            if (s != null) {
                 s.close();
             }
         }
