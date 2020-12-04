@@ -325,22 +325,33 @@ public class ContentGenerator {
     }
 
     public static PlayerType getBodybuilderPlayerType(){
-        PlayerType type = new PlayerType(BODYBUILDER_NAME,"The bodybuilder needs loads of protein!\n" +
-                "You should aim to get 3000 calories per day. \n Try to get as much protein as possible.\n Please try to avoid making the world explode!");
+        PlayerType type = new PlayerType(BODYBUILDER_NAME,"The bodybuilder really cares about meating his protein goal!\n" +
+                "You should aim to get 3000 calories per day. \n avoid soy as it reduces gains " +
+                "\n Please try to avoid making the world explode!");
         type.setFactors(6,1,3);
         type.setValues(75,1200,3000);
         type.setPlayerSprite(Game.class.getResource("/sprites/BodyBuilderTight.png").toString());
+        type.addNegativeExtra(Extra.CONTAINS_SOY);
         return type;
     }
 
     public static PlayerType getPickyPlayerType(){
-        PlayerType type = new PlayerType(PICKY_NAME,"The picky person has a lot of money to spent.\n However, he is very picky! \n His calorie goal is very specific. \n" +
-                "Please try to avoid making the world explode!");
+        ArrayList<Item> faveItems = new ArrayList<>();
+        ArrayList<Item> hateItems = new ArrayList<>();
+
+        PlayerType type = new PlayerType(PICKY_NAME,
+                "The picky person has a lot of money to spent.\n" +
+                        "However, he is very picky!\n" +
+                        "He doesn't like soy, gluten, or lactose but loves organic.\n" +
+                        "His calorie goal is very specific. \n" +
+                        "Please try to avoid making the world explode!");
         type.setFactors(1,1,8);
         type.setValues(100,1800,2000);
         type.addNegativeExtra(Extra.CONTAINS_GLUTEN);
         type.addNegativeExtra(Extra.CONTAINS_LACTOSE);
         type.addNegativeExtra(Extra.CONTAINS_SOY);
+        type.addPositiveExtra(Extra.ORGANIC);
+
         type.setPlayerSprite(Game.class.getResource("/sprites/Picky.png").toString());
         return type;
     }

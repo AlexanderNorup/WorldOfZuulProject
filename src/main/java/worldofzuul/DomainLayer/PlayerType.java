@@ -2,6 +2,7 @@ package worldofzuul.DomainLayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Keeps all the properties for a playerType (Student, Bodybuilder etc)
@@ -22,6 +23,8 @@ public class PlayerType {
     private final ArrayList<Item> hateItemTypes;
     private final ArrayList<Extra> positiveExtra;
     private final ArrayList<Extra> negativeExtra;
+    private ArrayList<Item> tempFaveItemTypes;
+    private ArrayList<Item> tempHateItemTypes;
 
     public PlayerType(String name, String description) {
         this.name = name;
@@ -30,6 +33,10 @@ public class PlayerType {
         this.hateItemTypes = new ArrayList<>();
         this.positiveExtra = new ArrayList<>();
         this.negativeExtra = new ArrayList<>();
+
+        tempFaveItemTypes = getRandomItemsFromList(faveItemTypes, 3);
+        tempHateItemTypes = getRandomItemsFromList(hateItemTypes, 3);
+
     }
 
     public String getName() {
@@ -37,7 +44,9 @@ public class PlayerType {
     }
 
     public String getDescription(){
-        return description;
+        String faveItemsString = "\nFavorite Items: " + Arrays.toString(tempFaveItemTypes.stream().map(Item::getName).toArray()) + "\n";
+        String hateItemsString = "\nHated Items: " + Arrays.toString(tempHateItemTypes.stream().map(Item::getName).toArray()) + "\n";
+        return description + faveItemsString + hateItemsString;
     }
 
     public double getCalorieMin() {
@@ -113,12 +122,12 @@ public class PlayerType {
             totalProtein += item.getProtein();
 
             //Count number of faveItemTypes bought
-            if (faveItemTypes.contains(item) && !itemTypeList.contains(item)) {
+            if (tempFaveItemTypes.contains(item) && !itemTypeList.contains(item)) {
                 faveItemsBought += 1;
             }
 
             //Count number of hateItemTypes bought
-            if (hateItemTypes.contains(item) && !itemTypeList.contains(item)) {
+            if (tempHateItemTypes.contains(item) && !itemTypeList.contains(item)) {
                 hateItemsBought += 1;
             }
 
@@ -179,8 +188,8 @@ public class PlayerType {
 
         //PICKINESS
         int allExtras = positiveExtra.size() + negativeExtra.size();
-        double percentageFaveItemTypesBought = faveItemTypes.size() != 0 ? (double) faveItemsBought / (double) faveItemTypes.size() : 0;
-        double percentageHateItemTypesBought = hateItemTypes.size() != 0 ? (double) hateItemsBought / (double) hateItemTypes.size() : 0.5;
+        double percentageFaveItemTypesBought = tempFaveItemTypes.size() != 0 ? (double) faveItemsBought / (double) tempFaveItemTypes.size() : 0;
+        double percentageHateItemTypesBought = tempHateItemTypes.size() != 0 ? (double) hateItemsBought / (double) tempHateItemTypes.size() : 0.5;
         double percentItemsContainingExtras = allExtras != 0 ? (double) itemsContainingExtras / (double) items.size() : 0;
 
         happiness += 40 * percentageFaveItemTypesBought * pickynessFactor;
@@ -222,4 +231,25 @@ public class PlayerType {
 
         return happiness;
     }
+
+    /**
+     * @param itemList the list from which you whish random items
+     * @param amount the amount of random items you wish
+     * @return list of random items from provided list
+     */
+    private ArrayList<Item> getRandomItemsFromList(ArrayList<Item> itemList, int amount){
+        ArrayList<Item> Return = new ArrayList<>();
+        if(amount > itemList.size()){
+            System.out.println("getRandomItemsFromList - amount longer than list");
+        }else {
+            Random random = new Random();
+            for(int x = 0 ; x < amount ; x++){
+                int randomInt = random.nextInt(itemList.size());
+                Return.add(itemList.get(new Random().nextInt(itemList.size())));
+                itemList.remove(randomInt);
+            }
+        }
+        return Return;
+    }
+
 }
