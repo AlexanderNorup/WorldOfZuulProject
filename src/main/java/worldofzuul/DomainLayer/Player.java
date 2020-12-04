@@ -142,7 +142,7 @@ public class Player implements IPlayer {
     /**
      * @return an instance of the GameResult class representing the current game
      */
-    public GameResult getGameResult() {
+    public GameResult getGameResult(String[][] previousInventories) {
         double totalC02 = 0.0;
         ArrayList<String> itemsBought = new ArrayList<>();
         for (Item item : inventory) {
@@ -150,14 +150,7 @@ public class Player implements IPlayer {
             itemsBought.add(item.getName());
         }
 
-        return new GameResult(totalC02, type.getHappiness(inventory), type, itemsBought);
-    }
-
-    /**
-     * @return String of the total price, calories and protein for this game
-     */
-    public String getSummedValuesString() {
-        return "Happiness: " + String.format(Locale.US, "%7.2f",  type.getHappiness(inventory)) + " | Total Price: " + getInventoryValue() + " | " + "Total Calories: " + getInventoryCalories() + " | " + "Total Protein: " + getInventoryProtein();
+        return new GameResult(totalC02, type.getHappiness(inventory, previousInventories), type, itemsBought);
     }
 
 
