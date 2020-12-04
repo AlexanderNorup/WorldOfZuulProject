@@ -118,7 +118,7 @@ public class PlayerType {
 
     //calculate happiness
     //TODO finish
-    public double getHappiness(ArrayList<Item> items){
+    public double getHappiness(ArrayList<Item> items, String[][] previousItems){
         double happiness = 0;
 
         double totalPrice = 0.0;
@@ -236,6 +236,25 @@ public class PlayerType {
 
 
 
+        //GETTING TIRED OF EATING THE SAME THINGS-punishment
+        double eatingSamePunishment = 0;
+        double eatingTheSameFactor = 2;
+        for(int day = 0; day < Math.min(previousItems.length,4); day++){ //Look at up to the 5 last days.
+            for(int i = 0; i < previousItems[day].length; i++){
+                for(Item item : items) {
+                    if (item.getName().equalsIgnoreCase(previousItems[day][i])) {
+                        //The player bought something they did in the last few days.
+                        //The player is punished more if they bought it more recently.
+                        eatingSamePunishment += Math.log10(0.2 * (day + 1));
+                    }
+                }
+            }
+        }
+
+        happiness -= eatingSamePunishment * eatingTheSameFactor;
+
+
+
         System.out.println("\n\n\n");
         System.out.println("HAPPINESS CALCULATION:");
         System.out.println("budgetFactor: " + budgetFactor);
@@ -255,7 +274,8 @@ public class PlayerType {
         System.out.println("ExtraItemPoints: " + 60 * ((percentItemsContainingExtras - 0.5) * 2) * pickynessFactor);
         System.out.println("HateItemPoints: " + -40 * percentageHateItemTypesBought * pickynessFactor);
         System.out.println("Calorie happiness: " + Math.max((1 - (totalCalories - calorieMin) / (calorieGoal - calorieMin)) * 10,0));
-        System.out.println("variaty happiness: " + Math.min(20 * ((variety-6)/5),20));
+        System.out.println("Variety happiness: " + Math.min(20 * ((variety-6)/5),20));
+        System.out.println("Eating the same things punishment: " + eatingSamePunishment);
         System.out.println("Happiness: " +happiness);
         System.out.println("\n\n\n");
 
