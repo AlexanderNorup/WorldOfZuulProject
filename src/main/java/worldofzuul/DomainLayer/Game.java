@@ -212,13 +212,13 @@ public class Game implements IGame {
         if (co2 < 5) {
             returnString.append("The earth is still a green and beautiful place\n");
         } else if (co2 < 10) {
-            returnString.append("You notice your armpits are more stained than usual.\n People seem to be rioting.");
+            returnString.append("You notice your armpits are more stained than usual.\n People seem to be rioting.\n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket1.png").toString());
         } else if (co2 < 15) {
-            returnString.append("It's getting hot outside and you notice that plants are dying around you. \n");
+            returnString.append("It's getting hot outside, plants are dying around you. \n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket2.png").toString());
         } else if (co2 < 20) {
-            returnString.append("It's too hot to walk barefoot. \n You notice everything sets on fire.");
+            returnString.append("It's too hot to walk barefoot. \n You notice everything sets on fire.\n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket3.png").toString());
         } else if (co2 < 25) {
             returnString.append("All the glaciers have melted and the ocean has risen. \n");
@@ -239,7 +239,7 @@ public class Game implements IGame {
         } else if (happiness > -200) {
             returnString.append("You've joined a fascist movement.\n");
         } else {
-            returnString.append("You have successfully overthrown the government. \n Bottle caps are now the only currency. \n");
+            returnString.append("You have successfully overthrown the government. \n GASOLINE are now the only currency. \n");
         }
         return returnString.toString();
     }
