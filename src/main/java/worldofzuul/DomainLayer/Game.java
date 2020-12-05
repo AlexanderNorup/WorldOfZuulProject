@@ -8,7 +8,10 @@ import worldofzuul.DomainLayer.Interfaces.IPlayer;
 import worldofzuul.DomainLayer.Interfaces.IRoom;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
+import static java.util.Collections.reverse;
 
 /**
  * The main class of the game
@@ -32,7 +35,7 @@ public class Game implements IGame {
     public Game() {
         rooms = ContentGenerator.getRooms();
         player = new Player(ContentGenerator.getRandomPlayerType(),
-                this.rooms.get(0)); //Set's starting room to the first room (outside).
+                            this.rooms.get(0)); //Set's starting room to the first room (outside).
 
         finishedGames = new ArrayList<>();
         saveGame = new SaveFile("./saveFile.json");
@@ -46,12 +49,15 @@ public class Game implements IGame {
             for (GameResultData resultData : loadedData) {
                 GameResult result = new GameResult(resultData.getCo2(),
                         resultData.getHappiness(),
-                        ContentGenerator.getPlayerTypeByName(resultData.getPlayerTypeName()));
+                        ContentGenerator.getPlayerTypeByName(resultData.getPlayerTypeName()),
+                        resultData.getItemsBought());
                 finishedGames.add(result);
             }
             System.out.println("Your saved game was loaded.");
         } catch (SaveGameException e) {
             System.out.println("No saved game found - a new game has been created");
+            System.out.println("[Debug] What actually went wrong loading the save: "+e.getMessage());
+            System.out.println("[Debug] Cause: " + e.getCause());
             // finishedGames Arraylist will be an empty list
             // This is the same as starting a new game
         }
@@ -71,13 +77,13 @@ public class Game implements IGame {
     }
 
     @Override
-    public IPlayer getPlayer() {
+    public IPlayer getPlayer(){
         return player;
     }
 
     @Override
     public void setPlayerType(String playerType) {
-        switch (playerType) {
+        switch (playerType){
             case "Student":
                 this.player.setPlayerType(ContentGenerator.getStudentPlayerType());
                 break;
@@ -94,13 +100,13 @@ public class Game implements IGame {
                 PlayerType newPicky = ContentGenerator.getPickyPlayerType();
                 newPicky.setPlayerSprite(Game.class.getResource("/sprites/gurli.png").toString());
                 this.player.setPlayerType(newPicky);
-                newPicky.setValues(1200, 7500, 9000);
+                newPicky.setValues(1200,7500,9000);
             default:
         }
     }
 
     @Override
-    public PlayerType getPlayerType() {
+    public PlayerType getPlayerType(){
         return player.getPlayerType();
     }
 
@@ -127,7 +133,7 @@ public class Game implements IGame {
     private void save() {
         ArrayList<GameResultData> resultData = new ArrayList<>();
         for (GameResult result : finishedGames) {
-            resultData.add(new GameResultData(result.getCo2(), result.getHappiness(), result.getPlayerType().getName()));
+            resultData.add(new GameResultData(result.getCo2(), result.getHappiness(), result.getPlayerType().getName()result.getItemsBought()));
         }
         try {
             saveGame.save(resultData);
@@ -137,7 +143,7 @@ public class Game implements IGame {
         }
     }
 
-    public String canCheckout() {
+    public String canCheckout(){
         if (!getPlayer().underBudget()) {
             return "You are over budget. Drop some items (use \"drop\" command)";
         }
@@ -147,10 +153,11 @@ public class Game implements IGame {
         return null;
     }
 
-    public ArrayList<String> Checkout() {
+    public ArrayList<String> Checkout(){
         ArrayList<String> strings = new ArrayList<>();
         ArrayList<IItem> items = getPlayer().getInventory();
         strings.add("You went to the cash register and checked out.\nThe day is over and you go back home to sleep.\n\n");
+        //strings.add(player.getGameResult());
         resetGame();
         strings.add(reactToResults());
         if (isCo2Bad) {
@@ -167,9 +174,20 @@ public class Game implements IGame {
     /**
      * Takes care of resetting player and rooms and prints stuff to the user
      */
-
     public void resetGame() {
-        GameResult result = player.getGameResult();
+        //Makes a uneven reversed 2D array of items the player bought all previous games.
+        //May be empty.
+        String[][] previousInventories = new String[finishedGames.size()][1];
+        int q = finishedGames.size()-1; //Used to reverse the list.
+        for(int i = 0; i < finishedGames.size(); i++){ //Go through the items backwards!
+            ArrayList<String> itemsBought = finishedGames.get(i).getItemsBought();
+            previousInventories[q] = new String[itemsBought.size()];
+            for(int j = 0; j < itemsBought.size(); j++){
+                previousInventories[q][j] = itemsBought.get(j);
+            }
+            q--;
+        }
+        GameResult result = player.getGameResult(previousInventories);
         finishedGames.add(result); //adds the game result of the currently played game to an arraylist of results.
         player.deleteInventory(); // deletes all items in the inventory
         player.setPlayerType(getPlayerType());
@@ -187,7 +205,7 @@ public class Game implements IGame {
         StringBuilder returnString = new StringBuilder();
         int happiness = 0;
         double co2 = 0;
-        int timesPlayed = 0; // to count how many times the game has played
+        int timesPlayed=0; // to count how many times the game has played
         for (GameResult finishedGame : finishedGames) {
             happiness += finishedGame.getHappiness();
             co2 += finishedGame.getCo2();
@@ -196,9 +214,9 @@ public class Game implements IGame {
         returnString.append("Your results for today\n\n");
         returnString.append("CO2: ").append(co2).append("\n");
         returnString.append("Happiness: ").append(happiness).append("\n\n\n");
-        returnString.append("You have played: ").append(timesPlayed).append(" times. \n");
+        returnString.append("You have played: ").append(timesPlayed).append(" times. \n---\n");
 
-        //co2
+        returnString.append("Current climate situation: \n");
         if (co2 < 5) {
             isCo2Bad = false;
             returnString.append("The earth is still a green and beautiful place\n");
@@ -240,7 +258,6 @@ public class Game implements IGame {
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket5.png").toString());
         }
 
-        //happiness
 
         if (happiness >= 0) {
             isNotHappy = false;
@@ -259,7 +276,7 @@ public class Game implements IGame {
             }
             returnString.append("You don't want to eat anymore. You hate yourself.\n");
 
-         }else if (happiness > -150) {
+        }else if (happiness > -150) {
             isNotHappy = true;
             if (finishedGames.size()>1 && getLastGameHappiness()<-100 && getLastGameHappiness()>-150) {
                 isNotHappy = false;
@@ -273,7 +290,7 @@ public class Game implements IGame {
             }
             returnString.append("You've joined a fascist movement.\n");
         } else {
-            returnString.append("You have successfully overthrown the government. \n Bottle caps are now the only currency. \n");
+            returnString.append("You have successfully overthrown the government. \n GASOLINE are now the only currency. \n");
         }
         return returnString.toString();
     }
@@ -286,9 +303,9 @@ public class Game implements IGame {
      */
     @Override
     public boolean take(IItem item) {
-        if (item instanceof Item) {
+        if(item instanceof Item){
             player.addItem((Item) item);
-            if (player.underBudget()) return true;
+            if(player.underBudget()) return true;
 
             player.removeItem((Item) item);
             return false;
@@ -303,7 +320,7 @@ public class Game implements IGame {
      */
     @Override
     public void drop(IItem item) {
-        if (item instanceof Item) {
+        if(item instanceof Item){
             player.removeItem((Item) item);
         }
     }
@@ -343,7 +360,6 @@ public class Game implements IGame {
         }
         return total;
     }
-
 
 
 }
