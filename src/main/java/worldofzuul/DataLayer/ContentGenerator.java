@@ -13,6 +13,7 @@ import worldofzuul.PresentationLayer.Position;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Creates the Arraylist of items for each room as well as
@@ -358,7 +359,6 @@ public class ContentGenerator {
                 "Blueberries Organic","Mango Organic","Pasta Organic");
         type.addHateItems("Margarine","Pork Rib","Ground Beef","Oatmeal","Rice","Chicken","Roast Beef","Potatoes","Oat milk");
         type.randomizeFaveHateItems();
-
 
 
         type.setPlayerSprite(Game.class.getResource("/sprites/Picky.png").toString());

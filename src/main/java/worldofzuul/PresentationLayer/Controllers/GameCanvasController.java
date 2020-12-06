@@ -306,8 +306,6 @@ public class GameCanvasController {
             locked = true;
 
         }else if(objectAbovePlayer instanceof Cashier){
-            //TODO checkout
-
             System.out.println("CASHIER");
             checkoutmenu.setPrefWidth(160);
             checkoutmenu.setText("Do you wanna checkout?");
@@ -341,7 +339,13 @@ public class GameCanvasController {
                 //TODO reset SideMenu to update list and addListener
 
                 checkoutmenu.setText("Thank you, come again!");
-                this.locked = true;
+
+                //Empty sidemenu
+                Scene sideScene = sideMenu.getScene();
+                ListView<IItem> sideMenuListView = (ListView<IItem>) sideScene.lookup("#sideMenuListView");
+                sideMenuListView.getItems().setAll(new ArrayList<>());
+
+                locked = true;
                 //set timer for message.
                 KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> transition());
                 Timeline timeline = new Timeline();

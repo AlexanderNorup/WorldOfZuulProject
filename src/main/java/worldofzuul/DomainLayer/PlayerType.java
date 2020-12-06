@@ -130,6 +130,7 @@ public class PlayerType {
 
 
         for (Item item : items) {
+            System.out.println("Item: " + item.getName());
 
             // Sums values
             totalPrice += item.getPrice();
@@ -168,10 +169,10 @@ public class PlayerType {
             }
 
             if(!containsNegativeExtra){
-                for(Extra extra : item.getExtra()){
-                    if(!negativeExtra.contains(extra)){
-                        itemsContainingExtras += (item.getExtra().contains(extra) ? 1 : 0) / positiveExtra.size();
-                    }
+                for(Extra extra : positiveExtra){
+                    System.out.println("Extra: " + extra);
+                    itemsContainingExtras += (item.getExtra().contains(extra) ? 1 : 0) / positiveExtra.size();
+                    System.out.println("itemsContainingExtras: " + itemsContainingExtras);
                 }
             }
         }
@@ -240,7 +241,9 @@ public class PlayerType {
         for(int day = 0; day < Math.min(previousItems.length,4); day++){ //Look at up to the 5 last days.
             for(int i = 0; i < previousItems[day].length; i++){
                 for(Item item : items) {
-                    if (item.getName().equalsIgnoreCase(previousItems[day][i])) {
+                    //Remove reference to Organic and Weight
+                    String itemName = item.getName().replace("Organic", "").replaceAll("\\d","");
+                    if (itemName.equalsIgnoreCase(previousItems[day][i])) {
                         //The player bought something they did in the last few days.
                         //The player is punished more if they bought it more recently.
                         eatingSamePunishment += Math.log10(0.2 * (day + 1));
@@ -266,6 +269,7 @@ public class PlayerType {
         System.out.println("extras: " + itemsContainingExtras);
         System.out.println("proteinMin: " + proteinMin);
         System.out.println("proteinGoal: " + proteinGoal);
+        System.out.println("BudgetHappiness: " + (totalPrice < budgetMax*0.8 ? 80 * (1 - totalPrice/budgetMax*0.8) * budgetFactor : -80 * (totalPrice-budgetMax*0.8)/(budgetMax*0.2) * budgetFactor));
         System.out.println("protein tempHappiness: " + tempHappiness);
         System.out.println("protein happiness: " + Math.min(tempHappiness, 80) * proteinFactor);
         System.out.println("FaveItemPoints: " + 40 * percentageFaveItemTypesBought * pickynessFactor);
