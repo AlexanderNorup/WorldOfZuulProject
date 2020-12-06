@@ -43,6 +43,7 @@ public class Game implements IGame {
     }
 
     void loadGame() {
+        finishedGames.clear();
         try {
             ArrayList<GameResultData> loadedData = saveGame.load();
             for (GameResultData resultData : loadedData) {
@@ -65,6 +66,7 @@ public class Game implements IGame {
     public void deleteSaveFile() {
         saveGame.delete();
         loadGame();
+        reactToResults();
     }
 
     /**
@@ -212,6 +214,7 @@ public class Game implements IGame {
         returnString.append("Current climate situation: \n");
         if (co2 < 5) {
             returnString.append("The earth is still a green and beautiful place\n");
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket.jpg").toString());
         } else if (co2 < 10) {
             returnString.append("You notice your armpits are more stained than usual.\n People seem to be rioting.\n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket1.png").toString());
