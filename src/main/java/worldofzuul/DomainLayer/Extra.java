@@ -9,7 +9,9 @@ public enum Extra {
     CONTAINS_LACTOSE("Contains Lactose"),
     ORGANIC("Organic"),
     CONTAINS_GLUTEN("Contains Gluten"),
-    CONTAINS_SOY("Contains Soy");
+    CONTAINS_SOY("Contains Soy"),
+    FROZEN("Frozen"),
+    CANNED("Canned");
 
     private String extraWord;
 

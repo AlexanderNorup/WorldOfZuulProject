@@ -12,16 +12,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import worldofzuul.DomainLayer.Interfaces.*;
-import worldofzuul.DomainLayer.Item;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.*;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,7 +35,7 @@ public class GameCanvasController {
     private HashMap<IRoom, Grid> gridMap;
     private HashMap<Grid, IRoom> iRoomMap;
     private Transition transitionScreen;
-    private boolean locked;
+    private static boolean locked;
     private Grid startingGrid;
 
 
@@ -163,7 +158,7 @@ public class GameCanvasController {
         this.transitionScreen.addLine("Welcome to World Of Zhopping!");
         this.transitionScreen.addLine("In this game you are going shopping\nas a given character.\n\nEach character has it's own needs that you\nneed to fulfill.");
         this.transitionScreen.addLine(MainGUI.game.getPlayerDescription());
-        this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
+        this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nPress 'I' to open your inventory.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
         this.transitionScreen.setActive(true);
 
         root.setFocusTraversable(true); //Makes onKeyPressed() work.
@@ -309,10 +304,12 @@ public class GameCanvasController {
             shelfMenuListView.requestFocus();
             MainGUI.playSoundEffect("select.wav");
             locked = true;
+
         }else if(objectAbovePlayer instanceof Cashier){
             //TODO checkout
 
             System.out.println("CASHIER");
+            checkoutmenu.setPrefWidth(160);
             checkoutmenu.setText("Do you wanna checkout?");
             checkoutmenu.setVisible(true);
             checkoutmenu.lookup(".arrow").setStyle("-fx-background-color: red;");
@@ -341,23 +338,28 @@ public class GameCanvasController {
             String result= MainGUI.game.canCheckout();
 
             if(result == null) {
+                //TODO reset SideMenu to update list and addListener
 
                 checkoutmenu.setText("Thank you, come again!");
                 this.locked = true;
                 //set timer for message.
-                KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2), event -> transition());
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> transition());
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(keyFrame);
 
                 timeline.play();
             }
             else {
-                checkoutmenu.setText(result);
-                KeyFrame keyFrame = new KeyFrame(Duration.seconds(1.2),event -> close()
+                TextArea textArea = (TextArea) gameCanvas.getParent().getScene().lookup("#textBox").lookup("#textArea");
+                textArea.setText(result);
+                textArea.getParent().setVisible(true);
+                checkoutmenu.setText("You can't checkout!");
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5),event -> close()
                 );
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(keyFrame);
                 timeline.play();
+
 
             }
 
@@ -379,7 +381,6 @@ public class GameCanvasController {
        close();
 
         String result = MainGUI.game.canCheckout();
-        //if(result == null){
         ArrayList<String> resultArray = MainGUI.game.Checkout();
         // Set this as "outside" background
         IRoom outside = MainGUI.game.getRooms().get(0);
@@ -406,5 +407,10 @@ public class GameCanvasController {
         this.transitionScreen.setActive(true);
 
     }
+
+    public static void setLocked(boolean set){
+        locked = set;
+    }
+
 }
 

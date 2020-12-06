@@ -6,8 +6,13 @@ import worldofzuul.DomainLayer.Interfaces.IGame;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IPlayer;
 import worldofzuul.DomainLayer.Interfaces.IRoom;
+import worldofzuul.PresentationLayer.MainGUI;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+import static java.util.Collections.reverse;
 
 
 /**
@@ -43,12 +48,15 @@ public class Game implements IGame {
             for (GameResultData resultData : loadedData) {
                 GameResult result = new GameResult(resultData.getCo2(),
                         resultData.getHappiness(),
-                        ContentGenerator.getPlayerTypeByName(resultData.getPlayerTypeName()));
+                        ContentGenerator.getPlayerTypeByName(resultData.getPlayerTypeName()),
+                        resultData.getItemsBought());
                 finishedGames.add(result);
             }
             System.out.println("Your saved game was loaded.");
         } catch (SaveGameException e) {
             System.out.println("No saved game found - a new game has been created");
+            System.out.println("[Debug] What actually went wrong loading the save: "+e.getMessage());
+            System.out.println("[Debug] Cause: " + e.getCause());
             // finishedGames Arraylist will be an empty list
             // This is the same as starting a new game
         }
@@ -114,8 +122,8 @@ public class Game implements IGame {
 
     public void printWelcome() {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to the World of Zhopping!");
+        System.out.println("World of Zhopping is a new, incredibly fun shopping game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(rooms.get(0).getDescription());
@@ -124,7 +132,7 @@ public class Game implements IGame {
     private void save() {
         ArrayList<GameResultData> resultData = new ArrayList<>();
         for (GameResult result : finishedGames) {
-            resultData.add(new GameResultData(result.getCo2(), result.getHappiness(), result.getPlayerType().getName()));
+            resultData.add(new GameResultData(result.getCo2(), result.getHappiness(), result.getPlayerType().getName(),result.getItemsBought()));
         }
         try {
             saveGame.save(resultData);
@@ -160,7 +168,19 @@ public class Game implements IGame {
      * Takes care of resetting player and rooms and prints stuff to the user
      */
     public void resetGame() {
-        GameResult result = player.getGameResult();
+        //Makes a uneven reversed 2D array of items the player bought all previous games.
+        //May be empty.
+        String[][] previousInventories = new String[finishedGames.size()][1];
+        int q = finishedGames.size()-1; //Used to reverse the list.
+        for(int i = 0; i < finishedGames.size(); i++){ //Go through the items backwards!
+            ArrayList<String> itemsBought = finishedGames.get(i).getItemsBought();
+            previousInventories[q] = new String[itemsBought.size()];
+            for(int j = 0; j < itemsBought.size(); j++){
+                previousInventories[q][j] = itemsBought.get(j);
+            }
+            q--;
+        }
+        GameResult result = player.getGameResult(previousInventories);
         finishedGames.add(result); //adds the game result of the currently played game to an arraylist of results.
         player.deleteInventory(); // deletes all items in the inventory
         player.setPlayerType(getPlayerType());
@@ -187,28 +207,28 @@ public class Game implements IGame {
         returnString.append("Your results for today\n\n");
         returnString.append("CO2: ").append(co2).append("\n");
         returnString.append("Happiness: ").append(happiness).append("\n\n\n");
-        returnString.append("You have played: ").append(timesPlayed).append(" times. \n");
+        returnString.append("You have played: ").append(timesPlayed).append(" times. \n---\n");
 
-
+        returnString.append("Current climate situation: \n");
         if (co2 < 5) {
             returnString.append("The earth is still a green and beautiful place\n");
         } else if (co2 < 10) {
-            returnString.append("You notice your armpits are more stained than usual.\n People seem to be rioting.");
+            returnString.append("You notice your armpits are more stained than usual.\n People seem to be rioting.\n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket1.png").toString());
         } else if (co2 < 15) {
-            returnString.append("It's getting hot outside and you notice that plants are dying around you. \n");
+            returnString.append("It's getting hot outside, plants are dying around you. \n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket2.png").toString());
         } else if (co2 < 20) {
-            returnString.append("It's too hot to walk barefoot. \n You notice everything sets on fire.");
+            returnString.append("It's too hot to walk barefoot. \n You notice everything sets on fire.\n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket3.png").toString());
         } else if (co2 < 25) {
             returnString.append("All the glaciers have melted and the ocean has risen. \n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket4.png").toString());
         } else {
-            returnString.append("The world is burning down and the store is set on fire.\n");
+            returnString.append("The world is burning down and the store has set on fire.\n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket5.png").toString());
         }
-
+        returnString.append("\nYour current situation: \n");
         if (happiness >= 0) {
             returnString.append("You're feeling fine. \n");
         } else if (happiness > -50) {
@@ -220,7 +240,7 @@ public class Game implements IGame {
         } else if (happiness > -200) {
             returnString.append("You've joined a fascist movement.\n");
         } else {
-            returnString.append("You have successfully overthrown the government. \n Bottle caps are now the only currency. \n");
+            returnString.append("You have successfully overthrown the government. \n Gasoline is now the only currency. \n");
         }
         return returnString.toString();
     }
