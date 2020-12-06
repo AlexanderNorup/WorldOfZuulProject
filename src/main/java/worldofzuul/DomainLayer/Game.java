@@ -6,6 +6,7 @@ import worldofzuul.DomainLayer.Interfaces.IGame;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IPlayer;
 import worldofzuul.DomainLayer.Interfaces.IRoom;
+import worldofzuul.PresentationLayer.MainGUI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -121,8 +122,8 @@ public class Game implements IGame {
 
     public void printWelcome() {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to the World of Zhopping!");
+        System.out.println("World of Zhopping is a new, incredibly fun shopping game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(rooms.get(0).getDescription());
@@ -224,7 +225,7 @@ public class Game implements IGame {
             returnString.append("All the glaciers have melted and the ocean has risen. \n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket4.png").toString());
         } else {
-            returnString.append("The world is burning down and the store is set on fire.\n");
+            returnString.append("The world is burning down and the store has set on fire.\n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket5.png").toString());
         }
         returnString.append("\nYour current situation: \n");
@@ -239,7 +240,7 @@ public class Game implements IGame {
         } else if (happiness > -200) {
             returnString.append("You've joined a fascist movement.\n");
         } else {
-            returnString.append("You have successfully overthrown the government. \n GASOLINE are now the only currency. \n");
+            returnString.append("You have successfully overthrown the government. \n Gasoline is now the only currency. \n");
         }
         return returnString.toString();
     }

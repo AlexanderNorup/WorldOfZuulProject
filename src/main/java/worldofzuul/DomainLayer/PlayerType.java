@@ -54,13 +54,29 @@ public class PlayerType {
         for(String item : tempFaveItemTypes){
             faveItemsString.append(item).append(", ");
         }
+        //Removes the last ', ' from the end of the string.
+        if(faveItemsString.length() > 0) {
+            faveItemsString.delete(faveItemsString.length() - 2, faveItemsString.length());
+        }
         for(String item : tempHateItemTypes){
             hateItemsString.append(item).append(", ");
+        }
+        if(hateItemsString.length() > 0) {
+            hateItemsString.delete(hateItemsString.length() - 2, hateItemsString.length());
         }
 
         faveItemsString.append("\n");
         hateItemsString.append("\n");
 
+        if (tempFaveItemTypes.size() == 0 && tempHateItemTypes.size() == 0 ){
+            return description;
+        }
+        else if (tempFaveItemTypes.size() == 0){
+            return description + hateItemsString;
+        }
+        else if (tempHateItemTypes.size() == 0){
+            return description + faveItemsString;
+        }
         return description + faveItemsString + hateItemsString;
     }
 

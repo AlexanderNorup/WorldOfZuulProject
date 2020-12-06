@@ -315,20 +315,26 @@ public class ContentGenerator {
     }
 
     public static PlayerType getStudentPlayerType(){
-        PlayerType type = new PlayerType(STUDENT_NAME, "The student is poor.\n You need to minimize the amount of money you use.\n" +
-                "You need around 2200 calories per day. \n The student cares about the environment.\n Focus on organic items. \n Please try to avoid making the world explode!");
+        PlayerType type = new PlayerType(STUDENT_NAME,
+                "The student is poor.\n" +
+                "You need to minimize the amount of money you spend.\n" +
+                "You need around 2200 calories per day.\n" +
+                "The student cares about the environment.\n" +
+                "Focus on organic items. \n" +
+                "Please try to avoid making the world explode!");
         type.setFactors(1,7,2);
         type.setValues(50,1000,2200);
         type.setPlayerSprite(Game.class.getResource("/sprites/student.png").toString());
         type.addPositiveExtra(Extra.ORGANIC);
         return type;
-
     }
 
     public static PlayerType getBodybuilderPlayerType(){
-        PlayerType type = new PlayerType(BODYBUILDER_NAME,"The bodybuilder really cares about meating his protein goal!\n" +
-                "You should aim to get 3000 calories per day. \n avoid soy as it reduces gains " +
-                "\n Please try to avoid making the world explode!");
+        PlayerType type = new PlayerType(BODYBUILDER_NAME,
+                "The bodybuilder cares about meeting his protein goal!\n" +
+                "You should aim to get at least 3000 calories per day.\n " +
+                "Try to avoid soy as it reduces his gains.\n" +
+                "Please try to avoid making the world explode!");
         type.setFactors(6,1,3);
         type.setValues(75,1200,3000);
         type.setPlayerSprite(Game.class.getResource("/sprites/BodyBuilderTight.png").toString());
@@ -339,10 +345,11 @@ public class ContentGenerator {
     public static PlayerType getPickyPlayerType(){
 
         PlayerType type = new PlayerType(PICKY_NAME,
-                "The picky person has a lot of money to spent.\n" +
+                "The picky person has a lot of money to spend.\n" +
                         "However, he is very picky!\n" +
-                        "He doesn't like soy, gluten, lactose\n" +
-                        "He also doesn't like Frozen or canned food, but loves organic\n" +
+                        "He doesn't like soy, gluten or lactose. \n" +
+                        "He also doesn't like frozen or canned food, \n " +
+                        "but loves organic food!\n" +
                         "His calorie goal is very specific. \n" +
                         "Please try to avoid making the world explode!");
         type.setFactors(1,1,8);
@@ -356,11 +363,9 @@ public class ContentGenerator {
         type.addFaveItems("Gluten Free White Bread Organic", "Gluten Free Pastry Organic",
                 "Salmon Organic","Lamb Chop Organic", "Salami Organic","Almonds Organic",
                 "Blueberries Organic","Mango Organic","Pasta Organic");
-        type.addHateItems("Margarine","Pork Rib","Ground Beef","Oatmeal","Rice","Chicken","Roast Beef","Potatoes","Oat milk");
+        type.addHateItems("Margarine","Pork Rib","Ground Beef","Oatmeal","Rice","Chicken","Roast Beef",
+                "Potatoes","Oat milk");
         type.randomizeFaveHateItems();
-
-
-
         type.setPlayerSprite(Game.class.getResource("/sprites/Picky.png").toString());
         return type;
     }
