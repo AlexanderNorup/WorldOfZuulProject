@@ -33,17 +33,6 @@ public class Item implements IItem {
         this(name,price,co2,protein,calories,Arrays.asList(extra));
     }
 
-    public Item(){
-        this.name = "";
-        this.price = 0;
-        this.co2 = 0.0;
-        this.protein = 0.0;
-        this.calories = 0.0;
-        this.extra = new ArrayList<>();
-    }
-
-
-
     /**
      * @return item name, price, calories, protein and any extras
      */
