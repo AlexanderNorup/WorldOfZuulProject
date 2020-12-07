@@ -25,6 +25,7 @@ public class PlayerType {
     private final ArrayList<Extra> negativeExtra;
     private ArrayList<String> tempFaveItemTypes;
     private ArrayList<String> tempHateItemTypes;
+    private String unhappyReason;
 
     public PlayerType(String name, String description) {
         this.name = name;
@@ -35,7 +36,7 @@ public class PlayerType {
         this.negativeExtra = new ArrayList<>();
         this.tempFaveItemTypes = new ArrayList<>();
         this.tempHateItemTypes = new ArrayList<>();
-
+        this.unhappyReason = "";
     }
 
     public void randomizeFaveHateItems(){
@@ -130,10 +131,25 @@ public class PlayerType {
         negativeExtra.add(thingThatMatter);
     }
 
+    public String getRandomFaveItem(){
+        if(this.faveItemTypes.isEmpty()){
+            return "cheaper items"; //If the list is empty we tell the player to "try some cheaper items".
+        }
+        Random random = new Random();
+        return this.faveItemTypes.get(random.nextInt(this.faveItemTypes.size()));
+    }
+
+    public String getUnhappyReason(){
+        return this.unhappyReason;
+    }
+
     //calculate happiness
     //TODO finish
     public double getHappiness(ArrayList<Item> items, String[][] previousItems){
         double happiness = 0;
+
+        double currentUnhappyMax = 0;
+        unhappyReason = "";
 
         double totalPrice = 0.0;
         double totalCalories = 0.0;
@@ -203,6 +219,10 @@ public class PlayerType {
 
         else {
             happiness -= 80 * (totalPrice-budgetMax*0.8)/(budgetMax*0.2) * budgetFactor;
+            if(currentUnhappyMax > happiness){
+                currentUnhappyMax = happiness;
+                this.unhappyReason = "You used a lot of money";
+            }
         }
 
 
@@ -211,7 +231,7 @@ public class PlayerType {
         //Calculate protein goal as 30% of goal energy requirements
         double proteinMin = calorieMin * 0.15 / 4;
         double proteinGoal = calorieGoal * 0.30 / 4;
-        int tempHappiness = 0;
+        double tempHappiness = 0;
 
 
         //if protein above protein goal, add 80 points times protein/proteinGoal times protein factor
@@ -225,9 +245,12 @@ public class PlayerType {
             tempHappiness -= 80;
         }
         //returns the smallest number, ensuring that happiness points don't exceed 80.
-
-        happiness += Math.min(tempHappiness, 80) * proteinFactor;
-
+        tempHappiness = (Math.min(tempHappiness, 80) * proteinFactor);
+        happiness += tempHappiness;
+        if(currentUnhappyMax > tempHappiness){
+            currentUnhappyMax = tempHappiness;
+            this.unhappyReason = "You didn't meet your protein or calorie goals.";
+        }
 
 
         //PICKINESS
@@ -238,7 +261,13 @@ public class PlayerType {
 
         happiness += 40 * percentageFaveItemTypesBought * pickynessFactor;
         happiness += 60 * ((percentItemsContainingExtras - 0.5) * 2) * pickynessFactor;
-        happiness -= 40 * percentageHateItemTypesBought * pickynessFactor;
+        double hatePickinessPunishment = 40 * percentageHateItemTypesBought * pickynessFactor;
+        happiness -= hatePickinessPunishment;
+
+        if(currentUnhappyMax > hatePickinessPunishment){
+            currentUnhappyMax = hatePickinessPunishment;
+            this.unhappyReason = "You bought a lot of items you hate!\nYou feel bad!";
+        }
 
         //GENERIC
         //if calories are at calorie min, subtract 10, if calories are at or above calorie goal, subtract 0.
@@ -264,9 +293,13 @@ public class PlayerType {
                 }
             }
         }
+        eatingSamePunishment = eatingSamePunishment * eatingTheSameFactor;
+        happiness -= eatingSamePunishment;
 
-        happiness -= eatingSamePunishment * eatingTheSameFactor;
-
+        if(currentUnhappyMax > eatingSamePunishment){
+            currentUnhappyMax = eatingSamePunishment;
+            this.unhappyReason = "You're getting tired of eating the same things over and over!";
+        }
 
 
         System.out.println("\n\n\n");
