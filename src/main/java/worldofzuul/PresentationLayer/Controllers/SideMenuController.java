@@ -84,7 +84,7 @@ public class SideMenuController {
             System.out.println("Dropped");
             MainGUI.game.drop(item);
             listViewList.clear();
-            listViewList.addAll(MainGUI.game.getPlayer().getInventory());
+            listViewList.setAll(MainGUI.game.getPlayer().getInventory());
         });
 
         contextMenu.getItems().addAll(inspect, drop);

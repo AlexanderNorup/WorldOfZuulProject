@@ -1,5 +1,7 @@
 package worldofzuul.DomainLayer;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -109,9 +111,9 @@ public class PlayerType {
     //set factors to determin happiness caluclation for playertype
     public void setFactors(int proteinFactor, int budgetFactor, int pickynessFactor){
         double equalizer = 1/(double) (proteinFactor + budgetFactor + pickynessFactor);
-        this.proteinFactor = proteinFactor * equalizer;
-        this.budgetFactor = budgetFactor * equalizer;
-        this.pickynessFactor = pickynessFactor * equalizer;
+        this.proteinFactor = new BigDecimal(proteinFactor * equalizer).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        this.budgetFactor = new BigDecimal(budgetFactor * equalizer).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        this.pickynessFactor = new BigDecimal(pickynessFactor * equalizer).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     public void addFaveItems(String... itemName) {
@@ -146,7 +148,6 @@ public class PlayerType {
 
 
         for (Item item : items) {
-            System.out.println("Item: " + item.getName());
 
             // Sums values
             totalPrice += item.getPrice();
@@ -186,9 +187,7 @@ public class PlayerType {
 
             if(!containsNegativeExtra){
                 for(Extra extra : positiveExtra){
-                    System.out.println("Extra: " + extra);
                     itemsContainingExtras += (item.getExtra().contains(extra) ? 1 : 0) / positiveExtra.size();
-                    System.out.println("itemsContainingExtras: " + itemsContainingExtras);
                 }
             }
         }

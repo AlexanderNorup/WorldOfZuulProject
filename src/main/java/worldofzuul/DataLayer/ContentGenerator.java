@@ -288,7 +288,7 @@ public class ContentGenerator {
         for (IItem item_ : items) {
             if(item_ instanceof Item){
                 Item item = (Item) item_;
-                ArrayList<Extra> organicExtras = item.getExtra();
+                ArrayList<Extra> organicExtras = new ArrayList<>(item.getExtra());
                 organicExtras.add(Extra.ORGANIC);
 
                 organicItems.add(new Item(
