@@ -13,6 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.PresentationLayer.MainGUI;
+import worldofzuul.PresentationLayer.PresentationHub;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,8 @@ public class ShelfMenuController {
     ArrayList<IItem> items;
 
     public void initialize() {
+        MainGUI.hub.setShelfMenuListView(shelfMenuListView);
+
         contextMenu = new ContextMenu();
         inspect = new MenuItem("Inspect");
         take = new MenuItem("Take");

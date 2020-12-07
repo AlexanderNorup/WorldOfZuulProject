@@ -252,13 +252,9 @@ public class GameCanvasController {
             } else {
                 sideMenu.setVisible(true);
                 sideMenu.setManaged(true);
-                Scene sideScene = sideMenu.getScene();
-                ListView<IItem> sideMenuListView = (ListView<IItem>) sideScene.lookup("#sideMenuListView");
+                ListView<IItem> sideMenuListView = MainGUI.hub.getSideMenuListView();
                 sideMenuListView.requestFocus();
-                ObservableList<IItem> listViewList = FXCollections.observableArrayList();
-                listViewList.addAll(MainGUI.game.getPlayer().getInventory());
-                sideMenuListView.setItems(listViewList);
-
+                sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
             }
         }
     }
@@ -293,9 +289,7 @@ public class GameCanvasController {
         // TODO check whether the player is standing in front of a shelf
         if (objectAbovePlayer instanceof Shelf) {
             Shelf currentShelf = (Shelf) objectAbovePlayer;
-            Scene shelfScene = shelfMenu.getScene();
-            ListView<IItem> shelfMenuListView = (ListView<IItem>) shelfScene.lookup("#shelfMenuListView");
-            shelfMenuListView.getItems().setAll(currentShelf.getItems());
+            MainGUI.hub.getShelfMenuListView().getItems().setAll(currentShelf.getItems());
 
             System.out.println(Arrays.toString(Collections.singletonList(currentShelf.getItems()).toArray()));
 
@@ -303,7 +297,7 @@ public class GameCanvasController {
             sideMenu.setDisable(true);
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
-            shelfMenuListView.requestFocus();
+            MainGUI.hub.getShelfMenuListView().requestFocus();
             MainGUI.playSoundEffect("select.wav");
             locked = true;
 
@@ -343,8 +337,7 @@ public class GameCanvasController {
                 checkoutmenu.setText("Thank you, come again!");
 
                 //Empty sidemenu
-                Scene sideScene = sideMenu.getScene();
-                ListView<IItem> sideMenuListView = (ListView<IItem>) sideScene.lookup("#sideMenuListView");
+                ListView<IItem> sideMenuListView = MainGUI.hub.getSideMenuListView();
                 sideMenuListView.getItems().setAll(new ArrayList<>());
 
                 locked = true;
@@ -365,7 +358,6 @@ public class GameCanvasController {
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(keyFrame);
                 timeline.play();
-
 
             }
 
