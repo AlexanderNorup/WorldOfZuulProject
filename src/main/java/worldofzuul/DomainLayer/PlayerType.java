@@ -1,5 +1,7 @@
 package worldofzuul.DomainLayer;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -110,9 +112,9 @@ public class PlayerType {
     //set factors to determin happiness caluclation for playertype
     public void setFactors(int proteinFactor, int budgetFactor, int pickynessFactor){
         double equalizer = 1/(double) (proteinFactor + budgetFactor + pickynessFactor);
-        this.proteinFactor = proteinFactor * equalizer;
-        this.budgetFactor = budgetFactor * equalizer;
-        this.pickynessFactor = pickynessFactor * equalizer;
+        this.proteinFactor = new BigDecimal(proteinFactor * equalizer).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        this.budgetFactor = new BigDecimal(budgetFactor * equalizer).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        this.pickynessFactor = new BigDecimal(pickynessFactor * equalizer).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     public void addFaveItems(String... itemName) {
@@ -200,11 +202,10 @@ public class PlayerType {
             }
 
             if(!containsNegativeExtra){
-                for(Extra extra : item.getExtra()){
-                    if(!negativeExtra.contains(extra) && !positiveExtra.isEmpty()){
-                        //TODO: Question; Is it correct that we devide by positiveExtra.size() here, and not negativeExtra.size() instead?
-                        itemsContainingExtras += (item.getExtra().contains(extra) ? 1 : 0) / positiveExtra.size();
-                    }
+                for(Extra extra : positiveExtra){
+                    //TODO: Question; Is it correct that we divide by positiveExtra.size() here, and not negativeExtra.size() instead?
+                    //TODO: Answer; check update
+                    itemsContainingExtras += (item.getExtra().contains(extra) ? 1 : 0) / positiveExtra.size();
                 }
             }
         }
@@ -289,7 +290,9 @@ public class PlayerType {
             }
             for(int i = 0; i < previousItems[day].length; i++){
                 for(Item item : items) {
-                    if (item.getName().equalsIgnoreCase(previousItems[day][i])) {
+                    //Remove reference to Organic and Weight
+                    String itemName = item.getName().replace("Organic", "").replaceAll("\\d","");
+                    if (itemName.equalsIgnoreCase(previousItems[day][i])) {
                         //The player bought something they did in the last few days.
                         //The player is punished more if they bought it more recently.
                         eatingSamePunishment += Math.log10(0.2 * (day + 1));
@@ -339,18 +342,20 @@ public class PlayerType {
      * @return list of random items from provided list
      */
     private ArrayList<String> getRandomItemsFromList(ArrayList<String> itemList, int amount){
-        ArrayList<String> Return = new ArrayList<>();
-        if(amount > itemList.size()){
+        ArrayList<String> startingPoint = new ArrayList<>(itemList);
+        ArrayList<String> result = new ArrayList<>();
+
+        if(amount > startingPoint.size()){
             System.out.println("getRandomItemsFromList - amount longer than list");
         }else {
             Random random = new Random();
             for(int x = 0 ; x < amount ; x++){
-                int randomInt = random.nextInt(itemList.size());
-                Return.add(itemList.get(new Random().nextInt(itemList.size())));
-                itemList.remove(randomInt);
+                int randomInt = random.nextInt(startingPoint.size());
+                result.add(startingPoint.get(new Random().nextInt(startingPoint.size())));
+                startingPoint.remove(randomInt);
             }
         }
-        return Return;
+        return result;
     }
 
 }

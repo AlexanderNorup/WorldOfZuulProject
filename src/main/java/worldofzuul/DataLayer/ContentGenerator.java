@@ -13,6 +13,7 @@ import worldofzuul.PresentationLayer.Position;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Creates the Arraylist of items for each room as well as
@@ -287,7 +288,7 @@ public class ContentGenerator {
         for (IItem item_ : items) {
             if(item_ instanceof Item){
                 Item item = (Item) item_;
-                ArrayList<Extra> organicExtras = item.getExtra();
+                ArrayList<Extra> organicExtras = new ArrayList<>(item.getExtra());
                 organicExtras.add(Extra.ORGANIC);
 
                 organicItems.add(new Item(
@@ -327,6 +328,7 @@ public class ContentGenerator {
         type.setPlayerSprite(Game.class.getResource("/sprites/student.png").toString());
         type.addPositiveExtra(Extra.ORGANIC);
         return type;
+
     }
 
     public static PlayerType getBodybuilderPlayerType(){
@@ -366,6 +368,9 @@ public class ContentGenerator {
         type.addHateItems("Margarine","Pork Rib","Ground Beef","Oatmeal","Rice","Chicken","Roast Beef",
                 "Potatoes","Oat milk");
         type.randomizeFaveHateItems();
+
+
+
         type.setPlayerSprite(Game.class.getResource("/sprites/Picky.png").toString());
         return type;
     }

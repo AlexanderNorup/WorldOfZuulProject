@@ -163,7 +163,6 @@ public class Game implements IGame {
         strings.add("You went to the cash register and checked out.\nThe day is over and you go back home to sleep.\n\n");
         resetGame();
         strings.add(reactToResults());
-        //Now add some helping-text if the player didn't do very well.
         if (isCo2Bad) {
             strings.add(co2IsBadString(items));
         }
@@ -184,14 +183,14 @@ public class Game implements IGame {
         //May be empty.
         String[][] previousInventories = new String[finishedGames.size()][1];
         int q = finishedGames.size()-1; //Used to reverse the list.
-        for(int i = 0; i < finishedGames.size(); i++){ //Go through the items backwards!
-            if(!finishedGames.get(i).getPlayerType().getName().equalsIgnoreCase(this.player.getPlayerType().getName())){
+        for (GameResult finishedGame : finishedGames) { //Go through the items backwards!
+            if (!finishedGame.getPlayerType().getName().equalsIgnoreCase(this.player.getPlayerType().getName())) {
                 //We only want the inventories of the times we played with the current player type.
                 continue;
             }
-            ArrayList<String> itemsBought = finishedGames.get(i).getItemsBought();
+            ArrayList<String> itemsBought = finishedGame.getItemsBought();
             previousInventories[q] = new String[itemsBought.size()];
-            for(int j = 0; j < itemsBought.size(); j++){
+            for (int j = 0; j < itemsBought.size(); j++) {
                 previousInventories[q][j] = itemsBought.get(j);
             }
             q--;
@@ -304,7 +303,6 @@ public class Game implements IGame {
             }
             returnString.append("You've joined a fascist movement.\n");
         } else {
-            isNotHappy = true;
             returnString.append("You have successfully overthrown the government. \n Gasoline is now the only currency. \n");
         }
         return returnString.toString();
