@@ -6,12 +6,14 @@ import worldofzuul.DomainLayer.Interfaces.IGame;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IPlayer;
 import worldofzuul.DomainLayer.Interfaces.IRoom;
+import worldofzuul.PresentationLayer.MainGUI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
 import static java.util.Collections.reverse;
+
 
 /**
  * The main class of the game
@@ -35,7 +37,7 @@ public class Game implements IGame {
     public Game() {
         rooms = ContentGenerator.getRooms();
         player = new Player(ContentGenerator.getRandomPlayerType(),
-                            this.rooms.get(0)); //Set's starting room to the first room (outside).
+                this.rooms.get(0)); //Set's starting room to the first room (outside).
 
         finishedGames = new ArrayList<>();
         saveGame = new SaveFile("./saveFile.json");
@@ -44,6 +46,7 @@ public class Game implements IGame {
     }
 
     void loadGame() {
+        finishedGames.clear();
         try {
             ArrayList<GameResultData> loadedData = saveGame.load();
             for (GameResultData resultData : loadedData) {
@@ -66,6 +69,7 @@ public class Game implements IGame {
     public void deleteSaveFile() {
         saveGame.delete();
         loadGame();
+        reactToResults();
     }
 
     /**
@@ -77,13 +81,13 @@ public class Game implements IGame {
     }
 
     @Override
-    public IPlayer getPlayer(){
+    public IPlayer getPlayer() {
         return player;
     }
 
     @Override
     public void setPlayerType(String playerType) {
-        switch (playerType){
+        switch (playerType) {
             case "Student":
                 this.player.setPlayerType(ContentGenerator.getStudentPlayerType());
                 break;
@@ -100,13 +104,13 @@ public class Game implements IGame {
                 PlayerType newPicky = ContentGenerator.getPickyPlayerType();
                 newPicky.setPlayerSprite(Game.class.getResource("/sprites/gurli.png").toString());
                 this.player.setPlayerType(newPicky);
-                newPicky.setValues(1200,7500,9000);
+                newPicky.setValues(1200, 7500, 9000);
             default:
         }
     }
 
     @Override
-    public PlayerType getPlayerType(){
+    public PlayerType getPlayerType() {
         return player.getPlayerType();
     }
 
@@ -123,8 +127,8 @@ public class Game implements IGame {
 
     public void printWelcome() {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to the World of Zhopping!");
+        System.out.println("World of Zhopping is a new, incredibly fun shopping game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(rooms.get(0).getDescription());
@@ -133,7 +137,7 @@ public class Game implements IGame {
     private void save() {
         ArrayList<GameResultData> resultData = new ArrayList<>();
         for (GameResult result : finishedGames) {
-            resultData.add(new GameResultData(result.getCo2(), result.getHappiness(), result.getPlayerType().getName()result.getItemsBought()));
+            resultData.add(new GameResultData(result.getCo2(), result.getHappiness(), result.getPlayerType().getName(),result.getItemsBought()));
         }
         try {
             saveGame.save(resultData);
@@ -143,7 +147,7 @@ public class Game implements IGame {
         }
     }
 
-    public String canCheckout(){
+    public String canCheckout() {
         if (!getPlayer().underBudget()) {
             return "You are over budget. Drop some items (use \"drop\" command)";
         }
@@ -153,11 +157,10 @@ public class Game implements IGame {
         return null;
     }
 
-    public ArrayList<String> Checkout(){
+    public ArrayList<String> Checkout() {
         ArrayList<String> strings = new ArrayList<>();
         ArrayList<IItem> items = getPlayer().getInventory();
         strings.add("You went to the cash register and checked out.\nThe day is over and you go back home to sleep.\n\n");
-        //strings.add(player.getGameResult());
         resetGame();
         strings.add(reactToResults());
         if (isCo2Bad) {
@@ -174,6 +177,7 @@ public class Game implements IGame {
     /**
      * Takes care of resetting player and rooms and prints stuff to the user
      */
+
     public void resetGame() {
         //Makes a uneven reversed 2D array of items the player bought all previous games.
         //May be empty.
@@ -205,7 +209,7 @@ public class Game implements IGame {
         StringBuilder returnString = new StringBuilder();
         int happiness = 0;
         double co2 = 0;
-        int timesPlayed=0; // to count how many times the game has played
+        int timesPlayed = 0; // to count how many times the game has played
         for (GameResult finishedGame : finishedGames) {
             happiness += finishedGame.getHappiness();
             co2 += finishedGame.getCo2();
@@ -214,12 +218,15 @@ public class Game implements IGame {
         returnString.append("Your results for today\n\n");
         returnString.append("CO2: ").append(co2).append("\n");
         returnString.append("Happiness: ").append(happiness).append("\n\n\n");
-        returnString.append("You have played: ").append(timesPlayed).append(" times. \n---\n");
+        returnString.append("You have played: ").append(timesPlayed).append(" times. \n");
 
+        //co2
         returnString.append("Current climate situation: \n");
+
         if (co2 < 5) {
             isCo2Bad = false;
             returnString.append("The earth is still a green and beautiful place\n");
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket.jpg").toString());
         } else if (co2 < 10) {
             isCo2Bad = true;
             if (finishedGames.size()>1 && getLastGameCO2()>5 && getLastGameCO2()<10) {
@@ -258,6 +265,8 @@ public class Game implements IGame {
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket5.png").toString());
         }
 
+        //happiness
+        returnString.append("\nYour current situation: \n");
 
         if (happiness >= 0) {
             isNotHappy = false;
@@ -276,7 +285,7 @@ public class Game implements IGame {
             }
             returnString.append("You don't want to eat anymore. You hate yourself.\n");
 
-        }else if (happiness > -150) {
+         }else if (happiness > -150) {
             isNotHappy = true;
             if (finishedGames.size()>1 && getLastGameHappiness()<-100 && getLastGameHappiness()>-150) {
                 isNotHappy = false;
@@ -290,7 +299,7 @@ public class Game implements IGame {
             }
             returnString.append("You've joined a fascist movement.\n");
         } else {
-            returnString.append("You have successfully overthrown the government. \n GASOLINE are now the only currency. \n");
+            returnString.append("You have successfully overthrown the government. \n Gasoline is now the only currency. \n");
         }
         return returnString.toString();
     }
@@ -303,9 +312,9 @@ public class Game implements IGame {
      */
     @Override
     public boolean take(IItem item) {
-        if(item instanceof Item){
+        if (item instanceof Item) {
             player.addItem((Item) item);
-            if(player.underBudget()) return true;
+            if (player.underBudget()) return true;
 
             player.removeItem((Item) item);
             return false;
@@ -320,7 +329,7 @@ public class Game implements IGame {
      */
     @Override
     public void drop(IItem item) {
-        if(item instanceof Item){
+        if (item instanceof Item) {
             player.removeItem((Item) item);
         }
     }
@@ -360,6 +369,7 @@ public class Game implements IGame {
         }
         return total;
     }
+
 
 
 }

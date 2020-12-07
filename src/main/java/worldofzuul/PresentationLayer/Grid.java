@@ -291,6 +291,10 @@ public class Grid {
         return true;
     }
 
+    public void setBackground (Image newBackground) {
+        this.background = newBackground;
+    }
+
     public int getGridWidth() {
         return gridWidth;
     }
