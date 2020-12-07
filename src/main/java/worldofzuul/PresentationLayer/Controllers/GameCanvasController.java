@@ -30,7 +30,7 @@ import java.util.HashMap;
  */
 public class GameCanvasController {
 
-    public MenuButton checkoutmenu; //et alternativ til checkout, synes det ser mere in-game ud end en alertbox
+    public MenuButton checkoutmenu;
     public MenuItem yesButton;
     public MenuItem noButton;
     private PlayerObject playerObject;
@@ -54,6 +54,9 @@ public class GameCanvasController {
     Pane textBox;
 
     @FXML
+    TextArea textArea;
+
+    @FXML
     Pane shelfMenu;
 
     /**
@@ -61,6 +64,9 @@ public class GameCanvasController {
      */
     @FXML
     public void initialize(){
+        MainGUI.hub.setTextBox(textBox);
+        MainGUI.hub.setTextBoxTextArea(textArea);
+
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
         gridMap = new HashMap<>();
         iRoomMap = new HashMap<>();
@@ -322,6 +328,7 @@ public class GameCanvasController {
         alert.setContentText("You will lose your unsaved progress");
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) {
+                //TODO go to main menu
                 System.exit(0); //0-exit code means "successfull".
             }
         });
@@ -332,37 +339,34 @@ public class GameCanvasController {
             String result= MainGUI.game.canCheckout();
 
             if(result == null) {
-                //TODO reset SideMenu to update list and addListener
 
                 checkoutmenu.setText("Thank you, come again!");
 
-                //Empty sidemenu
-                ListView<IItem> sideMenuListView = MainGUI.hub.getSideMenuListView();
-                sideMenuListView.getItems().setAll(new ArrayList<>());
+                //reset game
+                ArrayList<String> resultArray = MainGUI.game.Checkout();
+                MainGUI.hub.getSideMenuListView().getItems().setAll(MainGUI.game.getPlayer().getInventory());
 
                 locked = true;
                 //set timer for message.
-                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> transition());
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> newGameTransition(resultArray));
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(keyFrame);
 
                 timeline.play();
+
+
             }
             else {
-                TextArea textArea = (TextArea) gameCanvas.getParent().getScene().lookup("#textBox").lookup("#textArea");
+                TextArea textArea = MainGUI.hub.getTextBoxTextArea();
                 textArea.setText(result);
                 textArea.getParent().setVisible(true);
                 checkoutmenu.setText("You can't checkout!");
-                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5),event -> close()
-                );
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5),event -> close());
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(keyFrame);
                 timeline.play();
 
             }
-
-
-
         }
         else if(actionEvent.getSource() == noButton){
             close();
@@ -375,9 +379,8 @@ public class GameCanvasController {
         locked = false;
     }
 
-    void transition(){
-       close();
-        ArrayList<String> resultArray = MainGUI.game.Checkout();
+    void newGameTransition(ArrayList<String> resultArray){
+        close();
         
         //[Merge] The following 2 lines may have to be removed. 
         IRoom outside = MainGUI.game.getRooms().get(0);
@@ -408,10 +411,8 @@ public class GameCanvasController {
         this.transitionScreen.setActive(true);
 
     }
-
     public static void setLocked(boolean set){
         locked = set;
     }
-
 }
 

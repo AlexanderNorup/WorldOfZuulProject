@@ -1,11 +1,13 @@
 package worldofzuul.PresentationLayer.Controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -33,7 +35,6 @@ public class MainMenuController {
 
     private final String[] playerTypes = new String[] {"Student", "Bodybuilder", "Picky", "Random", "Mystery"};
     private int playerTypeIndex = 3; // Random playerType
-    private IPlayer player;
 
     @FXML
     public void initialize(){
@@ -44,11 +45,9 @@ public class MainMenuController {
     public void playGame(){
         playGameLabel.setText("The game is loading!");
 
-        Stage stage = (Stage) playGameLabel.getScene().getWindow();
-
         try {
             Parent game = FXMLLoader.load(MainGUI.class.getResource("/fxml/GameCanvas.fxml"));
-            stage.setScene(new Scene(game, 1280,720));
+            MainGUI.hub.getPrimaryStage().setScene(new Scene(game, 1280,720));
         } catch (IOException e) {
             playGameLabel.setText("There was en error starting the game!");
             e.printStackTrace();
@@ -96,19 +95,11 @@ public class MainMenuController {
             }
             selectCharacterLabel.setText("You selected: " + playerTypes[playerTypeIndex]);
             selectCharacterLabel.setRotate(0);
-            switch (playerTypeIndex){
-                case 0:
-                    characterImageView.setImage(new Image(Game.class.getResource("/sprites/student.png").toString()));
-                    break;
-                case 1:
-                    characterImageView.setImage(new Image(Game.class.getResource("/sprites/BodyBuilderTight.png").toString()));
-                    break;
-                case 2:
-                    characterImageView.setImage(new Image(Game.class.getResource("/sprites/Picky.png").toString()));
-                    break;
-                case 3:
-                    characterImageView.setImage(new Image(Game.class.getResource("/sprites/RandomPlayer.png").toString()));
-                    break;
+            switch (playerTypeIndex) {
+                case 0 -> characterImageView.setImage(new Image(Game.class.getResource("/sprites/student.png").toString()));
+                case 1 -> characterImageView.setImage(new Image(Game.class.getResource("/sprites/BodyBuilderTight.png").toString()));
+                case 2 -> characterImageView.setImage(new Image(Game.class.getResource("/sprites/Picky.png").toString()));
+                case 3 -> characterImageView.setImage(new Image(Game.class.getResource("/sprites/RandomPlayer.png").toString()));
             }
             selectCharacterLabel.setTextFill(Color.WHITE);
             selectCharacterLabel.setFont(new Font(12));

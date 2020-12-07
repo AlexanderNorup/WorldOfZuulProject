@@ -43,6 +43,7 @@ public class MainGUI extends Application {
 
         game = new Game();
         hub = new PresentationHub();
+        hub.setPrimaryStage(primaryStage);
 
         primaryStage.setScene(s);
         primaryStage.setResizable(false);

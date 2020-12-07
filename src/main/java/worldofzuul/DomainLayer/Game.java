@@ -183,10 +183,10 @@ public class Game implements IGame {
         //May be empty.
         String[][] previousInventories = new String[finishedGames.size()][1];
         int q = finishedGames.size()-1; //Used to reverse the list.
-        for(int i = 0; i < finishedGames.size(); i++){ //Go through the items backwards!
-            ArrayList<String> itemsBought = finishedGames.get(i).getItemsBought();
+        for (GameResult finishedGame : finishedGames) { //Go through the items backwards!
+            ArrayList<String> itemsBought = finishedGame.getItemsBought();
             previousInventories[q] = new String[itemsBought.size()];
-            for(int j = 0; j < itemsBought.size(); j++){
+            for (int j = 0; j < itemsBought.size(); j++) {
                 previousInventories[q][j] = itemsBought.get(j);
             }
             q--;

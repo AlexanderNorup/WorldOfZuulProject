@@ -1,7 +1,5 @@
 package worldofzuul.PresentationLayer.Controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -11,11 +9,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.PresentationLayer.MainGUI;
-import worldofzuul.PresentationLayer.PresentationHub;
-
-import java.util.ArrayList;
 
 public class ShelfMenuController {
 
@@ -29,8 +25,6 @@ public class ShelfMenuController {
     MenuItem take;
     MenuItem inspect;
 
-    ArrayList<IItem> items;
-
     public void initialize() {
         MainGUI.hub.setShelfMenuListView(shelfMenuListView);
 
@@ -40,7 +34,7 @@ public class ShelfMenuController {
 
         inspect.setOnAction(event -> {
             //Finds the textArea node
-            TextArea textArea = (TextArea) shelfMenu.getParent().getScene().lookup("#textBox").lookup("#textArea");
+            TextArea textArea = MainGUI.hub.getTextBoxTextArea();
 
             //Sets textArea's text to currently selected item in listView
             textArea.setText(shelfMenuListView.getSelectionModel().getSelectedItem().getDescription());
@@ -53,8 +47,7 @@ public class ShelfMenuController {
         take.setOnAction(event -> {
             IItem item = shelfMenuListView.getSelectionModel().getSelectedItem();
             MainGUI.game.take(item);
-            ListView<IItem> sideMenuListView = (ListView<IItem>) shelfMenu.getParent().getScene().lookup("#sideMenu").lookup("#sideMenuListView");
-            sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
+            MainGUI.hub.getSideMenuListView().getItems().setAll(MainGUI.game.getPlayer().getInventory());
             MainGUI.playSoundEffect("select.wav");
         });
 
@@ -76,11 +69,11 @@ public class ShelfMenuController {
                 break;
             case ESCAPE:
                 //"Close" textBox, if textBox is "open". If textBox is not "open", but sideMenu is, "close" sideMenu
-                Node textBox = shelfMenu.getParent().getScene().lookup("#textBox");
+                Pane textBox = MainGUI.hub.getTextBox();
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
                 }else{
-                    Node sideMenu = shelfMenu.getParent().getScene().lookup("#sideMenu");
+                    Node sideMenu = MainGUI.hub.getSideMenuListView();
                     shelfMenu.setVisible(false);
                     shelfMenu.setManaged(false);
                     sideMenu.setDisable(false);

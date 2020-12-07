@@ -76,7 +76,7 @@ public class SideMenuController {
 
         inspect.setOnAction(event -> {
             //Finds the textArea node
-            TextArea textArea = (TextArea) sideMenu.getParent().getScene().lookup("#textBox").lookup("#textArea");
+            TextArea textArea = MainGUI.hub.getTextBoxTextArea();
 
             //Sets textArea's text to currently selected item in listView
             textArea.setText(sideMenuListView.getSelectionModel().getSelectedItem().getDescription());
@@ -109,7 +109,7 @@ public class SideMenuController {
                 break;
             case ESCAPE:
                 //"Close" textBox, if textBox is "open". If textBox is not "open", but sideMenu is, "close" sideMenu
-                Node textBox = sideMenu.getParent().getScene().lookup("#textBox");
+                Node textBox = MainGUI.hub.getTextBox();
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
                 }else {
