@@ -6,8 +6,13 @@ import worldofzuul.DomainLayer.Interfaces.IGame;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.DomainLayer.Interfaces.IPlayer;
 import worldofzuul.DomainLayer.Interfaces.IRoom;
+import worldofzuul.PresentationLayer.MainGUI;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+import static java.util.Collections.reverse;
 
 
 /**
@@ -41,17 +46,21 @@ public class Game implements IGame {
     }
 
     void loadGame() {
+        finishedGames.clear();
         try {
             ArrayList<GameResultData> loadedData = saveGame.load();
             for (GameResultData resultData : loadedData) {
                 GameResult result = new GameResult(resultData.getCo2(),
                         resultData.getHappiness(),
-                        ContentGenerator.getPlayerTypeByName(resultData.getPlayerTypeName()));
+                        ContentGenerator.getPlayerTypeByName(resultData.getPlayerTypeName()),
+                        resultData.getItemsBought());
                 finishedGames.add(result);
             }
             System.out.println("Your saved game was loaded.");
         } catch (SaveGameException e) {
             System.out.println("No saved game found - a new game has been created");
+            System.out.println("[Debug] What actually went wrong loading the save: "+e.getMessage());
+            System.out.println("[Debug] Cause: " + e.getCause());
             // finishedGames Arraylist will be an empty list
             // This is the same as starting a new game
         }
@@ -60,6 +69,7 @@ public class Game implements IGame {
     public void deleteSaveFile() {
         saveGame.delete();
         loadGame();
+        reactToResults();
     }
 
     /**
@@ -117,8 +127,8 @@ public class Game implements IGame {
 
     public void printWelcome() {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to the World of Zhopping!");
+        System.out.println("World of Zhopping is a new, incredibly fun shopping game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(rooms.get(0).getDescription());
@@ -127,7 +137,7 @@ public class Game implements IGame {
     private void save() {
         ArrayList<GameResultData> resultData = new ArrayList<>();
         for (GameResult result : finishedGames) {
-            resultData.add(new GameResultData(result.getCo2(), result.getHappiness(), result.getPlayerType().getName()));
+            resultData.add(new GameResultData(result.getCo2(), result.getHappiness(), result.getPlayerType().getName(),result.getItemsBought()));
         }
         try {
             saveGame.save(resultData);
@@ -169,7 +179,19 @@ public class Game implements IGame {
      */
 
     public void resetGame() {
-        GameResult result = player.getGameResult();
+        //Makes a uneven reversed 2D array of items the player bought all previous games.
+        //May be empty.
+        String[][] previousInventories = new String[finishedGames.size()][1];
+        int q = finishedGames.size()-1; //Used to reverse the list.
+        for(int i = 0; i < finishedGames.size(); i++){ //Go through the items backwards!
+            ArrayList<String> itemsBought = finishedGames.get(i).getItemsBought();
+            previousInventories[q] = new String[itemsBought.size()];
+            for(int j = 0; j < itemsBought.size(); j++){
+                previousInventories[q][j] = itemsBought.get(j);
+            }
+            q--;
+        }
+        GameResult result = player.getGameResult(previousInventories);
         finishedGames.add(result); //adds the game result of the currently played game to an arraylist of results.
         player.deleteInventory(); // deletes all items in the inventory
         player.setPlayerType(getPlayerType());
@@ -199,9 +221,12 @@ public class Game implements IGame {
         returnString.append("You have played: ").append(timesPlayed).append(" times. \n");
 
         //co2
+        returnString.append("Current climate situation: \n");
+
         if (co2 < 5) {
             isCo2Bad = false;
             returnString.append("The earth is still a green and beautiful place\n");
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket.jpg").toString());
         } else if (co2 < 10) {
             isCo2Bad = true;
             if (finishedGames.size()>1 && getLastGameCO2()>5 && getLastGameCO2()<10) {
@@ -241,6 +266,7 @@ public class Game implements IGame {
         }
 
         //happiness
+        returnString.append("\nYour current situation: \n");
 
         if (happiness >= 0) {
             isNotHappy = false;
@@ -273,7 +299,7 @@ public class Game implements IGame {
             }
             returnString.append("You've joined a fascist movement.\n");
         } else {
-            returnString.append("You have successfully overthrown the government. \n Bottle caps are now the only currency. \n");
+            returnString.append("You have successfully overthrown the government. \n Gasoline is now the only currency. \n");
         }
         return returnString.toString();
     }

@@ -382,7 +382,11 @@ public class GameCanvasController {
     void transition(){
        close();
         ArrayList<String> resultArray = MainGUI.game.Checkout();
-
+        
+        //[Merge] The following 2 lines may have to be removed. 
+        IRoom outside = MainGUI.game.getRooms().get(0);
+        gridMap.get(outside).setBackground(new Image(outside.getBackground()));
+      
         this.transitionScreen.reset();
         transitionScreen.setDoneHandler(new AnimationDoneHandler() {
             @Override

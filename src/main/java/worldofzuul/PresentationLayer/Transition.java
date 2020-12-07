@@ -130,7 +130,12 @@ public class Transition {
                 gc.translate(0,lines.length*this.textFont.getSize() * -1);
                 for(int i = 0; i < lines.length; i++) {
                     String currentLine = lines[i];
-                    gc.fillText(currentLine, windowWidth / 2, (windowHeight / 2) + (i+1)*this.textFont.getSize());
+                    if(lines.length > 10){
+                        gc.fillText(currentLine, windowWidth / 2.0, (windowHeight / 1.5) + (i + 1) * this.textFont.getSize());
+                    }
+                    else {
+                        gc.fillText(currentLine, windowWidth / 2.0, (windowHeight / 2.0) + (i + 1) * this.textFont.getSize());
+                    }
                 }
                 gc.restore();
             }else{
