@@ -51,19 +51,21 @@ public class GameCanvasController {
     Pane sideMenu;
 
     @FXML
+    Pane shelfMenu;
+
+    @FXML
     Pane textBox;
 
     @FXML
     TextArea textArea;
-
-    @FXML
-    Pane shelfMenu;
 
     /**
      * This method gets called as soon as this Controller is loaded.
      */
     @FXML
     public void initialize(){
+        MainGUI.hub.setSideMenu(sideMenu);
+        MainGUI.hub.setShelfMenu(shelfMenu);
         MainGUI.hub.setTextBox(textBox);
         MainGUI.hub.setTextBoxTextArea(textArea);
 

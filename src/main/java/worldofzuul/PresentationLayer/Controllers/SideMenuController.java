@@ -47,6 +47,7 @@ public class SideMenuController {
 
     @FXML
     public void initialize() {
+        System.out.println("SideMenuController - initialize");
         MainGUI.hub.setSideMenuListView(sideMenuListView);
 
         //ContextMenu that pops up on pressing enter
@@ -69,6 +70,7 @@ public class SideMenuController {
                 sideMenuProteinLabel.setText((int) (MainGUI.game.getPlayer().getInventoryProtein()) + " g");
                 moneyBar.setProgress(MainGUI.game.getPlayer().getInventoryValue()/MainGUI.game.getPlayer().getBudget());
                 moneySpent.setText(String.format("%4.2f", MainGUI.game.getPlayer().getInventoryValue()));
+                System.out.println("listViewList - item update");
             }
         });
 

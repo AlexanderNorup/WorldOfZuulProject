@@ -46,9 +46,15 @@ public class ShelfMenuController {
 
         take.setOnAction(event -> {
             IItem item = shelfMenuListView.getSelectionModel().getSelectedItem();
-            MainGUI.game.take(item);
-            MainGUI.hub.getSideMenuListView().getItems().setAll(MainGUI.game.getPlayer().getInventory());
-            MainGUI.playSoundEffect("select.wav");
+            boolean underBudget = MainGUI.game.take(item);
+
+            if(underBudget){
+                MainGUI.hub.getSideMenuListView().getItems().setAll(MainGUI.game.getPlayer().getInventory());
+                MainGUI.playSoundEffect("select.wav");
+            }else {
+                MainGUI.hub.getTextBox().setVisible(true);
+                MainGUI.hub.getTextBoxTextArea().setText("The item is too pricey");
+            }
         });
 
         contextMenu.getItems().addAll(inspect, take);
@@ -73,7 +79,7 @@ public class ShelfMenuController {
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
                 }else{
-                    Node sideMenu = MainGUI.hub.getSideMenuListView();
+                    Node sideMenu = MainGUI.hub.getSideMenu();
                     shelfMenu.setVisible(false);
                     shelfMenu.setManaged(false);
                     sideMenu.setDisable(false);
