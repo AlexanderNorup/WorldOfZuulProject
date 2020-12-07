@@ -14,6 +14,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import worldofzuul.DomainLayer.Interfaces.*;
+import worldofzuul.DomainLayer.Item;
+import worldofzuul.Main;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.*;
 
@@ -368,7 +370,7 @@ public class GameCanvasController {
             }
 
 
-            //}
+
         }
         else if(actionEvent.getSource() == noButton){
             close();
@@ -383,9 +385,12 @@ public class GameCanvasController {
 
     void transition(){
        close();
-
-        String result = MainGUI.game.canCheckout();
         ArrayList<String> resultArray = MainGUI.game.Checkout();
+        
+        //[Merge] The following 2 lines may have to be removed. 
+        IRoom outside = MainGUI.game.getRooms().get(0);
+        gridMap.get(outside).setBackground(new Image(outside.getBackground()));
+      
         this.transitionScreen.reset();
         transitionScreen.setDoneHandler(new AnimationDoneHandler() {
             @Override
@@ -404,6 +409,9 @@ public class GameCanvasController {
         this.transitionScreen.addText(resultArray);
         this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
         this.transitionScreen.addLine("Happy shopping!\n\nYour game has been saved!");
+
+
+
         playerObject.getActiveGrid().setActive(false);
         this.transitionScreen.setActive(true);
 

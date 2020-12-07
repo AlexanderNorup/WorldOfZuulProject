@@ -26,7 +26,7 @@ public class MainGUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         soundCache = new HashMap<>();
-        //Pathen til resourcen er relativt fra /src/main/resources/
+        // The path to the resource is relative from /src/main/resources/
         Parent mainMenu = FXMLLoader.load(MainGUI.class.getResource("/fxml/mainmenu.fxml"));
         s = new Scene(mainMenu, 1280,720);
         if(!this.getParameters().getRaw().contains("--mute")) {

@@ -9,8 +9,8 @@ public enum Direction {
 
     private final String directionWord;
 
-    Direction(String cirectionWord) {
-        this.directionWord = cirectionWord;
+    Direction(String directionWord) {
+        this.directionWord = directionWord;
     }
 
     @Override

@@ -129,11 +129,11 @@ public class Grid {
         gc.clearRect(0, 0, windowWidth, windowHeight);
 
         //Then draw the background
-        gc.save();
-        gc.translate((int) (windowWidth / 2 - (gameWidth / 2)), //forklar tak
-                (int) (windowHeight / 2 - (gameHeight / 2)));
+        gc.save();                                               //gemmer koordinatsystemets 0-punkt i det øverste venstre hjørne der er i programmet.
+        gc.translate((int) (windowWidth / 2 - (gameWidth / 2)),  //flytter koordinatsystemets 0-punkt for området der skal tegnes i
+                (int) (windowHeight / 2 - (gameHeight / 2)));    //til det øverste venstre hjørne i spillet.
 
-        gc.drawImage(background, 0, 0, gameWidth, gameHeight);
+        gc.drawImage(background, 0, 0, gameWidth, gameHeight); //tegner et billede i 0.0.
 
         //If debug is turned on:
         if (showDebug) {
@@ -142,14 +142,14 @@ public class Grid {
             gc.setStroke(Color.GREY);
 
 
-            for (int col = 0; col < gridWidth + 1; col++) {
-                gc.strokeLine(col * tileSize, 0,
-                        col * tileSize, gameHeight);
+            for (int col = 0; col < gridWidth + 1; col++) {  //continues to draw vertical lines from left to right until last column been drawn
+                gc.strokeLine(col * tileSize, 0,      //the x-starting point and x-endpoint need to move with eachother so line is straight
+                        col * tileSize, gameHeight);     //the y-starting point is from the top and end point is the bottom of screen.
             }
 
-            for (int row = 0; row < gridHeight + 1; row++) {
-                gc.strokeLine(0, row * tileSize,
-                        gameWidth, row * tileSize);
+            for (int row = 0; row < gridHeight + 1; row++) { //continues to draw horizontal lines from top to bottom until last row been drawn
+                gc.strokeLine(0, row * tileSize,      //the x-starting point is from the left and end point is the right of screen.
+                        gameWidth, row * tileSize);       //the y-starting point and y-endpoint need to move with eachother so line is straight
             }
 
             gc.setFont(new Font(16));
@@ -289,6 +289,10 @@ public class Grid {
 
 
         return true;
+    }
+
+    public void setBackground (Image newBackground) {
+        this.background = newBackground;
     }
 
     public int getGridWidth() {
