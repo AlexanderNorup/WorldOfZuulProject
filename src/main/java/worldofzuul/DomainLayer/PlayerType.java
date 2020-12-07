@@ -201,7 +201,8 @@ public class PlayerType {
 
             if(!containsNegativeExtra){
                 for(Extra extra : item.getExtra()){
-                    if(!negativeExtra.contains(extra)){
+                    if(!negativeExtra.contains(extra) && !positiveExtra.isEmpty()){
+                        //TODO: Question; Is it correct that we devide by positiveExtra.size() here, and not negativeExtra.size() instead?
                         itemsContainingExtras += (item.getExtra().contains(extra) ? 1 : 0) / positiveExtra.size();
                     }
                 }
@@ -283,6 +284,9 @@ public class PlayerType {
         double eatingSamePunishment = 0;
         double eatingTheSameFactor = 2;
         for(int day = 0; day < Math.min(previousItems.length,4); day++){ //Look at up to the 5 last days.
+            if(previousItems[day] == null || previousItems[day][0] == null){
+                continue;
+            }
             for(int i = 0; i < previousItems[day].length; i++){
                 for(Item item : items) {
                     if (item.getName().equalsIgnoreCase(previousItems[day][i])) {

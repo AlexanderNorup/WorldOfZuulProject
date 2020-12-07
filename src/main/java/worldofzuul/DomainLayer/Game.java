@@ -185,6 +185,10 @@ public class Game implements IGame {
         String[][] previousInventories = new String[finishedGames.size()][1];
         int q = finishedGames.size()-1; //Used to reverse the list.
         for(int i = 0; i < finishedGames.size(); i++){ //Go through the items backwards!
+            if(!finishedGames.get(i).getPlayerType().getName().equalsIgnoreCase(this.player.getPlayerType().getName())){
+                //We only want the inventories of the times we played with the current player type.
+                continue;
+            }
             ArrayList<String> itemsBought = finishedGames.get(i).getItemsBought();
             previousInventories[q] = new String[itemsBought.size()];
             for(int j = 0; j < itemsBought.size(); j++){
