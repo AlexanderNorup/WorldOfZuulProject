@@ -184,6 +184,10 @@ public class Game implements IGame {
         String[][] previousInventories = new String[finishedGames.size()][1];
         int q = finishedGames.size()-1; //Used to reverse the list.
         for (GameResult finishedGame : finishedGames) { //Go through the items backwards!
+            if (!finishedGame.getPlayerType().getName().equalsIgnoreCase(this.player.getPlayerType().getName())) {
+                //We only want the inventories of the times we played with the current player type.
+                continue;
+            }
             ArrayList<String> itemsBought = finishedGame.getItemsBought();
             previousInventories[q] = new String[itemsBought.size()];
             for (int j = 0; j < itemsBought.size(); j++) {
@@ -240,7 +244,7 @@ public class Game implements IGame {
             if (finishedGames.size()>1 && getLastGameCO2()>10 && getLastGameCO2()<15) {
                 isCo2Bad = false;
             }
-            returnString.append("It's getting hot outside and you notice that plants are dying around you. \n");
+            returnString.append("It's getting hot outside and\nyou notice that plants are dying around you. \n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket2.png").toString());
 
         } else if (co2 < 20) {
@@ -261,7 +265,7 @@ public class Game implements IGame {
 
         } else {
             isCo2Bad = true;
-            returnString.append("The world is burning down and the store is set on fire.\n");
+            returnString.append("The world is burning down and\nthe store is set on fire.\n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket5.png").toString());
         }
 
@@ -349,11 +353,20 @@ public class Game implements IGame {
 
         }
         String co2Percentage = String.format("%.2f", (co2 / co2Total) * 100);
-        return "The Item with the highest C02 was: " + itemname + "\nIt's C02 was " + co2Percentage + "% of your total C02.";
+        StringBuilder builder = new StringBuilder();
+        builder.append("Your CO2 emissions today was very high:\n");
+        builder.append("The Item with the highest C02 emission was: " + itemname + "\nIt was responsible for " + co2Percentage + "% ofthe total emissions today.\n");
+        builder.append("Consider buying less of that, and thinking more\nabout the enviroment.");
+        return builder.toString();
     }
 
     private String playerTypeNotHappyString() {
-        return player.getPlayerType().getName() +" is not happy. Maybe buy some <PlayerType faveItems> .";
+        String reason = this.player.getPlayerType().getUnhappyReason();
+        if(!reason.equals("")){
+            return "The " + player.getPlayerType().getName() + " is not happy.\n" + reason + "\nTry buying different things tomorrow!";
+        }else {
+            return "The " + player.getPlayerType().getName() + " is not happy.\nMaybe buy some " + player.getPlayerType().getRandomFaveItem() + "\nor try buying different things each day.";
+        }
     }
     private double getLastGameCO2(){
         double total = 0;
