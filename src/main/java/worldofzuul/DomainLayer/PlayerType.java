@@ -193,7 +193,7 @@ public class PlayerType {
 
 
         //if variaty is 1, subtract 20 points from happiness, if variaty is 12, add 20 points to happiness
-        happiness += Math.min(((variety-6) * 4),20);
+        happiness += Math.min(((variety-3) * 4),20);
 
 
 
