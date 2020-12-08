@@ -323,7 +323,7 @@ public class ContentGenerator {
                 "The student cares about the environment.\n" +
                 "Focus on organic items. \n" +
                 "Please try to avoid making the world explode!");
-        type.setFactors(1,7,2);
+        type.setFactors(1,5,4);
         type.setValues(50,1000,2200);
         type.setPlayerSprite(Game.class.getResource("/sprites/student.png").toString());
         type.addPositiveExtra(Extra.ORGANIC);
