@@ -28,6 +28,7 @@ public class PlayerType {
     private ArrayList<String> tempFaveItemTypes;
     private ArrayList<String> tempHateItemTypes;
     private String unhappyReason;
+    private int favhateamount = 0;
 
     public PlayerType(String name, String description) {
         this.name = name;
@@ -41,9 +42,13 @@ public class PlayerType {
         this.unhappyReason = "";
     }
 
+    public void setFavhateamount(int favhateamount) {
+        this.favhateamount = favhateamount;
+    }
+
     public void randomizeFaveHateItems(){
-        tempFaveItemTypes = getRandomItemsFromList(faveItemTypes, 3);
-        tempHateItemTypes = getRandomItemsFromList(hateItemTypes, 3);
+        tempFaveItemTypes = getRandomItemsFromList(faveItemTypes, favhateamount);
+        tempHateItemTypes = getRandomItemsFromList(hateItemTypes, favhateamount);
     }
 
     public String getName() {
@@ -337,25 +342,25 @@ public class PlayerType {
     }
 
     /**
-     * @param itemList the list from which you whish random items
-     * @param amount the amount of random items you wish
+     * @param itemList the list from which you wish random items
+     * @param favhateamount the amount of random items you wish
      * @return list of random items from provided list
      */
-    private ArrayList<String> getRandomItemsFromList(ArrayList<String> itemList, int amount){
+    private ArrayList<String> getRandomItemsFromList(ArrayList<String> itemList, int favhateamount) {
         ArrayList<String> startingPoint = new ArrayList<>(itemList);
         ArrayList<String> result = new ArrayList<>();
 
-        if(amount > startingPoint.size()){
+        if (favhateamount > startingPoint.size()) {
             System.out.println("getRandomItemsFromList - amount longer than list");
-        }else {
+        } else {
             Random random = new Random();
-            for(int x = 0 ; x < amount ; x++){
-                int randomInt = random.nextInt(startingPoint.size());
-                result.add(startingPoint.get(new Random().nextInt(startingPoint.size())));
-                startingPoint.remove(randomInt);
+            for (int x = 0; x < favhateamount; x++) {
+                int randomInt = random.nextInt(itemList.size());
+                result.add(itemList.get(new Random().nextInt(itemList.size())));
+                itemList.remove(randomInt);
+
             }
         }
         return result;
     }
-
 }

@@ -218,7 +218,12 @@ public class Game implements IGame {
             returnString.append("Your results for today\n\n");
             returnString.append("CO2: ").append(String.format("%4.2f", lastGame.getCo2())).append("\n");
             returnString.append("Happiness: ").append(String.format("%2.0f", lastGame.getHappiness())).append("\n\n\n");
-            returnString.append("You have played: ").append(finishedGames.size()).append(" times. \n---\n");
+            if(finishedGames.size() == 1) {
+                returnString.append("You have played: ").append(finishedGames.size()).append(" time. \n---\n");
+            }
+            else{
+                returnString.append("You have played: ").append(finishedGames.size()).append(" times. \n---\n");
+            }
         }
 
         //Sums CO2 and happiness for all the played games
@@ -235,14 +240,14 @@ public class Game implements IGame {
         if (co2 < 5) {
             isCo2Bad = false;
             returnString.append("The earth is still a green and beautiful place\n");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket.jpg").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket.png").toString());
         } else if (co2 < 10) {
             isCo2Bad = true;
             if (finishedGames.size()>1 && getLastGameCO2()>5 && getLastGameCO2()<10) {
                 isCo2Bad = false;
             }
             returnString.append("You notice your armpits are more stained than usual.\n People seem to be rioting.");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket1.png").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket1.png").toString());
 
         } else if (co2 < 15) {
             isCo2Bad = true;
@@ -250,7 +255,7 @@ public class Game implements IGame {
                 isCo2Bad = false;
             }
             returnString.append("It's getting hot outside and\nyou notice that plants are dying around you. \n");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket2.png").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket2.png").toString());
 
         } else if (co2 < 20) {
             isCo2Bad = true;
@@ -258,7 +263,7 @@ public class Game implements IGame {
                 isCo2Bad = false;
             }
             returnString.append("It's too hot to walk barefoot. \n You notice everything sets on fire.");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket3.png").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket3.png").toString());
 
         } else if (co2 < 25) {System.out.println(co2);
             isCo2Bad = true;
@@ -266,12 +271,12 @@ public class Game implements IGame {
                 isCo2Bad = false;
             }
             returnString.append("All the glaciers have melted and the ocean has risen. \n");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket4.png").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket4.png").toString());
 
         } else {
             isCo2Bad = true;
             returnString.append("The world is burning down and\nthe store is set on fire.\n");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket5.png").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket5.png").toString());
         }
 
         //happiness
@@ -350,10 +355,12 @@ public class Game implements IGame {
 
 
         for (IItem item : inventory) {
+            co2Total += item.getCo2();
+
             if (item.getCo2() > co2) {
                 co2 = item.getCo2();
                 itemname = item.getName();
-                co2Total += item.getCo2();
+
             }
 
         }
