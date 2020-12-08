@@ -345,10 +345,12 @@ public class Game implements IGame {
 
 
         for (IItem item : inventory) {
+            co2Total += item.getCo2();
+
             if (item.getCo2() > co2) {
                 co2 = item.getCo2();
                 itemname = item.getName();
-                co2Total += item.getCo2();
+
             }
 
         }
