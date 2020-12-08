@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import worldofzuul.DomainLayer.Interfaces.IItem;
+import worldofzuul.Main;
 import worldofzuul.PresentationLayer.MainGUI;
 
 public class SideMenuController {
@@ -46,6 +47,9 @@ public class SideMenuController {
 
     @FXML
     public void initialize() {
+        System.out.println("SideMenuController - initialize");
+        MainGUI.hub.setSideMenuListView(sideMenuListView);
+
         //ContextMenu that pops up on pressing enter
         contextMenu = new ContextMenu();
         inspect = new MenuItem("Inspect");
@@ -57,20 +61,24 @@ public class SideMenuController {
 
         ObservableList<IItem> listViewList = FXCollections.observableArrayList();
         listViewList.addAll(MainGUI.game.getPlayer().getInventory());
+
         sideMenuListView.setItems(listViewList);
-        listViewList.addListener(new ListChangeListener<IItem>() {
+        sideMenuListView.getItems().addListener(new ListChangeListener<IItem>() {
             @Override
             public void onChanged(Change<? extends IItem> c) {
                 sideMenuCalorieLabel.setText(Integer.toString((int)(MainGUI.game.getPlayer().getInventoryCalories())));
                 sideMenuProteinLabel.setText((int) (MainGUI.game.getPlayer().getInventoryProtein()) + " g");
                 moneyBar.setProgress(MainGUI.game.getPlayer().getInventoryValue()/MainGUI.game.getPlayer().getBudget());
                 moneySpent.setText(String.format("%4.2f", MainGUI.game.getPlayer().getInventoryValue()));
+                System.out.println("listViewList - item update");
             }
         });
 
+        listViewList.addListener((ListChangeListener<IItem>) c -> System.out.println("listViewList - item update"));
+
         inspect.setOnAction(event -> {
             //Finds the textArea node
-            TextArea textArea = (TextArea) sideMenu.getParent().getScene().lookup("#textBox").lookup("#textArea");
+            TextArea textArea = MainGUI.hub.getTextBoxTextArea();
 
             //Sets textArea's text to currently selected item in listView
             textArea.setText(sideMenuListView.getSelectionModel().getSelectedItem().getDescription());
@@ -83,8 +91,7 @@ public class SideMenuController {
             IItem item = sideMenuListView.getSelectionModel().getSelectedItem();
             System.out.println("Dropped");
             MainGUI.game.drop(item);
-            listViewList.clear();
-            listViewList.addAll(MainGUI.game.getPlayer().getInventory());
+            sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
         });
 
         contextMenu.getItems().addAll(inspect, drop);
@@ -104,7 +111,7 @@ public class SideMenuController {
                 break;
             case ESCAPE:
                 //"Close" textBox, if textBox is "open". If textBox is not "open", but sideMenu is, "close" sideMenu
-                Node textBox = sideMenu.getParent().getScene().lookup("#textBox");
+                Node textBox = MainGUI.hub.getTextBox();
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
                 }else {

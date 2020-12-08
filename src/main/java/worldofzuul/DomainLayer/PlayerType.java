@@ -1,5 +1,7 @@
 package worldofzuul.DomainLayer;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -25,6 +27,7 @@ public class PlayerType {
     private final ArrayList<Extra> negativeExtra;
     private ArrayList<String> tempFaveItemTypes;
     private ArrayList<String> tempHateItemTypes;
+    private String unhappyReason;
 
     public PlayerType(String name, String description) {
         this.name = name;
@@ -35,7 +38,7 @@ public class PlayerType {
         this.negativeExtra = new ArrayList<>();
         this.tempFaveItemTypes = new ArrayList<>();
         this.tempHateItemTypes = new ArrayList<>();
-
+        this.unhappyReason = "";
     }
 
     public void randomizeFaveHateItems(){
@@ -109,9 +112,9 @@ public class PlayerType {
     //set factors to determin happiness caluclation for playertype
     public void setFactors(int proteinFactor, int budgetFactor, int pickynessFactor){
         double equalizer = 1/(double) (proteinFactor + budgetFactor + pickynessFactor);
-        this.proteinFactor = proteinFactor * equalizer;
-        this.budgetFactor = budgetFactor * equalizer;
-        this.pickynessFactor = pickynessFactor * equalizer;
+        this.proteinFactor = new BigDecimal(proteinFactor * equalizer).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        this.budgetFactor = new BigDecimal(budgetFactor * equalizer).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        this.pickynessFactor = new BigDecimal(pickynessFactor * equalizer).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     public void addFaveItems(String... itemName) {
@@ -130,10 +133,25 @@ public class PlayerType {
         negativeExtra.add(thingThatMatter);
     }
 
+    public String getRandomFaveItem(){
+        if(this.faveItemTypes.isEmpty()){
+            return "cheaper items"; //If the list is empty we tell the player to "try some cheaper items".
+        }
+        Random random = new Random();
+        return this.faveItemTypes.get(random.nextInt(this.faveItemTypes.size()));
+    }
+
+    public String getUnhappyReason(){
+        return this.unhappyReason;
+    }
+
     //calculate happiness
     //TODO finish
     public double getHappiness(ArrayList<Item> items, String[][] previousItems){
         double happiness = 0;
+
+        double currentUnhappyMax = 0;
+        unhappyReason = "";
 
         double totalPrice = 0.0;
         double totalCalories = 0.0;
@@ -184,10 +202,10 @@ public class PlayerType {
             }
 
             if(!containsNegativeExtra){
-                for(Extra extra : item.getExtra()){
-                    if(!negativeExtra.contains(extra)){
-                        itemsContainingExtras += (item.getExtra().contains(extra) ? 1 : 0) / positiveExtra.size();
-                    }
+                for(Extra extra : positiveExtra){
+                    //TODO: Question; Is it correct that we divide by positiveExtra.size() here, and not negativeExtra.size() instead?
+                    //TODO: Answer; check update
+                    itemsContainingExtras += (item.getExtra().contains(extra) ? 1 : 0) / positiveExtra.size();
                 }
             }
         }
@@ -203,6 +221,10 @@ public class PlayerType {
 
         else {
             happiness -= 80 * (totalPrice-budgetMax*0.8)/(budgetMax*0.2) * budgetFactor;
+            if(currentUnhappyMax > happiness){
+                currentUnhappyMax = happiness;
+                this.unhappyReason = "You used a lot of money";
+            }
         }
 
 
@@ -211,7 +233,7 @@ public class PlayerType {
         //Calculate protein goal as 30% of goal energy requirements
         double proteinMin = calorieMin * 0.15 / 4;
         double proteinGoal = calorieGoal * 0.30 / 4;
-        int tempHappiness = 0;
+        double tempHappiness = 0;
 
 
         //if protein above protein goal, add 80 points times protein/proteinGoal times protein factor
@@ -225,9 +247,12 @@ public class PlayerType {
             tempHappiness -= 80;
         }
         //returns the smallest number, ensuring that happiness points don't exceed 80.
-
-        happiness += Math.min(tempHappiness, 80) * proteinFactor;
-
+        tempHappiness = (Math.min(tempHappiness, 80) * proteinFactor);
+        happiness += tempHappiness;
+        if(currentUnhappyMax > tempHappiness){
+            currentUnhappyMax = tempHappiness;
+            this.unhappyReason = "You didn't meet your protein or calorie goals.";
+        }
 
 
         //PICKINESS
@@ -238,7 +263,13 @@ public class PlayerType {
 
         happiness += 40 * percentageFaveItemTypesBought * pickynessFactor;
         happiness += 60 * ((percentItemsContainingExtras - 0.5) * 2) * pickynessFactor;
-        happiness -= 40 * percentageHateItemTypesBought * pickynessFactor;
+        double hatePickinessPunishment = 40 * percentageHateItemTypesBought * pickynessFactor;
+        happiness -= hatePickinessPunishment;
+
+        if(currentUnhappyMax > hatePickinessPunishment){
+            currentUnhappyMax = hatePickinessPunishment;
+            this.unhappyReason = "You bought a lot of items you hate!\nYou feel bad!";
+        }
 
         //GENERIC
         //if calories are at calorie min, subtract 10, if calories are at or above calorie goal, subtract 0.
@@ -254,9 +285,14 @@ public class PlayerType {
         double eatingSamePunishment = 0;
         double eatingTheSameFactor = 2;
         for(int day = 0; day < Math.min(previousItems.length,4); day++){ //Look at up to the 5 last days.
+            if(previousItems[day] == null || previousItems[day][0] == null){
+                continue;
+            }
             for(int i = 0; i < previousItems[day].length; i++){
                 for(Item item : items) {
-                    if (item.getName().equalsIgnoreCase(previousItems[day][i])) {
+                    //Remove reference to Organic and Weight
+                    String itemName = item.getName().replace("Organic", "").replaceAll("\\d","");
+                    if (itemName.equalsIgnoreCase(previousItems[day][i])) {
                         //The player bought something they did in the last few days.
                         //The player is punished more if they bought it more recently.
                         eatingSamePunishment += Math.log10(0.2 * (day + 1));
@@ -264,9 +300,13 @@ public class PlayerType {
                 }
             }
         }
+        eatingSamePunishment = eatingSamePunishment * eatingTheSameFactor;
+        happiness -= eatingSamePunishment;
 
-        happiness -= eatingSamePunishment * eatingTheSameFactor;
-
+        if(currentUnhappyMax > eatingSamePunishment){
+            currentUnhappyMax = eatingSamePunishment;
+            this.unhappyReason = "You're getting tired of eating the same things over and over!";
+        }
 
 
         System.out.println("\n\n\n");
@@ -302,18 +342,20 @@ public class PlayerType {
      * @return list of random items from provided list
      */
     private ArrayList<String> getRandomItemsFromList(ArrayList<String> itemList, int amount){
-        ArrayList<String> Return = new ArrayList<>();
-        if(amount > itemList.size()){
+        ArrayList<String> startingPoint = new ArrayList<>(itemList);
+        ArrayList<String> result = new ArrayList<>();
+
+        if(amount > startingPoint.size()){
             System.out.println("getRandomItemsFromList - amount longer than list");
         }else {
             Random random = new Random();
             for(int x = 0 ; x < amount ; x++){
-                int randomInt = random.nextInt(itemList.size());
-                Return.add(itemList.get(new Random().nextInt(itemList.size())));
-                itemList.remove(randomInt);
+                int randomInt = random.nextInt(startingPoint.size());
+                result.add(startingPoint.get(new Random().nextInt(startingPoint.size())));
+                startingPoint.remove(randomInt);
             }
         }
-        return Return;
+        return result;
     }
 
 }
