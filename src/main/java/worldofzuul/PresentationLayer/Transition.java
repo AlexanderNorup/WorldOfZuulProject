@@ -194,7 +194,7 @@ public class Transition {
     }
 
     /**
-     * Completely resets the Transition so it can be used agian.
+     * Completely resets the Transition so it can be used again.
      */
     public void reset(){
         this.clearLines();
