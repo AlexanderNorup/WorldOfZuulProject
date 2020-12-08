@@ -190,7 +190,6 @@ public class Game implements IGame {
         //gameover
         object.setDidCheckout(true);
         object.setGameOver(true);
-        object.addReturnStrings(reactToResults(co2,happiness,timesPlayed));
 
         object.addReturnStrings("Game Over");
         object.addReturnStrings("you reached day " + timesPlayed);
