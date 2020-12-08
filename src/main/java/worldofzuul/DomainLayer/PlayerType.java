@@ -362,13 +362,13 @@ public class PlayerType {
             System.out.println("getRandomItemsFromList - amount longer than list");
         } else {
             Random random = new Random();
-            for (int x = 0; x < favhateamount; x++) {
-                int randomInt = random.nextInt(itemList.size());
-                result.add(itemList.get(new Random().nextInt(itemList.size())));
-                itemList.remove(randomInt);
-
+            for(int x = 0 ; x < favhateamount ; x++){
+                int randomInt = random.nextInt(startingPoint.size());
+                result.add(startingPoint.get(randomInt));
+                startingPoint.remove(randomInt);
             }
         }
         return result;
     }
+
 }
