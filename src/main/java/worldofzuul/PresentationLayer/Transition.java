@@ -126,7 +126,7 @@ public class Transition {
                 gc.setGlobalAlpha(animationProgress);
                 gc.setFont(this.textFont);
                 gc.save();
-                gc.translate(0,lines.length*this.textFont.getSize() * -1);
+                gc.translate(0,(lines.length+1)*(this.textFont.getSize()/2) * -1);
                 for(int i = 0; i < lines.length; i++) {
                     String currentLine = lines[i];
                     gc.fillText(currentLine, windowWidth / 2, (windowHeight / 2) + (i+1)*this.textFont.getSize());
