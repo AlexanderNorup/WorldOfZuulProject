@@ -218,7 +218,12 @@ public class Game implements IGame {
             returnString.append("Your results for today\n\n");
             returnString.append("CO2: ").append(String.format("%4.2f", lastGame.getCo2())).append("\n");
             returnString.append("Happiness: ").append(String.format("%2.0f", lastGame.getHappiness())).append("\n\n\n");
-            returnString.append("You have played: ").append(finishedGames.size()).append(" times. \n---\n");
+            if(finishedGames.size() == 1) {
+                returnString.append("You have played: ").append(finishedGames.size()).append(" time. \n---\n");
+            }
+            else{
+                returnString.append("You have played: ").append(finishedGames.size()).append(" times. \n---\n");
+            }
         }
 
         //Sums CO2 and happiness for all the played games
