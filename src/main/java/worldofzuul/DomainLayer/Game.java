@@ -211,18 +211,23 @@ public class Game implements IGame {
     @Override
     public String reactToResults() {
         StringBuilder returnString = new StringBuilder();
+
+        //Prints the results of the day if the player has played a game
+        if (finishedGames.size()>0) {
+            GameResult lastGame = finishedGames.get(finishedGames.size() - 1);
+            returnString.append("Your results for today\n\n");
+            returnString.append("CO2: ").append(String.format("%4.2f", lastGame.getCo2())).append("\n");
+            returnString.append("Happiness: ").append(String.format("%2.0f", lastGame.getHappiness())).append("\n\n\n");
+            returnString.append("You have played: ").append(finishedGames.size()).append(" times. \n---\n");
+        }
+
+        //Sums CO2 and happiness for all the played games
         int happiness = 0;
         double co2 = 0;
-        int timesPlayed = 0; // to count how many times the game has played
         for (GameResult finishedGame : finishedGames) {
             happiness += finishedGame.getHappiness();
             co2 += finishedGame.getCo2();
-            timesPlayed++;
         }
-        returnString.append("Your results for today\n\n");
-        returnString.append("CO2: ").append(co2).append("\n");
-        returnString.append("Happiness: ").append(happiness).append("\n\n\n");
-        returnString.append("You have played: ").append(timesPlayed).append(" times. \n");
 
         //co2
         returnString.append("Current climate situation: \n");
