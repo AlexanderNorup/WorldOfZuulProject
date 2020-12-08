@@ -6,6 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
@@ -19,6 +21,7 @@ import worldofzuul.Main;
 import worldofzuul.PresentationLayer.*;
 import worldofzuul.PresentationLayer.GridObjects.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -180,7 +183,7 @@ public class GameCanvasController {
      * @param keyEvent Represents the key being pressed along with more information.
      */
     @FXML
-    public void onKeyPressed(KeyEvent keyEvent) {
+    public void onKeyPressed(KeyEvent keyEvent) throws IOException {
         //currently, when spacebar, enter, arrowkeys, esc, etc., are hit, and sidemenu is open,
         // these keyEvents goes to the sidemenu controller. Therefore a switchcase with some similar instructions
         // are implemented in the sidemenu controller.
@@ -331,7 +334,13 @@ public class GameCanvasController {
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) {
                 //TODO go to main menu
-                System.exit(0); //0-exit code means "successfull".
+                Parent mainMenu = null;
+                try {
+                    mainMenu = FXMLLoader.load(MainGUI.class.getResource("/fxml/mainmenu.fxml"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                MainGUI.hub.getPrimaryStage().setScene(new Scene(mainMenu, 1280,720));
             }
         });
     }
