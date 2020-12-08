@@ -441,7 +441,7 @@ public class ContentGenerator {
 
     public static ArrayList<Room> getRooms(){
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
-        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 8,5, getBackground("supermarket.jpg") );
+        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 8,5, getBackground("zuupermarket.png") );
         aisle1 = new Room("in the 1st aisle. \nTo your east is the dairy section, to your west is the bakery, " +
                 "to your south is the 2nd aisle", 4,6, getBackground("aisle_butcher_produce.png"));
         aisle2 = new Room("in the 2nd aisle. \nTo your east is the frozen section, to your west is the " +
