@@ -158,7 +158,7 @@ public class PlayerType {
         double totalProtein = 0.0;
         int faveItemsBought = 0;
         int hateItemsBought = 0;
-        int itemsContainingExtras = 0;
+        double itemsContainingExtras = 0;
         double variety = 0;
         ArrayList<Item> itemTypeList = new ArrayList<>();
 
@@ -202,10 +202,14 @@ public class PlayerType {
             }
 
             if(!containsNegativeExtra){
-                for(Extra extra : positiveExtra){
-                    //TODO: Question; Is it correct that we divide by positiveExtra.size() here, and not negativeExtra.size() instead?
-                    //TODO: Answer; check update
-                    itemsContainingExtras += (item.getExtra().contains(extra) ? 1 : 0) / positiveExtra.size();
+                if(positiveExtra.size() > 0) {
+                    for (Extra extra : positiveExtra) {
+                        //TODO: Question; Is it correct that we divide by positiveExtra.size() here, and not negativeExtra.size() instead?
+                        //TODO: Answer; check update
+                        itemsContainingExtras += (item.getExtra().contains(extra) ? 1 : 0) / (double) positiveExtra.size();
+                    }
+                }else {
+                    itemsContainingExtras += 0.5;
                 }
             }
         }
@@ -235,7 +239,7 @@ public class PlayerType {
         //Calculate minimum protein as 15% of minimum energy requirements
         //Calculate protein goal as 30% of goal energy requirements
         double proteinMin = calorieMin * 0.15 / 4;
-        double proteinGoal = calorieGoal * 0.30 / 4;
+        double proteinGoal = calorieGoal * 0.25 / 4;
         double tempHappiness = 0;
 
 
@@ -259,13 +263,12 @@ public class PlayerType {
 
 
         //PICKINESS
-        int allExtras = positiveExtra.size() + negativeExtra.size();
         double percentageFaveItemTypesBought = tempFaveItemTypes.size() != 0 ? (double) faveItemsBought / (double) tempFaveItemTypes.size() : 0;
         double percentageHateItemTypesBought = tempHateItemTypes.size() != 0 ? (double) hateItemsBought / (double) tempHateItemTypes.size() : 0;
-        double percentItemsContainingExtras = allExtras != 0 ? (double) itemsContainingExtras / (double) items.size() : 0.5;
+        double percentItemsContainingExtras = itemsContainingExtras / (double) items.size();
 
         happiness += 40 * percentageFaveItemTypesBought * pickynessFactor;
-        happiness += 60 * ((percentItemsContainingExtras - 0.5) * 2) * pickynessFactor;
+        happiness += 40 * ((percentItemsContainingExtras - 0.5) * 2) * pickynessFactor;
         double hatePickinessPunishment = 40 * percentageHateItemTypesBought * pickynessFactor;
         happiness -= hatePickinessPunishment;
 

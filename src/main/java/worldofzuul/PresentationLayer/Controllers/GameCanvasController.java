@@ -159,6 +159,7 @@ public class GameCanvasController {
 
 
         //Transition Work!
+        locked = true;
         this.transitionScreen = new Transition(gameCanvas);
         this.transitionScreen.setDoneHandler(new AnimationDoneHandler() {
             @Override
@@ -255,7 +256,7 @@ public class GameCanvasController {
     }
 
     private void toggleSideMenu(){
-        if (!shelfMenu.isVisible()) {
+        if (!shelfMenu.isVisible() && !locked) {
             MainGUI.playSoundEffect("inventory.wav");
             if (sideMenu.isVisible()) {
                 sideMenu.setVisible(false);
