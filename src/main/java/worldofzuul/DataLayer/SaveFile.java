@@ -85,7 +85,12 @@ public class SaveFile implements ISaveGame {
 
                 // Reads a string from the scanner and converts it into a jsonArray
                 // Throws a JSONException, if the contents of the JSON file is not an array
-                String jsonString = s.nextLine();
+                //String jsonString = s.nextLine();
+                StringBuilder builder = new StringBuilder();
+                while (s.hasNextLine()){
+                    builder.append(s.nextLine());
+                }
+                String jsonString = builder.toString();
                 JSONArray arr = new JSONArray(jsonString);
 
                 double co2;
