@@ -195,11 +195,27 @@ public class Game implements IGame {
         object.addReturnStrings("you reached day " + timesPlayed);
 
         //TODO add string with most poluting item purchased
+        //TODO NOT DONE
+        ArrayList<IItem> allItemsBought = new ArrayList<>();
+        for (GameResult finishedGame : finishedGames) { //Go through the items backwards!
+            if (!finishedGame.getPlayerType().getName().equalsIgnoreCase(this.player.getPlayerType().getName())) {
+                //We only want the inventories of the times we played with the current player type.
+                continue;
+            }
+            ArrayList<String> itemsBought = finishedGame.getItemsBought();
+            for(String itemName : finishedGame.getItemsBought()) {
+                for (IRoom room : rooms) {
+                    allItemsBought.add(room.getItem(itemName));
+                }
+            }
+        }
+        //TODO NOT DONE
+
 
         if(co2 > 30){
             object.addReturnStrings("The store has burnt down\nno living beings are left\nyour consumption destroyed the world");
         }else {
-            object.addReturnStrings("The worlds unhappiness has lead to revolution\nYou have successfully overthrown the government. \n Gasoline is now the only currency. \n");
+            object.addReturnStrings("The worlds unhappiness has lead to revolution\nYou have successfully overthrown the government. \n Gasoline is now the only currency. \n\n\n");
         }
 
         deleteSaveFile();
@@ -392,10 +408,6 @@ public class Game implements IGame {
 
         }
 
-        if(co2Total == 0){
-            System.out.println("0000000000000000");
-        }
-
         String co2Percentage = String.format("%.2f", (co2 / co2Total) * 100);
         StringBuilder builder = new StringBuilder();
         builder.append("Your CO2 emissions today was very high:\n");
@@ -426,7 +438,4 @@ public class Game implements IGame {
         }
         return total;
     }
-
-
-
 }

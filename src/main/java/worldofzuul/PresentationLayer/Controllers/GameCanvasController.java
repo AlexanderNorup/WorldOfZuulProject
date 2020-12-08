@@ -384,7 +384,7 @@ public class GameCanvasController {
                //GameOver
                 locked = true;
                 //set timer for message.
-                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> newGameTransition(object.getReturnString()));
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> gameOverTransition(object.getReturnString()));
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(keyFrame);
 
@@ -434,6 +434,7 @@ public class GameCanvasController {
         this.transitionScreen.setActive(true);
 
     }
+
     void gameOverTransition(ArrayList<String> resultArray){
         close();
 
@@ -446,11 +447,9 @@ public class GameCanvasController {
         this.locked = true;
         this.transitionScreen.addText(resultArray);
         this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
-        this.transitionScreen.addLine("Happy shopping!\n\nYour game has been saved!");
 
         playerObject.getActiveGrid().setActive(false);
         this.transitionScreen.setActive(true);
-
 
     }
 
