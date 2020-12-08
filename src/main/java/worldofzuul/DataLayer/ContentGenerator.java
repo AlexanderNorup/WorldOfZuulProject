@@ -327,6 +327,12 @@ public class ContentGenerator {
         type.setValues(50,1000,2200);
         type.setPlayerSprite(Game.class.getResource("/sprites/student.png").toString());
         type.addPositiveExtra(Extra.ORGANIC);
+        type.addFaveItems("Chicken Breast", "Salmon", "Apples", "Frozen Pizza", "Milk",
+                "Yogurt", "White Bread");
+        type.addHateItems("Ground Beef", "Clam", "Pastry", "Oat milk", "Ready-made meal",
+                "Salad", "Tomatoes", "Oatmeal", "Rice", "Pasta");
+        type.setFavhateamount(1);
+        type.randomizeFaveHateItems();
         return type;
 
     }
@@ -341,6 +347,12 @@ public class ContentGenerator {
         type.setValues(75,1200,3000);
         type.setPlayerSprite(Game.class.getResource("/sprites/BodyBuilderTight.png").toString());
         type.addNegativeExtra(Extra.CONTAINS_SOY);
+        type.addFaveItems("Chicken Breast", "Chicken", "Ground Beef",
+                "Apples", "Frozen Pizza", "eggs" , "Yogurt", "Oatmeal", "Almonds");
+        type.addHateItems("White Bread", "Clam", "Pastry", "Margarine", "Salmon", "Frozen Pizza",
+                "Shrimp", "Lamb Chop");
+        type.setFavhateamount(1);
+        type.randomizeFaveHateItems();
         return type;
     }
 
@@ -367,10 +379,8 @@ public class ContentGenerator {
                 "Blueberries Organic","Mango Organic","Pasta Organic");
         type.addHateItems("Margarine","Pork Rib","Ground Beef","Oatmeal","Rice","Chicken","Roast Beef",
                 "Potatoes","Oat milk");
+        type.setFavhateamount(3);
         type.randomizeFaveHateItems();
-
-
-
         type.setPlayerSprite(Game.class.getResource("/sprites/Picky.png").toString());
         return type;
     }
