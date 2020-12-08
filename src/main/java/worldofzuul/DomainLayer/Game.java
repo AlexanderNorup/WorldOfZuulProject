@@ -216,8 +216,8 @@ public class Game implements IGame {
         if (finishedGames.size()>0) {
             GameResult lastGame = finishedGames.get(finishedGames.size() - 1);
             returnString.append("Your results for today\n\n");
-            returnString.append("CO2: ").append(lastGame.getCo2()).append("\n");
-            returnString.append("Happiness: ").append(lastGame.getHappiness()).append("\n\n\n");
+            returnString.append("CO2: ").append(String.format("%4.2f", lastGame.getCo2())).append("\n");
+            returnString.append("Happiness: ").append(String.format("%2.0f", lastGame.getHappiness())).append("\n\n\n");
             returnString.append("You have played: ").append(finishedGames.size()).append(" times. \n---\n");
         }
 
