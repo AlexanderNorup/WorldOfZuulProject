@@ -57,7 +57,7 @@ public class SideMenuController {
 
         moneyBar.setProgress(0);
         moneySpent.setText(Double.toString(0));
-        moneyGoal.setText(String.format("%4.2f", MainGUI.game.getPlayer().getBudget()));
+        moneyGoal.setText(String.format("%4.2f kr.", MainGUI.game.getPlayer().getBudget()));
 
         ObservableList<IItem> listViewList = FXCollections.observableArrayList();
         listViewList.addAll(MainGUI.game.getPlayer().getInventory());
@@ -69,7 +69,7 @@ public class SideMenuController {
                 sideMenuCalorieLabel.setText(Integer.toString((int)(MainGUI.game.getPlayer().getInventoryCalories())));
                 sideMenuProteinLabel.setText((int) (MainGUI.game.getPlayer().getInventoryProtein()) + " g");
                 moneyBar.setProgress(MainGUI.game.getPlayer().getInventoryValue()/MainGUI.game.getPlayer().getBudget());
-                moneySpent.setText(String.format("%4.2f", MainGUI.game.getPlayer().getInventoryValue()));
+                moneySpent.setText(String.format("%4.2f kr.", MainGUI.game.getPlayer().getInventoryValue()));
                 System.out.println("listViewList - item update");
             }
         });
