@@ -117,7 +117,7 @@ public class GameCanvasController {
         //Transition Work!
         locked = true;
         this.transitionScreen = new Transition(gameCanvas);
-        this.transitionScreen.setDoneHandler(new AnimationDoneHandler() {
+        this.transitionScreen.setDoneHandler(new IAnimationDoneHandler() {
             @Override
             public void animationDone() {
                 startingGrid.setActive(true);
@@ -325,7 +325,7 @@ public class GameCanvasController {
         gridMap.get(outside).setBackground(new Image(outside.getBackground()));
 
         this.transitionScreen.reset();
-        transitionScreen.setDoneHandler(new AnimationDoneHandler() {
+        transitionScreen.setDoneHandler(new IAnimationDoneHandler() {
             @Override
             public void animationDone() {
 
