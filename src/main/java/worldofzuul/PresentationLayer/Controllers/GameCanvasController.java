@@ -113,6 +113,10 @@ public class GameCanvasController {
 
         startingGrid = gridMap.get(startingRoom);
 
+        //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
+        //around. The last 2 arguments here represent the starting-position for the player.
+        playerObject = new PlayerObject(startingGrid, new Position(2,4));
+        playerObject.setAvatarImg(new Image (player.getSprite()));
 
 
         //Transition Work!
