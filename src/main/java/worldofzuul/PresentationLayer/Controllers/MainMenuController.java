@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.IPlayer;
 import worldofzuul.PresentationLayer.MainGUI;
+import worldofzuul.PresentationLayer.PresentationHub;
 
 import java.io.IOException;
 
@@ -47,7 +48,7 @@ public class MainMenuController {
 
         try {
             Parent game = FXMLLoader.load(MainGUI.class.getResource("/fxml/GameCanvas.fxml"));
-            MainGUI.hub.getPrimaryStage().setScene(new Scene(game, 1280,720));
+            PresentationHub.getInstance().getPrimaryStage().setScene(new Scene(game, 1280,720));
         } catch (IOException e) {
             playGameLabel.setText("There was en error starting the game!");
             e.printStackTrace();

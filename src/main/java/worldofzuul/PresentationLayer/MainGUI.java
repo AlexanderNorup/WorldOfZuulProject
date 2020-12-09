@@ -21,7 +21,6 @@ public class MainGUI extends Application {
     Scene s;
     MediaPlayer mediaPlayer;
     public static IGame game;
-    public static PresentationHub hub;
     private static HashMap<String, Media> soundCache;
 
     @Override
@@ -42,8 +41,7 @@ public class MainGUI extends Application {
         }
 
         game = new Game();
-        hub = new PresentationHub();
-        hub.setPrimaryStage(primaryStage);
+        PresentationHub.getInstance().setPrimaryStage(primaryStage);
 
         primaryStage.setScene(s);
         primaryStage.setResizable(false);

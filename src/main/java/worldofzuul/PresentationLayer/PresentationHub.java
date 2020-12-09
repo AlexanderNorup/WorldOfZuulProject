@@ -17,8 +17,12 @@ public class PresentationHub {
     private ListView<IItem> shelfMenuListView;
     private Pane textBox;
     private TextArea textBoxTextArea;
+    private static PresentationHub hub;
 
-    public PresentationHub(){}
+    public static PresentationHub getInstance(){
+        return hub != null ? hub : (hub = new PresentationHub());
+    }
+    private PresentationHub(){}
 
     public Stage getPrimaryStage() {
         return primaryStage;

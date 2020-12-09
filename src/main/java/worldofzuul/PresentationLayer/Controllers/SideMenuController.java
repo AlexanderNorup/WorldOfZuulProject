@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.Main;
 import worldofzuul.PresentationLayer.MainGUI;
+import worldofzuul.PresentationLayer.PresentationHub;
 
 public class SideMenuController {
     @FXML
@@ -48,7 +49,7 @@ public class SideMenuController {
     @FXML
     public void initialize() {
         System.out.println("SideMenuController - initialize");
-        MainGUI.hub.setSideMenuListView(sideMenuListView);
+        PresentationHub.getInstance().setSideMenuListView(sideMenuListView);
 
         //ContextMenu that pops up on pressing enter
         contextMenu = new ContextMenu();
@@ -78,7 +79,7 @@ public class SideMenuController {
 
         inspect.setOnAction(event -> {
             //Finds the textArea node
-            TextArea textArea = MainGUI.hub.getTextBoxTextArea();
+            TextArea textArea = PresentationHub.getInstance().getTextBoxTextArea();
 
             //Sets textArea's text to currently selected item in listView
             textArea.setText(sideMenuListView.getSelectionModel().getSelectedItem().getDescription());
@@ -111,7 +112,7 @@ public class SideMenuController {
                 break;
             case ESCAPE:
                 //"Close" textBox, if textBox is "open". If textBox is not "open", but sideMenu is, "close" sideMenu
-                Node textBox = MainGUI.hub.getTextBox();
+                Node textBox = PresentationHub.getInstance().getTextBox();
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
                 }else {

@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.PresentationLayer.MainGUI;
+import worldofzuul.PresentationLayer.PresentationHub;
 
 public class ShelfMenuController {
 
@@ -26,7 +27,7 @@ public class ShelfMenuController {
     MenuItem inspect;
 
     public void initialize() {
-        MainGUI.hub.setShelfMenuListView(shelfMenuListView);
+        PresentationHub.getInstance().setShelfMenuListView(shelfMenuListView);
 
         contextMenu = new ContextMenu();
         inspect = new MenuItem("Inspect");
@@ -34,7 +35,7 @@ public class ShelfMenuController {
 
         inspect.setOnAction(event -> {
             //Finds the textArea node
-            TextArea textArea = MainGUI.hub.getTextBoxTextArea();
+            TextArea textArea = PresentationHub.getInstance().getTextBoxTextArea();
 
             //Sets textArea's text to currently selected item in listView
             textArea.setText(shelfMenuListView.getSelectionModel().getSelectedItem().getDescription());
@@ -49,11 +50,11 @@ public class ShelfMenuController {
             boolean underBudget = MainGUI.game.take(item);
 
             if(underBudget){
-                MainGUI.hub.getSideMenuListView().getItems().setAll(MainGUI.game.getPlayer().getInventory());
+                PresentationHub.getInstance().getSideMenuListView().getItems().setAll(MainGUI.game.getPlayer().getInventory());
                 MainGUI.playSoundEffect("select.wav");
             }else {
-                MainGUI.hub.getTextBox().setVisible(true);
-                MainGUI.hub.getTextBoxTextArea().setText("The item is too pricey");
+                PresentationHub.getInstance().getTextBox().setVisible(true);
+                PresentationHub.getInstance().getTextBoxTextArea().setText("The item is too pricey");
             }
         });
 
@@ -75,11 +76,11 @@ public class ShelfMenuController {
                 break;
             case ESCAPE:
                 //"Close" textBox, if textBox is "open". If textBox is not "open", but sideMenu is, "close" sideMenu
-                Pane textBox = MainGUI.hub.getTextBox();
+                Pane textBox = PresentationHub.getInstance().getTextBox();
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
                 }else{
-                    Node sideMenu = MainGUI.hub.getSideMenu();
+                    Node sideMenu = PresentationHub.getInstance().getSideMenu();
                     shelfMenu.setVisible(false);
                     shelfMenu.setManaged(false);
                     sideMenu.setDisable(false);

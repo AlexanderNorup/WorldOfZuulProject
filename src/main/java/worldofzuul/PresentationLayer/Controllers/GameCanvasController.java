@@ -67,10 +67,10 @@ public class GameCanvasController {
      */
     @FXML
     public void initialize(){
-        MainGUI.hub.setSideMenu(sideMenu);
-        MainGUI.hub.setShelfMenu(shelfMenu);
-        MainGUI.hub.setTextBox(textBox);
-        MainGUI.hub.setTextBoxTextArea(textArea);
+        PresentationHub.getInstance().setSideMenu(sideMenu);
+        PresentationHub.getInstance().setShelfMenu(shelfMenu);
+        PresentationHub.getInstance().setTextBox(textBox);
+        PresentationHub.getInstance().setTextBoxTextArea(textArea);
 
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
         gridMap = new HashMap<>();
@@ -264,7 +264,7 @@ public class GameCanvasController {
             } else {
                 sideMenu.setVisible(true);
                 sideMenu.setManaged(true);
-                ListView<IItem> sideMenuListView = MainGUI.hub.getSideMenuListView();
+                ListView<IItem> sideMenuListView = PresentationHub.getInstance().getSideMenuListView();
                 sideMenuListView.requestFocus();
                 sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
             }
@@ -301,7 +301,7 @@ public class GameCanvasController {
         // TODO check whether the player is standing in front of a shelf
         if (objectAbovePlayer instanceof Shelf) {
             Shelf currentShelf = (Shelf) objectAbovePlayer;
-            MainGUI.hub.getShelfMenuListView().getItems().setAll(currentShelf.getItems());
+            PresentationHub.getInstance().getShelfMenuListView().getItems().setAll(currentShelf.getItems());
 
             System.out.println(Arrays.toString(Collections.singletonList(currentShelf.getItems()).toArray()));
 
@@ -309,7 +309,7 @@ public class GameCanvasController {
             sideMenu.setDisable(true);
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
-            MainGUI.hub.getShelfMenuListView().requestFocus();
+            PresentationHub.getInstance().getShelfMenuListView().requestFocus();
             MainGUI.playSoundEffect("select.wav");
             locked = true;
 
@@ -334,7 +334,6 @@ public class GameCanvasController {
         alert.setContentText("You will lose your unsaved progress");
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) quit();
-
         });
     }
 
@@ -346,7 +345,7 @@ public class GameCanvasController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        MainGUI.hub.getPrimaryStage().setScene(new Scene(mainMenu, 1280,720));
+        PresentationHub.getInstance().getPrimaryStage().setScene(new Scene(mainMenu, 1280,720));
     }
 
     public void checkoutButtonHandle(ActionEvent actionEvent) {
@@ -354,7 +353,7 @@ public class GameCanvasController {
             ICheckoutReturnObject object = MainGUI.game.Checkout();
 
             if(!object.didCheckout()){
-                TextArea textArea = MainGUI.hub.getTextBoxTextArea();
+                TextArea textArea = PresentationHub.getInstance().getTextBoxTextArea();
                 textArea.setText(object.getReturnString().get(0));
                 textArea.getParent().setVisible(true);
                 checkoutmenu.setText("You can't checkout!");
@@ -368,7 +367,7 @@ public class GameCanvasController {
                 checkoutmenu.setText("Thank you, come again!");
 
                 //reset game
-                MainGUI.hub.getSideMenuListView().getItems().setAll(MainGUI.game.getPlayer().getInventory());
+                PresentationHub.getInstance().getSideMenuListView().getItems().setAll(MainGUI.game.getPlayer().getInventory());
 
                 locked = true;
                 //set timer for message.
@@ -377,8 +376,6 @@ public class GameCanvasController {
                 timeline.getKeyFrames().add(keyFrame);
 
                 timeline.play();
-
-
             }
             else {
                //GameOver
