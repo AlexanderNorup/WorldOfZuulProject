@@ -23,9 +23,9 @@ import java.util.Scanner;
 public class ContentGenerator {
 
     //TODO The playerType part is hard to maintain, and it's complicated to add new types
-    private static final String STUDENT_NAME = "Student";
-    private static final String BODYBUILDER_NAME = "Bodybuilder";
-    private static final String PICKY_NAME = "Picky";
+    public static final String STUDENT_NAME = "Student";
+    public static final String BODYBUILDER_NAME = "Bodybuilder";
+    public static final String PICKY_NAME = "Picky";
 
     // Number with which to multiply price when product is organic
     private static final double organicFactor = 1.2;
@@ -35,7 +35,7 @@ public class ContentGenerator {
      * @return returns the Arraylist variable shelves with
      * Shelf objects in it. This is a list of butcher items.
      */
-    public static ArrayList<IShelf> getButcherItems(){
+    private static ArrayList<IShelf> getButcherItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
         ArrayList<IItem> meats = new ArrayList<IItem>();
@@ -80,7 +80,7 @@ public class ContentGenerator {
      * @return returns a Arraylist of non organic item objects and organic.
      * This is a list of produce items.
      */
-    public static ArrayList<IShelf> getProduceItems(){
+    private static ArrayList<IShelf> getProduceItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
 
@@ -123,7 +123,7 @@ public class ContentGenerator {
      * @return returns a Arraylist of non organic item objects and organic.
      * this is a list of frozen items.
      */
-    public static ArrayList<IShelf> getFrozenItems(){
+    private static ArrayList<IShelf> getFrozenItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
 
@@ -164,7 +164,7 @@ public class ContentGenerator {
         return shelves;
     }
 
-    public static ArrayList<IShelf> getDairyItems(){
+    private static ArrayList<IShelf> getDairyItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
         //Non-organic items
@@ -200,7 +200,7 @@ public class ContentGenerator {
      * @return returns a Arraylist of item objects.
      * this is a list of bakery items.
      */
-    public static ArrayList<IShelf> getBakeryItems(){
+    private static ArrayList<IShelf> getBakeryItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
         ArrayList<IItem> breads = new ArrayList<>();
@@ -233,7 +233,7 @@ public class ContentGenerator {
      * @return returns a Arraylist of non organic item objects and organic.
      * this is a list of tinned good items.
      */
-    public static ArrayList<IShelf> getTinnedGoodsItems(){
+    private static ArrayList<IShelf> getTinnedGoodsItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
         // Non-organic products
@@ -315,7 +315,7 @@ public class ContentGenerator {
         throw new IllegalArgumentException("Name should be one of the playerTypes in the ContentGenerator");
     }
 
-    public static PlayerType getStudentPlayerType(){
+    private static PlayerType getStudentPlayerType(){
         PlayerType type = new PlayerType(STUDENT_NAME,
                 "The student is poor.\n" +
                 "You need to minimize the amount of money you spend.\n" +
@@ -337,7 +337,7 @@ public class ContentGenerator {
 
     }
 
-    public static PlayerType getBodybuilderPlayerType(){
+    private static PlayerType getBodybuilderPlayerType(){
         PlayerType type = new PlayerType(BODYBUILDER_NAME,
                 "The bodybuilder cares about meeting his protein goal!\n" +
                 "You should aim to get at least 3000 calories per day.\n " +
@@ -356,7 +356,7 @@ public class ContentGenerator {
         return type;
     }
 
-    public static PlayerType getPickyPlayerType(){
+    private static PlayerType getPickyPlayerType(){
 
         PlayerType type = new PlayerType(PICKY_NAME,
                 "The picky person has a lot of money to spend.\n" +
