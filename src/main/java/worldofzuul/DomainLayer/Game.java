@@ -36,7 +36,7 @@ public class Game implements IGame {
 
     public Game() {
         rooms = ContentGenerator.getRooms();
-        player = new Player(ContentGenerator.getRandomPlayerType(),
+        player = new Player(ContentGenerator.getPlayerTypeByName(ContentGenerator.RANDOM_TYPE_NAME),
                 this.rooms.get(0)); //Set's starting room to the first room (outside).
 
         finishedGames = new ArrayList<>();
@@ -88,19 +88,19 @@ public class Game implements IGame {
     public void setPlayerType(String playerType) {
         switch (playerType) {
             case "Student":
-                this.player.setPlayerType(ContentGenerator.getStudentPlayerType());
+                this.player.setPlayerType(ContentGenerator.getPlayerTypeByName(ContentGenerator.STUDENT_NAME));
                 break;
             case "Bodybuilder":
-                this.player.setPlayerType(ContentGenerator.getBodybuilderPlayerType());
+                this.player.setPlayerType(ContentGenerator.getPlayerTypeByName(ContentGenerator.BODYBUILDER_NAME));
                 break;
             case "Picky":
-                this.player.setPlayerType(ContentGenerator.getPickyPlayerType());
+                this.player.setPlayerType(ContentGenerator.getPlayerTypeByName(ContentGenerator.PICKY_NAME));
                 break;
             case "Random":
-                this.player.setPlayerType(ContentGenerator.getRandomPlayerType());
+                this.player.setPlayerType(ContentGenerator.getPlayerTypeByName(ContentGenerator.RANDOM_TYPE_NAME));
                 break;
             case "Mystery":
-                PlayerType newPicky = ContentGenerator.getPickyPlayerType();
+                PlayerType newPicky = ContentGenerator.getPlayerTypeByName(ContentGenerator.PICKY_NAME);
                 newPicky.setPlayerSprite(Game.class.getResource("/sprites/gurli.png").toString());
                 this.player.setPlayerType(newPicky);
                 newPicky.setValues(1200, 7500, 9000);
