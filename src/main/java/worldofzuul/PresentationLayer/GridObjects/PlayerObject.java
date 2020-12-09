@@ -54,9 +54,6 @@ public class PlayerObject extends GridSprite {
         }
     }*/
 
-    /**
-     * @return The active Grid. The one the player is on, and currently being drawn.
-     */
 
     /**
      * Tries to move the player to a new position.
@@ -95,7 +92,9 @@ public class PlayerObject extends GridSprite {
         }
     }
 
-
+    /**
+     * @return The active Grid. The one the player is on, and currently being drawn.
+     */
     public Grid getActiveGrid() {
         return grid;
     }
