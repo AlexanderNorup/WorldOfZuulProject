@@ -75,9 +75,8 @@ public class GameCanvasController {
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
         gridMap = new HashMap<>();
         iRoomMap = new HashMap<>();
-        IPlayer player = MainGUI.game.getPlayer();
 
-        IRoom startingRoom = player.getStartingRoom();
+
 
         //Make hashMap of rooms and grids
         for(IRoom iRoom : MainGUI.game.getRooms()){
@@ -111,12 +110,16 @@ public class GameCanvasController {
             }
         }
 
-        startingGrid = gridMap.get(startingRoom);
 
-        //Then passes the grid over to the PlayerObject. That's the thing we'll be moving
-        //around. The last 2 arguments here represent the starting-position for the player.
-        playerObject = new PlayerObject(startingGrid, new Position(2,4));
+
+
+        //Sets the player on the board.
+        IPlayer player = MainGUI.game.getPlayer();
+        IRoom startingRoom = player.getStartingRoom();
+        startingGrid = gridMap.get(startingRoom); //Finds the Grid that represents the startingRoom by a HashMap
+        playerObject = new PlayerObject(startingGrid, new Position(player.getStartingX(),player.getStartingY()));
         playerObject.setAvatarImg(new Image (player.getSprite()));
+
 
 
         //Transition Work!
