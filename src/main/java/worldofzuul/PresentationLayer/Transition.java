@@ -19,7 +19,6 @@ public class Transition {
     private int windowHeight;
     private int windowWidth;
     private Font textFont;
-    private Font pickyFont;
     private boolean isActive;
 
 
@@ -62,7 +61,6 @@ public class Transition {
         this.animationState = -1;
         this.animationIsDone = false;
         this.textFont = new Font("Consolas", 36 );
-        this.pickyFont = new Font("Consolas", 28); //For the picky player, since his text is very long
         this.text = new ArrayList<String>();
         this.isActive = false;
 
@@ -128,19 +126,10 @@ public class Transition {
                 gc.setGlobalAlpha(animationProgress);
                 gc.setFont(this.textFont);
                 gc.save();
-                gc.translate(0,lines.length*this.textFont.getSize() * -1);
+                gc.translate(0,(lines.length+1)*(this.textFont.getSize()/2) * -1);
                 for(int i = 0; i < lines.length; i++) {
                     String currentLine = lines[i];
-                    if (lines.length >= 13){
-                        gc.fillText(currentLine, windowWidth / 2.0, (windowHeight / 1.5) + (i + 1) * this.textFont.getSize());
-                        gc.setFont(this.pickyFont);
-                    }
-                    else if(lines.length > 10){
-                        gc.fillText(currentLine, windowWidth / 2.0, (windowHeight / 1.5) + (i + 1) * this.textFont.getSize());
-                    }
-                    else {
-                        gc.fillText(currentLine, windowWidth / 2.0, (windowHeight / 2.0) + (i + 1) * this.textFont.getSize());
-                    }
+                    gc.fillText(currentLine, windowWidth / 2, (windowHeight / 2) + (i+1)*this.textFont.getSize());
                 }
                 gc.restore();
             }else{
