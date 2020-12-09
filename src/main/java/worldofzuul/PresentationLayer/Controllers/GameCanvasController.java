@@ -159,6 +159,7 @@ public class GameCanvasController {
 
 
         //Transition Work!
+        locked = true;
         this.transitionScreen = new Transition(gameCanvas);
         this.transitionScreen.setDoneHandler(new AnimationDoneHandler() {
             @Override
@@ -201,7 +202,7 @@ public class GameCanvasController {
             case C -> closeShelfMenu();
             case SPACE -> toggleTextBox();
             case ENTER -> interact();
-            case ESCAPE -> quit();
+            case ESCAPE -> quitAlert();
             case E -> {
                 if(this.transitionScreen.isActive()){
                     this.transitionScreen.advanceAnimationState();
@@ -255,7 +256,7 @@ public class GameCanvasController {
     }
 
     private void toggleSideMenu(){
-        if (!shelfMenu.isVisible()) {
+        if (!shelfMenu.isVisible() && !locked) {
             MainGUI.playSoundEffect("inventory.wav");
             if (sideMenu.isVisible()) {
                 sideMenu.setVisible(false);
@@ -325,41 +326,53 @@ public class GameCanvasController {
         }
     }
 
-    private void quit(){
+    private void quitAlert(){
         //Prompts the user if they want to exit.
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Quit the game?");
         alert.setHeaderText("Do you want to quit the game?");
         alert.setContentText("You will lose your unsaved progress");
         alert.showAndWait().ifPresent(rs -> {
-            if (rs == ButtonType.OK) {
-                //TODO go to main menu
-                Parent mainMenu = null;
-                try {
-                    mainMenu = FXMLLoader.load(MainGUI.class.getResource("/fxml/mainmenu.fxml"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                MainGUI.hub.getPrimaryStage().setScene(new Scene(mainMenu, 1280,720));
-            }
+            if (rs == ButtonType.OK) quit();
+
         });
     }
 
+    private void quit(){
+        //TODO go to main menu
+        Parent mainMenu = null;
+        try {
+            mainMenu = FXMLLoader.load(MainGUI.class.getResource("/fxml/mainmenu.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        MainGUI.hub.getPrimaryStage().setScene(new Scene(mainMenu, 1280,720));
+    }
+
     public void checkoutButtonHandle(ActionEvent actionEvent) {
-        if(actionEvent.getSource()==yesButton){
-            String result= MainGUI.game.canCheckout();
+        if(actionEvent.getSource() == yesButton){
+            ICheckoutReturnObject object = MainGUI.game.Checkout();
 
-            if(result == null) {
+            if(!object.didCheckout()){
+                TextArea textArea = MainGUI.hub.getTextBoxTextArea();
+                textArea.setText(object.getReturnString().get(0));
+                textArea.getParent().setVisible(true);
+                checkoutmenu.setText("You can't checkout!");
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5),event -> close());
+                Timeline timeline = new Timeline();
+                timeline.getKeyFrames().add(keyFrame);
+                timeline.play();
+            }
 
+            else if(!object.isGameOver()) {
                 checkoutmenu.setText("Thank you, come again!");
 
                 //reset game
-                ArrayList<String> resultArray = MainGUI.game.Checkout();
                 MainGUI.hub.getSideMenuListView().getItems().setAll(MainGUI.game.getPlayer().getInventory());
 
                 locked = true;
                 //set timer for message.
-                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> newGameTransition(resultArray));
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> newGameTransition(object.getReturnString()));
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(keyFrame);
 
@@ -368,15 +381,14 @@ public class GameCanvasController {
 
             }
             else {
-                TextArea textArea = MainGUI.hub.getTextBoxTextArea();
-                textArea.setText(result);
-                textArea.getParent().setVisible(true);
-                checkoutmenu.setText("You can't checkout!");
-                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5),event -> close());
+               //GameOver
+                locked = true;
+                //set timer for message.
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> gameOverTransition(object.getReturnString()));
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(keyFrame);
-                timeline.play();
 
+                timeline.play();
             }
         }
         else if(actionEvent.getSource() == noButton){
@@ -392,11 +404,11 @@ public class GameCanvasController {
 
     void newGameTransition(ArrayList<String> resultArray){
         close();
-        
-        //[Merge] The following 2 lines may have to be removed. 
+
+        //[Merge] The following 2 lines may have to be removed.
         IRoom outside = MainGUI.game.getRooms().get(0);
         gridMap.get(outside).setBackground(new Image(outside.getBackground()));
-      
+
         this.transitionScreen.reset();
         transitionScreen.setDoneHandler(new AnimationDoneHandler() {
             @Override
@@ -422,6 +434,25 @@ public class GameCanvasController {
         this.transitionScreen.setActive(true);
 
     }
+
+    void gameOverTransition(ArrayList<String> resultArray){
+        close();
+
+        //[Merge] The following 2 lines may have to be removed.
+        IRoom outside = MainGUI.game.getRooms().get(0);
+        gridMap.get(outside).setBackground(new Image(outside.getBackground()));
+
+        this.transitionScreen.reset();
+        transitionScreen.setDoneHandler(this::quit);
+        this.locked = true;
+        this.transitionScreen.addText(resultArray);
+        this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
+
+        playerObject.getActiveGrid().setActive(false);
+        this.transitionScreen.setActive(true);
+
+    }
+
     public static void setLocked(boolean set){
         locked = set;
     }

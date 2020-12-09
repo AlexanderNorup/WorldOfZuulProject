@@ -39,24 +39,24 @@ public class ContentGenerator {
         ArrayList<IShelf> shelves = new ArrayList<>();
 
         ArrayList<IItem> meats = new ArrayList<IItem>();
-        meats.add(new Item("200g Salmon",35,0.6,40,416.6,new Extra[]{}));
-        meats.add(new Item("100g Salmon",20,0.4,20,208.3,new Extra[]{}));
-        meats.add(new Item("1300g Whole Chicken",50,5,350,2400,new Extra[]{}));
-        meats.add(new Item("500g Half Chicken",20,2.1,13.4,921.6,new Extra[]{}));
-        meats.add(new Item("250g 2 Lamb Chops",50,5.25,62.5,735,new Extra[]{}));
-        meats.add(new Item("125g 1 Lamb Chop",27,2.8,31.25,367.5,new Extra[]{}));
-        meats.add(new Item("500g Pork Rib",50,3,135,1200,new Extra[]{}));
-        meats.add(new Item("200g Pork Rib",22,1.8,54,480,new Extra[]{}));
+        meats.add(new Item("200g Salmon",35,0.6,32,460,new Extra[]{}));
+        meats.add(new Item("100g Salmon",20,0.4,16,230,new Extra[]{}));
+        meats.add(new Item("1300g Whole Chicken",50,5,240,2260,new Extra[]{}));
+        meats.add(new Item("500g Half Chicken",20,2.1,120,1130,new Extra[]{}));
+        meats.add(new Item("250g 2 Lamb Chops",50,5.25,46,500,new Extra[]{}));
+        meats.add(new Item("125g 1 Lamb Chop",27,2.8,23,250,new Extra[]{}));
+        meats.add(new Item("500g Pork Rib",50,3,92,1.340,new Extra[]{}));
+        meats.add(new Item("200g Pork Rib",22,1.8,46,540,new Extra[]{}));
 
         ArrayList<IItem> coldCuts = new ArrayList<>();
-        coldCuts.add(new Item("100g Salami",10,0.7,22,335,new Extra[]{}));
-        coldCuts.add(new Item("100g Roast Beef",12,0.7,29,170,new Extra[]{}));
-        coldCuts.add(new Item("500g Chicken Breast",40,1.4,136,1200,new Extra[]{}));
-        coldCuts.add(new Item("250g Chicken Breast",25,0.75,68,600,new Extra[]{}));
-        coldCuts.add(new Item("100g Chicken Breast",12,0.45,27.2,240,new Extra[]{}));
-        coldCuts.add(new Item("500g Ground Beef",30,13,70,1660,new Extra[]{}));
-        coldCuts.add(new Item("400g Ground Beef",25,11,56,1328,new Extra[]{}));
-        coldCuts.add(new Item("250g Ground Beef",18,7,35,830,new Extra[]{}));
+        coldCuts.add(new Item("100g Salami",10,0.7,14,509,new Extra[]{}));
+        coldCuts.add(new Item("100g Roast Beef",12,0.7,22,120,new Extra[]{}));
+        coldCuts.add(new Item("500g Chicken Breast",30,1.4,100,640,new Extra[]{}));
+        coldCuts.add(new Item("250g Chicken Breast",20,0.75,50,320,new Extra[]{}));
+        coldCuts.add(new Item("100g Chicken Breast",10,0.45,25,130,new Extra[]{}));
+        coldCuts.add(new Item("500g Ground Beef",25,13,100,820,new Extra[]{}));
+        coldCuts.add(new Item("400g Ground Beef",22,11,80,660,new Extra[]{}));
+        coldCuts.add(new Item("250g Ground Beef",18,7,50,410,new Extra[]{}));
 
 
         shelves.add(new Shelf(4,3,coldCuts));
@@ -323,7 +323,7 @@ public class ContentGenerator {
                 "The student cares about the environment.\n" +
                 "Focus on organic items. \n" +
                 "Please try to avoid making the world explode!");
-        type.setFactors(1,7,2);
+        type.setFactors(1,5,4);
         type.setValues(50,1000,2200);
         type.setPlayerSprite(Game.class.getResource("/sprites/student.png").toString());
         type.addPositiveExtra(Extra.ORGANIC);
@@ -366,7 +366,7 @@ public class ContentGenerator {
                         "but loves organic food!\n" +
                         "His calorie goal is very specific. \n" +
                         "Please try to avoid making the world explode!");
-        type.setFactors(1,1,8);
+        type.setFactors(1,2,7);
         type.setValues(100,1800,2000);
         type.addNegativeExtra(Extra.CONTAINS_GLUTEN);
         type.addNegativeExtra(Extra.CONTAINS_LACTOSE);
@@ -374,13 +374,16 @@ public class ContentGenerator {
         type.addNegativeExtra(Extra.FROZEN);
         type.addNegativeExtra(Extra.CANNED);
         type.addPositiveExtra(Extra.ORGANIC);
-        type.addFaveItems("Gluten Free White Bread Organic", "Gluten Free Pastry Organic",
-                "Salmon Organic","Lamb Chop Organic", "Salami Organic","Almonds Organic",
-                "Blueberries Organic","Mango Organic","Pasta Organic");
+        type.addFaveItems("White Bread", "Pastry",
+                "Salmon","Lamb Chop", "Salami","Almonds",
+                "Blueberries","Mango","Pasta");
         type.addHateItems("Margarine","Pork Rib","Ground Beef","Oats","Rice","Chicken","Roast Beef",
                 "Potatoes","Oat milk");
         type.setFavhateamount(3);
         type.randomizeFaveHateItems();
+
+
+
         type.setPlayerSprite(Game.class.getResource("/sprites/Picky.png").toString());
         return type;
     }
