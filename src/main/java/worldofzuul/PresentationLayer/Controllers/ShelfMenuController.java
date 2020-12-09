@@ -22,12 +22,15 @@ public class ShelfMenuController {
     @FXML
     BorderPane shelfMenu;
 
-    ContextMenu contextMenu;
-    MenuItem take;
-    MenuItem inspect;
+    private PresentationHub hub;
+    private ContextMenu contextMenu;
+    private MenuItem take;
+    private MenuItem inspect;
 
     public void initialize() {
-        PresentationHub.getInstance().setShelfMenuListView(shelfMenuListView);
+        hub = PresentationHub.getInstance();
+
+        hub.setShelfMenuListView(shelfMenuListView);
 
         contextMenu = new ContextMenu();
         inspect = new MenuItem("Inspect");
@@ -35,26 +38,26 @@ public class ShelfMenuController {
 
         inspect.setOnAction(event -> {
             //Finds the textArea node
-            TextArea textArea = PresentationHub.getInstance().getTextBoxTextArea();
+            TextArea textArea = hub.getTextBoxTextArea();
 
             //Sets textArea's text to currently selected item in listView
             textArea.setText(shelfMenuListView.getSelectionModel().getSelectedItem().getDescription());
 
             //Sets visibility of textBox (parent of textArea) to true
             textArea.getParent().setVisible(true);
-            MainGUI.playSoundEffect("select.wav");
+            hub.playSoundEffect("select.wav");
         });
 
         take.setOnAction(event -> {
             IItem item = shelfMenuListView.getSelectionModel().getSelectedItem();
-            boolean underBudget = MainGUI.game.take(item);
+            boolean underBudget = hub.getGame().take(item);
 
             if(underBudget){
-                PresentationHub.getInstance().getSideMenuListView().getItems().setAll(MainGUI.game.getPlayer().getInventory());
-                MainGUI.playSoundEffect("select.wav");
+                hub.getSideMenuListView().getItems().setAll(hub.getGame().getPlayer().getInventory());
+                hub.playSoundEffect("select.wav");
             }else {
-                PresentationHub.getInstance().getTextBox().setVisible(true);
-                PresentationHub.getInstance().getTextBoxTextArea().setText("The item is too pricey");
+                hub.getTextBox().setVisible(true);
+                hub.getTextBoxTextArea().setText("The item is too pricey");
             }
         });
 
@@ -62,7 +65,7 @@ public class ShelfMenuController {
         shelfMenuListView.setContextMenu(contextMenu);
 
         shelfMenuListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            MainGUI.playSoundEffect("select.wav");
+            hub.playSoundEffect("select.wav");
         });
 
     }
@@ -72,15 +75,15 @@ public class ShelfMenuController {
             case ENTER:
                 Bounds bounds = shelfMenuListView.localToScreen(shelfMenuListView.getBoundsInLocal());
                 contextMenu.show(shelfMenuListView, bounds.getMaxX() - 50, bounds.getMinY());
-                MainGUI.playSoundEffect("select.wav");
+                hub.playSoundEffect("select.wav");
                 break;
             case ESCAPE:
                 //"Close" textBox, if textBox is "open". If textBox is not "open", but sideMenu is, "close" sideMenu
-                Pane textBox = PresentationHub.getInstance().getTextBox();
+                Pane textBox = hub.getTextBox();
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
                 }else{
-                    Node sideMenu = PresentationHub.getInstance().getSideMenu();
+                    Node sideMenu = hub.getSideMenu();
                     shelfMenu.setVisible(false);
                     shelfMenu.setManaged(false);
                     sideMenu.setDisable(false);
@@ -88,7 +91,7 @@ public class ShelfMenuController {
                     textBox.setVisible(false);
                     GameCanvasController.setLocked(false);
                 }
-                MainGUI.playSoundEffect("select.wav");
+                hub.playSoundEffect("select.wav");
                 break;
         }
     }
