@@ -1,5 +1,6 @@
 package worldofzuul.DomainLayer.Interfaces;
 
+import worldofzuul.DomainLayer.CheckoutReturnObject;
 import worldofzuul.DomainLayer.PlayerType;
 
 import java.util.ArrayList;
@@ -28,13 +29,7 @@ public interface IGame {
 
     void drop(IItem item);
 
-    void resetGame();
-
-    String canCheckout();
-
-    ArrayList<String > Checkout();
-
-    String reactToResults();
+    CheckoutReturnObject Checkout();
 
     void printWelcome();
 

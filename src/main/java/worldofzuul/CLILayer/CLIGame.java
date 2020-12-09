@@ -1,5 +1,6 @@
 package worldofzuul.CLILayer;
 
+import worldofzuul.DomainLayer.CheckoutReturnObject;
 import worldofzuul.DomainLayer.Game;
 import worldofzuul.DomainLayer.Interfaces.IGame;
 import worldofzuul.DomainLayer.Interfaces.IItem;
@@ -194,17 +195,27 @@ public class CLIGame {
             return "You can't checkout here, go to the cashier.";
         }
 
-        String canCheckoutResult = game.canCheckout();
+        CheckoutReturnObject object = game.Checkout();
 
-        if(canCheckoutResult != null){
-            return canCheckoutResult;
-        }else {
-            ArrayList<String> CheckoutResult = game.Checkout();
-            CheckoutResult.add(game.getPlayerDescription());
-            CheckoutResult.add(currentRoom.getDescription());
+        if(!object.didCheckout()){
+            return object.getReturnString().get(0);
+        }else if(!object.isGameOver()){
+            object.getReturnString().add(game.getPlayerDescription());
+            object.getReturnString().add(currentRoom.getDescription());
 
             StringBuilder returnString = new StringBuilder();
-            for(String string : CheckoutResult){
+            for(String string : object.getReturnString()){
+                setStartPosition();
+                returnString.append(string);
+                returnString.append("\n");
+            }
+            return returnString.toString();
+        }else {
+            object.getReturnString().add(game.getPlayerDescription());
+            object.getReturnString().add(currentRoom.getDescription());
+
+            StringBuilder returnString = new StringBuilder();
+            for(String string : object.getReturnString()){
                 setStartPosition();
                 returnString.append(string);
                 returnString.append("\n");
