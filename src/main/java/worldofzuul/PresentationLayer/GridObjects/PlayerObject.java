@@ -1,7 +1,9 @@
 package worldofzuul.PresentationLayer.GridObjects;
 
 import javafx.scene.image.Image;
+import worldofzuul.PresentationLayer.Direction;
 import worldofzuul.PresentationLayer.Grid;
+import worldofzuul.PresentationLayer.MainGUI;
 import worldofzuul.PresentationLayer.Position;
 
 /**
@@ -55,6 +57,45 @@ public class PlayerObject extends GridSprite {
     /**
      * @return The active Grid. The one the player is on, and currently being drawn.
      */
+
+    /**
+     * Tries to move the player to a new position.
+     * If the new position is a Warp, then the player changes the active Grid, and moves to the Warp's destination
+     * @param direction the direction the player should go.
+     */
+    public void tryMove(Direction direction) {
+        Position newPosition = this.playerPos;
+        switch (direction) {
+            case UP -> newPosition = new Position(this.playerPos.getX(), this.playerPos.getY() - 1);
+            case DOWN -> newPosition = new Position(this.playerPos.getX(), this.playerPos.getY() + 1);
+            case LEFT -> newPosition = new Position(this.playerPos.getX() - 1, this.playerPos.getY());
+            case RIGHT -> newPosition = new Position(this.playerPos.getX() + 1, this.playerPos.getY());
+        }
+        GridObject gridObjectAtNewPosition = this.grid.getGridObject(newPosition);
+        if (gridObjectAtNewPosition instanceof Warp) {
+            this.setAnimating(true);
+            Warp warp = (Warp) gridObjectAtNewPosition;
+            this.grid.setGridObject(null, this.playerPos); //Remove the player from the current grid
+            this.grid.setActive(false); //Stop animating the current grid
+            this.playerPos = warp.getPlayerPos(); //Get the player position that the warp sends the player to
+            warp.getGrid().setGridObject(this, warp.getPlayerPos()); //Add the player to the new grid
+            this.grid = warp.getGrid(); //Get the new grid that is being opened
+            this.grid.setActive(true);//Start animating the new grid.
+            this.setAnimating(false);
+            MainGUI.playSoundEffect("door.wav");
+            return;
+        }
+
+
+        if (!this.isAnimating() && this.getActiveGrid().moveObject(this.getPlayerPos(), newPosition)) {
+            this.setPlayerPos(newPosition);
+            //If not moving onto the warp, then we just move by calling the grid.
+        }else{
+            MainGUI.playSoundEffect("block.wav");
+        }
+    }
+
+
     public Grid getActiveGrid() {
         return grid;
     }
