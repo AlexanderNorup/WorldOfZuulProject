@@ -26,6 +26,7 @@ public class ContentGenerator {
     public static final String STUDENT_NAME = "Student";
     public static final String BODYBUILDER_NAME = "Bodybuilder";
     public static final String PICKY_NAME = "Picky";
+    public static final String RANDOM_TYPE_NAME = "Random";
 
     // Number with which to multiply price when product is organic
     private static final double organicFactor = 1.2;
@@ -311,6 +312,8 @@ public class ContentGenerator {
                 return getBodybuilderPlayerType();
             case PICKY_NAME:
                 return getPickyPlayerType();
+            case RANDOM_TYPE_NAME:
+                return getRandomPlayerType();
         }
         throw new IllegalArgumentException("Name should be one of the playerTypes in the ContentGenerator");
     }
@@ -393,7 +396,7 @@ public class ContentGenerator {
      * @return returns a random playerType with the use of switch
      * statements
      */
-    public static PlayerType getRandomPlayerType(){
+    private static PlayerType getRandomPlayerType(){
         PlayerType type = null;
         switch (new Random().nextInt(3)){
             case 0 -> type = getStudentPlayerType();

@@ -36,7 +36,7 @@ public class Game implements IGame {
 
     public Game() {
         rooms = ContentGenerator.getRooms();
-        player = new Player(ContentGenerator.getRandomPlayerType(),
+        player = new Player(ContentGenerator.getPlayerTypeByName(ContentGenerator.RANDOM_TYPE_NAME),
                 this.rooms.get(0)); //Set's starting room to the first room (outside).
 
         finishedGames = new ArrayList<>();
@@ -97,7 +97,7 @@ public class Game implements IGame {
                 this.player.setPlayerType(ContentGenerator.getPlayerTypeByName(ContentGenerator.PICKY_NAME));
                 break;
             case "Random":
-                this.player.setPlayerType(ContentGenerator.getRandomPlayerType());
+                this.player.setPlayerType(ContentGenerator.getPlayerTypeByName(ContentGenerator.RANDOM_TYPE_NAME));
                 break;
             case "Mystery":
                 PlayerType newPicky = ContentGenerator.getPlayerTypeByName(ContentGenerator.PICKY_NAME);
