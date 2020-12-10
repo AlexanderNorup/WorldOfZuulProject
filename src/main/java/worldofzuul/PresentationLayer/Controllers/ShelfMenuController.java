@@ -62,7 +62,7 @@ public class ShelfMenuController {
             }
         });
 
-        contextMenu.getItems().addAll(inspect, take);
+        contextMenu.getItems().addAll(take, inspect);
         shelfMenuListView.setContextMenu(contextMenu);
 
         shelfMenuListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

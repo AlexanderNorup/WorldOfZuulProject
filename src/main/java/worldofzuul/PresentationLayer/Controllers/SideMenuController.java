@@ -97,7 +97,7 @@ public class SideMenuController {
             sideMenuListView.getItems().setAll(hub.getGame().getPlayer().getInventory());
         });
 
-        contextMenu.getItems().addAll(inspect, drop);
+        contextMenu.getItems().addAll(drop, inspect);
         sideMenuListView.setContextMenu(contextMenu);
         sideMenuListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             hub.playSoundEffect("select.wav");
