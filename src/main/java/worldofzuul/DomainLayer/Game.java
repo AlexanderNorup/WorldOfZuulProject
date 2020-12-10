@@ -31,7 +31,6 @@ public class Game implements IGame {
     private final ISaveGame saveGame;
     private final ArrayList<Room> rooms;
     private boolean isCo2Bad = false;
-    private boolean isNotHappy = false;
 
 
     public Game() {
@@ -173,17 +172,22 @@ public class Game implements IGame {
 
         if(co2 < 30 && happiness > -200){
             ArrayList<IItem> items = getPlayer().getInventory();
+            double CurrentGameHappiness = finishedGames.get(finishedGames.size()-1).getHappiness();
+            boolean isNotHappy = CurrentGameHappiness < 0;
+
             object.addReturnStrings("You went to the cash register and checked out.\nThe day is over and you go back home to sleep.\n\n");
+
             if (isCo2Bad) {
                 object.addReturnStrings(co2IsBadString(items));
             }
             if (isNotHappy) {
                 object.addReturnStrings(playerTypeNotHappyString());
             }
-            object.addReturnStrings("It is a new day, you wake up and go to the store.");
 
             object.setDidCheckout(true);
             object.addReturnStrings(reactToResults(co2,happiness,timesPlayed));
+            object.addReturnStrings("It is a new day, you wake up and go to the store.");
+            player.getPlayerType().randomizeFaveHateItems();
             return object;
         }
 
@@ -311,22 +315,17 @@ public class Game implements IGame {
         returnString.append("\nYour current situation: \n");
 
         if (happiness >= 0) {
-            isNotHappy = false;
             returnString.append("You're feeling fine. \n");
         } else if (happiness > -50) {
-            isNotHappy = finishedGames.size() <= 1 || !(getLastGameHappiness() < 0) || !(getLastGameHappiness() > -25);
             returnString.append("You notice that you've started snapping at your friends.\n");
 
         } else if (happiness > -100) {
-            isNotHappy = finishedGames.size() <= 1 || !(getLastGameHappiness() < -50) || !(getLastGameHappiness() > -100);
             returnString.append("You don't want to eat anymore. You hate yourself.\n");
 
          }else if (happiness > -150) {
-            isNotHappy = finishedGames.size() <= 1 || !(getLastGameHappiness() < -100) || !(getLastGameHappiness() > -150);
             returnString.append("You're beginning to wonder if there's a point to anything. \n");
 
         } else if (happiness > -200) {
-            isNotHappy = finishedGames.size() <= 1 || !(getLastGameHappiness() < -150) || !(getLastGameHappiness() > -200);
             returnString.append("You've joined a fascist movement.\n");
         }
         return returnString.toString();
@@ -408,5 +407,9 @@ public class Game implements IGame {
             total += finishedGames.get(i).getHappiness();
         }
         return total;
+    }
+
+    private double getCurrentGameHappiness(){
+        return finishedGames.get(finishedGames.size()-1).getHappiness();
     }
 }
