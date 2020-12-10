@@ -3,8 +3,10 @@ package worldofzuul.PresentationLayer.Controllers;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -12,6 +14,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.PresentationLayer.*;
@@ -32,6 +39,7 @@ public class GameCanvasController {
     public MenuButton checkoutmenu;
     public MenuItem yesButton;
     public MenuItem noButton;
+    public MenuItem askButton;
     private PlayerObject playerObject;
     private HashMap<IRoom, Grid> gridMap;
     private HashMap<Grid, IRoom> iRoomMap;
@@ -308,6 +316,44 @@ public class GameCanvasController {
             }
         } else if (actionEvent.getSource() == noButton) {
             close();
+        }else if (actionEvent.getSource() == askButton){
+            checkoutmenu.setText("What item are you\nlooking for?");
+
+            final Stage dialog = new Stage();
+
+            dialog.setTitle("Tell the Cashier what you're looking for:");
+            Window window = gameCanvas.getScene().getWindow();
+            dialog.initOwner(window);
+            dialog.initStyle(StageStyle.UTILITY);
+            dialog.initModality(Modality.WINDOW_MODAL);
+            dialog.setWidth(300);
+            dialog.setX(window.getX()+(window.getWidth()/2));
+            dialog.setY(window.getY()+(window.getHeight()/2));
+
+            final TextField textField = new TextField();
+            final Button submitButton = new Button("Submit");
+            submitButton.setDefaultButton(true);
+            submitButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent t) {
+                    checkoutmenu.setText("If it isn't on the Shelves,\nwe don't have it.");
+                    dialog.close();
+                    KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> close());
+                    Timeline timeline = new Timeline();
+                    timeline.getKeyFrames().add(keyFrame);
+                    timeline.play();
+                }
+            });
+            textField.setMinHeight(TextField.USE_PREF_SIZE);
+
+            final VBox layout = new VBox(10);
+            layout.setAlignment(Pos.CENTER_RIGHT);
+            layout.getChildren().setAll(
+                    textField,
+                    submitButton
+            );
+
+            dialog.setScene(new Scene(layout));
+            dialog.showAndWait();
         }
         hub.playSoundEffect("select.wav");
     }

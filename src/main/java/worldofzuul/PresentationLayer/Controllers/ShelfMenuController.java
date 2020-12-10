@@ -33,8 +33,9 @@ public class ShelfMenuController {
         hub.setShelfMenuListView(shelfMenuListView);
 
         contextMenu = new ContextMenu();
-        inspect = new MenuItem("Inspect");
         take = new MenuItem("Take");
+        inspect = new MenuItem("Inspect");
+
 
         inspect.setOnAction(event -> {
             //Finds the textArea node
