@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
@@ -26,7 +27,7 @@ public class PresentationHub {
     private Pane textBox;
     private TextArea textBoxTextArea;
     private static PresentationHub hub;
-    private static HashMap<String, Media> soundCache;
+    private static HashMap<String, AudioClip> soundCache;
 
     public static PresentationHub getInstance(){
         return hub != null ? hub : (hub = new PresentationHub());
@@ -38,14 +39,15 @@ public class PresentationHub {
 
     public void playSoundEffect(String sound){
         if(soundCache.containsKey(sound)){
-            new MediaPlayer(soundCache.get(sound)).play();
+            (soundCache.get(sound)).play();
             return;
         }
         URL url = MainGUI.class.getResource("/music/"+sound);
         if(url != null) {
-            Media media = new Media(url.toString());  //plays sound effect
-            new MediaPlayer(media).play();
-            soundCache.put(sound, media);
+            AudioClip ac = new AudioClip(url.toString());
+            ac.play();
+            soundCache.put(sound, ac);
+
         }
     }
 
