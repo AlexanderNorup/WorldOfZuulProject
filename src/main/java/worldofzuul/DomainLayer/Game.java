@@ -158,6 +158,7 @@ public class Game implements IGame {
         }
 
         //Can checkout, return result
+        ArrayList<IItem> currentGameItems = getPlayer().getInventory();
         resetGame();
 
         int happiness = 0;
@@ -170,7 +171,6 @@ public class Game implements IGame {
         }
 
         if(co2 < 30 && happiness > -200){
-            ArrayList<IItem> items = getPlayer().getInventory();
             double CurrentGameHappiness = finishedGames.get(finishedGames.size()-1).getHappiness();
             double CurrentGameCo2 = finishedGames.get(finishedGames.size()-1).getCo2();
             boolean isNotHappy = CurrentGameHappiness < 0;
@@ -179,7 +179,7 @@ public class Game implements IGame {
             object.addReturnStrings("You went to the cash register and checked out.\nThe day is over and you go back home to sleep.\n\n");
 
             if (isCo2Negative) {
-                object.addReturnStrings(co2IsBadString(items));
+                object.addReturnStrings(co2IsBadString(currentGameItems));
             }
             if (isNotHappy) {
                 object.addReturnStrings(playerTypeNotHappyString());
@@ -365,14 +365,32 @@ public class Game implements IGame {
         for (IItem item : inventory) {
             co2Total += item.getCo2();
 
-            if (item.getCo2() > co2) {
-                co2 = item.getCo2();
-                itemname = item.getName();
-
+            double co2Temp = 0;
+            for(IItem item1 : inventory){
+                if(item.getName().contains(item1.getName().replace("Organic","").replace("Gluten Free","").replaceAll("\\d+g","").replaceAll("\\d+\\.?\\d+L","").replaceAll("\\d+\\.?+L","").replaceAll("\\d+-Pack","").replaceAll("\\d+",""))){
+                    co2Temp += item1.getCo2();
+                }
             }
 
+            System.out.println("CO2TEMP: " + co2Temp);
+
+            if (co2Temp > co2) {
+                co2 = co2Temp;
+                itemname = item.getName().replace("Organic","").replace("Gluten Free","").replaceAll("\\d+g","").replaceAll("\\d+\\.?\\d+L","").replaceAll("\\d+\\.?+L","").replaceAll("\\d+-Pack","").replaceAll("\\d+","");
+            }
         }
 
+        co2 = 0;
+        for(IItem item : inventory){
+
+            if(item.getName().contains(itemname)){
+                co2 += item.getCo2();
+            }
+        }
+
+        System.out.println("CO2 TOTAL: " + co2Total);
+        System.out.println("CO2: " + co2);
+        System.out.println("CO2 PERCENTAGE: " + String.format("%.2f", (co2 / co2Total) * 100));
         String co2Percentage = String.format("%.2f", (co2 / co2Total) * 100);
         StringBuilder builder = new StringBuilder();
         builder.append("Your CO2 emissions today was very high:\n");
@@ -384,7 +402,7 @@ public class Game implements IGame {
     private String playerTypeNotHappyString() {
         String reason = this.player.getPlayerType().getUnhappyReason();
         if(!reason.equals("")){
-            return "The " + player.getPlayerType().getName() + " is not happy.\n" + reason + "\nTry buying different things tomorrow!";
+            return "You're not happy about today's purchase because:\n " + reason + "\nRead the your character's needs more carefully next game";
         }else {
             return "The " + player.getPlayerType().getName() + " is not happy.\nTry buying their favorite item: " + player.getPlayerType().getRandomFaveItem() + "\nor try buying different things each day.";
         }
