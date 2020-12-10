@@ -376,8 +376,8 @@ public class Game implements IGame {
         String co2Percentage = String.format("%.2f", (co2 / co2Total) * 100);
         StringBuilder builder = new StringBuilder();
         builder.append("Your CO2 emissions today was very high:\n");
-        builder.append("The Item with the highest C02 emission was: " + itemname + "\nIt was responsible for " + co2Percentage + "% ofthe total emissions today.\n");
-        builder.append("Consider buying less of that, and thinking more\nabout the enviroment.");
+        builder.append("The item with the highest C02 emission was: " + itemname + "\nIt was responsible for " + co2Percentage + "% of the total emissions today.\n");
+        builder.append("Consider buying less of that, and thinking more\nabout the environment.");
         return builder.toString();
     }
 
@@ -386,7 +386,7 @@ public class Game implements IGame {
         if(!reason.equals("")){
             return "The " + player.getPlayerType().getName() + " is not happy.\n" + reason + "\nTry buying different things tomorrow!";
         }else {
-            return "The " + player.getPlayerType().getName() + " is not happy.\nMaybe buy some " + player.getPlayerType().getRandomFaveItem() + "\nor try buying different things each day.";
+            return "The " + player.getPlayerType().getName() + " is not happy.\nTry buying their favorite item: " + player.getPlayerType().getRandomFaveItem() + "\nor try buying different things each day.";
         }
     }
 
