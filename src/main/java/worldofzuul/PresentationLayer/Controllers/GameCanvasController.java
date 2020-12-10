@@ -15,10 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
+import javafx.stage.*;
 import javafx.util.Duration;
 import worldofzuul.DomainLayer.Interfaces.*;
 import worldofzuul.PresentationLayer.*;
@@ -344,6 +341,13 @@ public class GameCanvasController {
                 }
             });
             textField.setMinHeight(TextField.USE_PREF_SIZE);
+
+            dialog.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    close();
+                }
+            });
 
             final VBox layout = new VBox(10);
             layout.setAlignment(Pos.CENTER_RIGHT);
