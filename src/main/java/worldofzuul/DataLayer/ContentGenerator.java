@@ -112,12 +112,12 @@ public class ContentGenerator {
         shelves.add(new Shelf(6,3,imported));
         shelves.add(new Shelf(7,3,imported));
 
-        shelves.add(new Shelf(2,1, createOrganics(imported)));
-        shelves.add(new Shelf(3,1, createOrganics(imported)));
-        shelves.add(new Shelf(4,1, createOrganics(imported)));
-        shelves.add(new Shelf(5,1, createOrganics(local)));
-        shelves.add(new Shelf(6,1, createOrganics(local)));
-        shelves.add(new Shelf(7,1, createOrganics(local)));
+        shelves.add(new Shelf(2,1, createOrganics(local)));
+        shelves.add(new Shelf(3,1, createOrganics(local)));
+        shelves.add(new Shelf(4,1, createOrganics(local)));
+        shelves.add(new Shelf(5,1, createOrganics(imported)));
+        shelves.add(new Shelf(6,1, createOrganics(imported)));
+        shelves.add(new Shelf(7,1, createOrganics(imported)));
 
         return shelves;
     }
