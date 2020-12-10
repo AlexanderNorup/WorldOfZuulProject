@@ -79,7 +79,7 @@ public class PlayerObject extends GridSprite {
             this.grid.setActive(true);//Start animating the new grid.
             this.setAnimating(false);
 
-            PresentationHub.getInstance().playSoundEffect("door.wav");
+            hub.playSoundEffect("door.wav");
             return;
         }
 
@@ -89,7 +89,7 @@ public class PlayerObject extends GridSprite {
             //If not moving onto the warp, then we just move by calling the grid.
         }else{
 
-            PresentationHub.getInstance().playSoundEffect("block.wav");
+            hub.playSoundEffect("block.wav");
         }
     }
 
