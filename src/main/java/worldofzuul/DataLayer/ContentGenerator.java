@@ -340,7 +340,7 @@ public class ContentGenerator {
         type.addFaveItems("Chicken Breast", "Salmon", "Apples", "Frozen Pizza", "Milk",
                 "Yogurt", "White Bread");
         type.addHateItems("Ground Beef", "Clam", "Pastry", "Oat milk", "Ready-made meal",
-                "Salad", "Tomatoes", "Oatmeal", "Rice", "Pasta");
+                "Salad", "Tomatoes", "Oats", "Rice", "Pasta");
         type.setFavhateamount(1);
         type.randomizeFaveHateItems();
         return type;
@@ -358,7 +358,7 @@ public class ContentGenerator {
         type.setPlayerSprite(Game.class.getResource("/sprites/BodyBuilderTight.png").toString());
         type.addNegativeExtra(Extra.CONTAINS_SOY);
         type.addFaveItems("Chicken Breast", "Chicken",
-                "Apples", "eggs" , "Yogurt", "Oatmeal", "Almonds", "Salmon", "Lamb Chop");
+                "Apples", "Eggs" , "Yogurt", "Oatmeal", "Almonds", "Salmon", "Lamb Chop");
         type.addHateItems("White Bread", "Clam", "Pastry", "Margarine", "Frozen Pizza",
                 "Shrimp", "Ground Beef");
         type.setFavhateamount(1);
