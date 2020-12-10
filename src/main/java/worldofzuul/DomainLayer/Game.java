@@ -365,6 +365,7 @@ public class Game implements IGame {
         for (IItem item : inventory) {
             co2Total += item.getCo2();
 
+
             double co2Temp = 0;
             for(IItem item1 : inventory){
                 if(item.getName().contains(item1.getName().replace("Organic","").replace("Gluten Free","").replaceAll("\\d+g","").replaceAll("\\d+\\.?\\d+L","").replaceAll("\\d+\\.?+L","").replaceAll("\\d+-Pack","").replaceAll("\\d+",""))){
