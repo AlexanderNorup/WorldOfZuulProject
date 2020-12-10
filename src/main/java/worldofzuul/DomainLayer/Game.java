@@ -401,15 +401,5 @@ public class Game implements IGame {
         }
         return total;
     }
-    private double getLastGameHappiness(){
-        double total = 0;
-        for(int i= 0; i<finishedGames.size()-1; i++){
-            total += finishedGames.get(i).getHappiness();
-        }
-        return total;
-    }
 
-    private double getCurrentGameHappiness(){
-        return finishedGames.get(finishedGames.size()-1).getHappiness();
-    }
 }
