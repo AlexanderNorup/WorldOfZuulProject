@@ -41,7 +41,7 @@ public class MainGUI extends Application {
             });
         }
         game = new Game();
-        hub = new PresentationHub();
+        hub = PresentationHub.getInstance();
         hub.setPrimaryStage(primaryStage);
 
         primaryStage.setScene(s);

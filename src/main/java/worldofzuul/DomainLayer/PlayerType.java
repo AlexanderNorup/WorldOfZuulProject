@@ -273,9 +273,15 @@ public class PlayerType {
         double percentItemsContainingExtras = itemsContainingExtras / (double) items.size();
 
         happiness += 40 * percentageFaveItemTypesBought * pickynessFactor;
-        happiness += 40 * ((percentItemsContainingExtras - 0.5) * 2) * pickynessFactor;
+        double extraPickinessPunishment =  40 * ((percentItemsContainingExtras - 0.5) * 2) * pickynessFactor;
         double hatePickinessPunishment = 40 * percentageHateItemTypesBought * pickynessFactor;
         happiness -= hatePickinessPunishment;
+        happiness += extraPickinessPunishment;
+
+        if(currentUnhappyMax > extraPickinessPunishment){
+            currentUnhappyMax = hatePickinessPunishment;
+            this.unhappyReason = "You didn't like the types of items you bought!" ;
+        }
 
         if(currentUnhappyMax > hatePickinessPunishment){
             currentUnhappyMax = hatePickinessPunishment;
@@ -314,8 +320,7 @@ public class PlayerType {
         eatingSamePunishment = eatingSamePunishment * eatingTheSameFactor;
         happiness -= eatingSamePunishment;
 
-        if(currentUnhappyMax > eatingSamePunishment){
-            currentUnhappyMax = eatingSamePunishment;
+        if(currentUnhappyMax < eatingSamePunishment){
             this.unhappyReason = "You're getting tired of eating the same things over and over!";
         }
 
