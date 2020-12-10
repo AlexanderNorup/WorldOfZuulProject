@@ -368,9 +368,7 @@ public class Game implements IGame {
             if (item.getCo2() > co2) {
                 co2 = item.getCo2();
                 itemname = item.getName();
-
             }
-
         }
 
         String co2Percentage = String.format("%.2f", (co2 / co2Total) * 100);

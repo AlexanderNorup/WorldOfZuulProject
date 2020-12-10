@@ -44,8 +44,8 @@ public class ContentGenerator {
         meats.add(new Item("100g Salmon",20,0.4,16,230,new Extra[]{}));
         meats.add(new Item("1300g Whole Chicken",50,5,240,2260,new Extra[]{}));
         meats.add(new Item("500g Half Chicken",20,2.1,120,1130,new Extra[]{}));
-        meats.add(new Item("250g 2 Lamb Chops",50,5.25,46,500,new Extra[]{}));
-        meats.add(new Item("125g 1 Lamb Chop",27,2.8,23,250,new Extra[]{}));
+        meats.add(new Item("250g Lamb Chop",50,5.25,46,500,new Extra[]{}));
+        meats.add(new Item("125g Lamb Chop",27,2.8,23,250,new Extra[]{}));
         meats.add(new Item("500g Pork Rib",50,3,92,1.340,new Extra[]{}));
         meats.add(new Item("200g Pork Rib",22,1.8,46,540,new Extra[]{}));
 
@@ -87,7 +87,7 @@ public class ContentGenerator {
 
         ArrayList<IItem> imported = new ArrayList<>();
         imported.add(new Item("500g Potatoes Imported",8,0.1,10,385,new Extra[]{Extra.VEGAN}));
-        imported.add(new Item("400g 1 Cucumber Imported",6,0.56,2.8,48,new Extra[]{Extra.VEGAN}));
+        imported.add(new Item("400g Cucumber Imported",6,0.56,2.8,48,new Extra[]{Extra.VEGAN}));
         imported.add(new Item("250g Salad Imported",10,1,3.25,14,new Extra[]{Extra.VEGAN}));
         imported.add(new Item("200g Mango",12,2.2,1,134,new Extra[]{Extra.VEGAN}));
         imported.add(new Item("100g Blueberries",25,0.1,0.7,52,new Extra[]{Extra.VEGAN}));
@@ -97,7 +97,7 @@ public class ContentGenerator {
         ArrayList<IItem> local = new ArrayList<>();
         local.add(new Item("500g Potatoes Danish",12,0.05,10,385,new Extra[]{Extra.VEGAN}));
         local.add(new Item("500g Apples Danish",5,0.1,1.5,275,new Extra[]{Extra.VEGAN}));
-        local.add(new Item("400g 1 Cucumber Danish",8,0.4,2.8,48,new Extra[]{Extra.VEGAN}));
+        local.add(new Item("400g Cucumber Danish",8,0.4,2.8,48,new Extra[]{Extra.VEGAN}));
         local.add(new Item("250g Salad Danish",12,0.5,3.25,14,new Extra[]{Extra.VEGAN}));
         local.add(new Item("400g Tomatoes Danish",18,1.6,2.8,80,new Extra[]{Extra.VEGAN}));
 
