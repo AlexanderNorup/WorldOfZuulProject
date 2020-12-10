@@ -9,7 +9,7 @@ public class Position {
 
     /**
      * Creates a new position in 2D space.
-     * Positions are messured from the top-left corner of the window.
+     * Positions are measured from the top-left corner of the window.
      * @param x The x-value.
      * @param y The y-value
      */

@@ -197,9 +197,9 @@ public class Game implements IGame {
         object.setGameOver(true);
 
         object.addReturnStrings("Game Over");
-        object.addReturnStrings("you reached day " + timesPlayed);
+        object.addReturnStrings("You reached day " + timesPlayed);
 
-        //TODO add string with most poluting item purchased
+        //TODO add string with most polluting item purchased
         //TODO NOT DONE
         ArrayList<IItem> allItemsBought = new ArrayList<>();
         for (GameResult finishedGame : finishedGames) { //Go through the items backwards!
