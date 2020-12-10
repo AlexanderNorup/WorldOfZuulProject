@@ -24,6 +24,7 @@
             <items>
                 <MenuItem fx:id="yesButton" mnemonicParsing="false" onAction="#checkoutButtonHandle" text="Yes" />
                 <MenuItem fx:id="noButton" mnemonicParsing="false" onAction="#checkoutButtonHandle" text="No" />
+                <MenuItem fx:id="askButton" mnemonicParsing="false" onAction="#checkoutButtonHandle" text="Help me find an item" />
             </items>
         </MenuButton>
     </AnchorPane>

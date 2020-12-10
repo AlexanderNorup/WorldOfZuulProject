@@ -55,8 +55,8 @@ public class SideMenuController {
 
         //ContextMenu that pops up on pressing enter
         contextMenu = new ContextMenu();
-        inspect = new MenuItem("Inspect");
         drop = new MenuItem("Drop");
+        inspect = new MenuItem("Inspect");
 
         moneyBar.setProgress(0);
         moneySpent.setText(Double.toString(0));
