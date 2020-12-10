@@ -38,6 +38,7 @@ public class GameCanvasController {
     private Transition transitionScreen;
     private static boolean locked;
     private Grid startingGrid;
+    private PresentationHub hub;
 
 
     @FXML
@@ -62,19 +63,21 @@ public class GameCanvasController {
      * This method gets called as soon as this Controller is loaded.
      */
     @FXML
-    public void initialize() {
-        MainGUI.hub.setSideMenu(sideMenu);
-        MainGUI.hub.setShelfMenu(shelfMenu);
-        MainGUI.hub.setTextBox(textBox);
-        MainGUI.hub.setTextBoxTextArea(textArea);
+    public void initialize(){
+        hub = PresentationHub.getInstance();
+        hub.setSideMenu(sideMenu);
+        hub.setShelfMenu(shelfMenu);
+        hub.setTextBox(textBox);
+        hub.setTextBoxTextArea(textArea);
+
 
         //TODO: Canvas has width and height hardcoded. Do something about that, yes?
         gridMap = new HashMap<>();
         iRoomMap = new HashMap<>();
-
+        IPlayer player = hub.getGame().getPlayer();
 
         //Make hashMap of rooms and grids
-        for (IRoom iRoom : MainGUI.game.getRooms()) {
+        for (IRoom iRoom : hub.getGame().getRooms()) {
             Grid grid = new Grid(gameCanvas, iRoom.getWidth(), iRoom.getHeight(), new Image(iRoom.getBackground()));
 
             for (IRoomObject object : iRoom.getObjects()) {
@@ -107,7 +110,6 @@ public class GameCanvasController {
 
 
         //Places the player on the grid.
-        IPlayer player = MainGUI.game.getPlayer();
         IRoom startingRoom = player.getStartingRoom();
         startingGrid = gridMap.get(startingRoom); //Finds the Grid that represents the startingRoom by a HashMap
         playerObject = new PlayerObject(startingGrid, new Position(player.getStartingX(), player.getStartingY()));
@@ -127,7 +129,7 @@ public class GameCanvasController {
 
         this.transitionScreen.addLine("Welcome to World Of Zhopping!");
         this.transitionScreen.addLine("In this game you are going shopping\nas a given character.\n\nEach character has it's own needs that you\nneed to fulfill.");
-        this.transitionScreen.addLine(MainGUI.game.getPlayerDescription());
+        this.transitionScreen.addLine(hub.getGame().getPlayerDescription());
         this.transitionScreen.addLine("Move around using the WASD or Arrow keys.\nInteract with things using the ENTER key.\nPress 'I' to open your inventory.\nYou can use ESCAPE to quit the game.\n\nHave fun!");
         this.transitionScreen.setActive(true);
 
@@ -171,19 +173,18 @@ public class GameCanvasController {
 
     }
 
-
     private void toggleSideMenu() {
         if (!shelfMenu.isVisible() && !locked) {
-            MainGUI.playSoundEffect("inventory.wav");
+            hub.playSoundEffect("inventory.wav");
             if (sideMenu.isVisible()) {
                 sideMenu.setVisible(false);
                 sideMenu.setManaged(false);
             } else {
                 sideMenu.setVisible(true);
                 sideMenu.setManaged(true);
-                ListView<IItem> sideMenuListView = MainGUI.hub.getSideMenuListView();
+                ListView<IItem> sideMenuListView = hub.getSideMenuListView();
                 sideMenuListView.requestFocus();
-                sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
+                sideMenuListView.getItems().setAll(hub.getGame().getPlayer().getInventory());
             }
         }
     }
@@ -207,7 +208,7 @@ public class GameCanvasController {
             sideMenu.setDisable(false);
             sideMenu.setVisible(false);
             textBox.setVisible(false);
-            MainGUI.playSoundEffect("select.wav");
+            hub.playSoundEffect("select.wav");
             locked = false;
         }
     }
@@ -220,7 +221,7 @@ public class GameCanvasController {
         // TODO check whether the player is standing in front of a shelf
         if (objectAbovePlayer instanceof Shelf) {
             Shelf currentShelf = (Shelf) objectAbovePlayer;
-            MainGUI.hub.getShelfMenuListView().getItems().setAll(currentShelf.getItems());
+            hub.getShelfMenuListView().getItems().setAll(currentShelf.getItems());
 
             System.out.println(Arrays.toString(Collections.singletonList(currentShelf.getItems()).toArray()));
 
@@ -228,8 +229,8 @@ public class GameCanvasController {
             sideMenu.setDisable(true);
             shelfMenu.setVisible(true);
             shelfMenu.setManaged(true);
-            MainGUI.hub.getShelfMenuListView().requestFocus();
-            MainGUI.playSoundEffect("select.wav");
+            hub.getShelfMenuListView().requestFocus();
+            hub.playSoundEffect("select.wav");
             locked = true;
 
         } else if (objectAbovePlayer instanceof Cashier) {
@@ -239,8 +240,8 @@ public class GameCanvasController {
             checkoutmenu.setVisible(true);
             checkoutmenu.lookup(".arrow").setStyle("-fx-background-color: red;");
             checkoutmenu.fire();
-            checkoutmenu.lookup(".arrow").setStyle("-fx-background-insets: 0; -fx-padding: 0; -fx-shape: null;");
-            MainGUI.playSoundEffect("select.wav");
+            checkoutmenu.lookup( ".arrow" ).setStyle( "-fx-background-insets: 0; -fx-padding: 0; -fx-shape: null;" );
+            hub.playSoundEffect("select.wav");
             locked = true;
         }
     }
@@ -253,7 +254,6 @@ public class GameCanvasController {
         alert.setContentText("You will lose your unsaved progress");
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) quit();
-
         });
     }
 
@@ -265,15 +265,15 @@ public class GameCanvasController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        MainGUI.hub.getPrimaryStage().setScene(new Scene(mainMenu, 1280, 720));
+        hub.getPrimaryStage().setScene(new Scene(mainMenu, 1280,720));
     }
 
     public void checkoutButtonHandle(ActionEvent actionEvent) {
-        if (actionEvent.getSource() == yesButton) {
-            ICheckoutReturnObject object = MainGUI.game.Checkout();
+        if(actionEvent.getSource() == yesButton){
+            ICheckoutReturnObject object = hub.getGame().Checkout();
 
-            if (!object.didCheckout()) {
-                TextArea textArea = MainGUI.hub.getTextBoxTextArea();
+            if(!object.didCheckout()){
+                TextArea textArea = hub.getTextBoxTextArea();
                 textArea.setText(object.getReturnString().get(0));
                 textArea.getParent().setVisible(true);
                 checkoutmenu.setText("You can't checkout!");
@@ -285,7 +285,7 @@ public class GameCanvasController {
                 checkoutmenu.setText("Thank you, come again!");
 
                 //reset game
-                MainGUI.hub.getSideMenuListView().getItems().setAll(MainGUI.game.getPlayer().getInventory());
+                hub.getSideMenuListView().getItems().setAll(hub.getGame().getPlayer().getInventory());
 
                 locked = true;
                 //set timer for message.
@@ -294,8 +294,6 @@ public class GameCanvasController {
                 timeline.getKeyFrames().add(keyFrame);
 
                 timeline.play();
-
-
             } else {
                 //GameOver
                 locked = true;
@@ -309,7 +307,7 @@ public class GameCanvasController {
         } else if (actionEvent.getSource() == noButton) {
             close();
         }
-        MainGUI.playSoundEffect("select.wav");
+        hub.playSoundEffect("select.wav");
     }
 
     void close() {
@@ -321,7 +319,7 @@ public class GameCanvasController {
         close();
 
         //[Merge] The following 2 lines may have to be removed.
-        IRoom outside = MainGUI.game.getRooms().get(0);
+        IRoom outside = hub.getGame().getRooms().get(0);
         gridMap.get(outside).setBackground(new Image(outside.getBackground()));
 
         this.transitionScreen.reset();
@@ -333,14 +331,14 @@ public class GameCanvasController {
                 playerObject.getActiveGrid().setGridObject(null, playerObject.getPlayerPos());
                 startingGrid.setActive(true);
                 playerObject.setActiveGrid(startingGrid);
-                playerObject.setPlayerPos(new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
-                startingGrid.setGridObject(playerObject, new Position(MainGUI.game.getPlayer().getStartingX(), MainGUI.game.getPlayer().getStartingY()));
+                playerObject.setPlayerPos(new Position(hub.getGame().getPlayer().getStartingX(), hub.getGame().getPlayer().getStartingY()));
+                startingGrid.setGridObject(playerObject, new Position(hub.getGame().getPlayer().getStartingX(), hub.getGame().getPlayer().getStartingY()));
                 locked = false;
             }
         });
         this.locked = true;
         this.transitionScreen.addText(resultArray);
-        this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
+        this.transitionScreen.addLine(hub.getGame().getPlayer().getPlayerType().getDescription());
         this.transitionScreen.addLine("Happy shopping!\n\nYour game has been saved!");
 
 
@@ -353,14 +351,14 @@ public class GameCanvasController {
         close();
 
         //[Merge] The following 2 lines may have to be removed.
-        IRoom outside = MainGUI.game.getRooms().get(0);
+        IRoom outside = hub.getGame().getRooms().get(0);
         gridMap.get(outside).setBackground(new Image(outside.getBackground()));
 
         this.transitionScreen.reset();
         transitionScreen.setDoneHandler(this::quit);
         this.locked = true;
         this.transitionScreen.addText(resultArray);
-        this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
+        this.transitionScreen.addLine(hub.getGame().getPlayer().getPlayerType().getDescription());
 
         playerObject.getActiveGrid().setActive(false);
         this.transitionScreen.setActive(true);
