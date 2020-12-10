@@ -23,9 +23,10 @@ import java.util.Scanner;
 public class ContentGenerator {
 
     //TODO The playerType part is hard to maintain, and it's complicated to add new types
-    private static final String STUDENT_NAME = "Student";
-    private static final String BODYBUILDER_NAME = "Bodybuilder";
-    private static final String PICKY_NAME = "Picky";
+    public static final String STUDENT_NAME = "Student";
+    public static final String BODYBUILDER_NAME = "Bodybuilder";
+    public static final String PICKY_NAME = "Picky";
+    public static final String RANDOM_TYPE_NAME = "Random";
 
     // Number with which to multiply price when product is organic
     private static final double organicFactor = 1.2;
@@ -35,28 +36,28 @@ public class ContentGenerator {
      * @return returns the Arraylist variable shelves with
      * Shelf objects in it. This is a list of butcher items.
      */
-    public static ArrayList<IShelf> getButcherItems(){
+    private static ArrayList<IShelf> getButcherItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
         ArrayList<IItem> meats = new ArrayList<IItem>();
-        meats.add(new Item("200g Salmon",35,0.6,40,416.6,new Extra[]{}));
-        meats.add(new Item("100g Salmon",20,0.4,20,208.3,new Extra[]{}));
-        meats.add(new Item("1300g Whole Chicken",50,5,350,2400,new Extra[]{}));
-        meats.add(new Item("500g Half Chicken",20,2.1,13.4,921.6,new Extra[]{}));
-        meats.add(new Item("250g 2 Lamb Chops",50,5.25,62.5,735,new Extra[]{}));
-        meats.add(new Item("125g 1 Lamb Chop",27,2.8,31.25,367.5,new Extra[]{}));
-        meats.add(new Item("500g Pork Rib",50,3,135,1200,new Extra[]{}));
-        meats.add(new Item("200g Pork Rib",22,1.8,54,480,new Extra[]{}));
+        meats.add(new Item("200g Salmon",35,0.6,32,460,new Extra[]{}));
+        meats.add(new Item("100g Salmon",20,0.4,16,230,new Extra[]{}));
+        meats.add(new Item("1300g Whole Chicken",50,5,240,2260,new Extra[]{}));
+        meats.add(new Item("500g Half Chicken",20,2.1,120,1130,new Extra[]{}));
+        meats.add(new Item("250g 2 Lamb Chops",50,5.25,46,500,new Extra[]{}));
+        meats.add(new Item("125g 1 Lamb Chop",27,2.8,23,250,new Extra[]{}));
+        meats.add(new Item("500g Pork Rib",50,3,92,1.340,new Extra[]{}));
+        meats.add(new Item("200g Pork Rib",22,1.8,46,540,new Extra[]{}));
 
         ArrayList<IItem> coldCuts = new ArrayList<>();
-        coldCuts.add(new Item("100g Salami",10,0.7,22,335,new Extra[]{}));
-        coldCuts.add(new Item("100g Roast Beef",12,0.7,29,170,new Extra[]{}));
-        coldCuts.add(new Item("500g Chicken Breast",40,1.4,136,1200,new Extra[]{}));
-        coldCuts.add(new Item("250g Chicken Breast",25,0.75,68,600,new Extra[]{}));
-        coldCuts.add(new Item("100g Chicken Breast",12,0.45,27.2,240,new Extra[]{}));
-        coldCuts.add(new Item("500g Ground Beef",30,13,70,1660,new Extra[]{}));
-        coldCuts.add(new Item("400g Ground Beef",25,11,56,1328,new Extra[]{}));
-        coldCuts.add(new Item("250g Ground Beef",18,7,35,830,new Extra[]{}));
+        coldCuts.add(new Item("100g Salami",10,0.7,14,509,new Extra[]{}));
+        coldCuts.add(new Item("100g Roast Beef",12,0.7,22,120,new Extra[]{}));
+        coldCuts.add(new Item("500g Chicken Breast",30,1.4,100,640,new Extra[]{}));
+        coldCuts.add(new Item("250g Chicken Breast",20,0.75,50,320,new Extra[]{}));
+        coldCuts.add(new Item("100g Chicken Breast",10,0.45,25,130,new Extra[]{}));
+        coldCuts.add(new Item("500g Ground Beef",25,13,100,820,new Extra[]{}));
+        coldCuts.add(new Item("400g Ground Beef",22,11,80,660,new Extra[]{}));
+        coldCuts.add(new Item("250g Ground Beef",18,7,50,410,new Extra[]{}));
 
 
         shelves.add(new Shelf(4,3,coldCuts));
@@ -80,7 +81,7 @@ public class ContentGenerator {
      * @return returns a Arraylist of non organic item objects and organic.
      * This is a list of produce items.
      */
-    public static ArrayList<IShelf> getProduceItems(){
+    private static ArrayList<IShelf> getProduceItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
 
@@ -123,7 +124,7 @@ public class ContentGenerator {
      * @return returns a Arraylist of non organic item objects and organic.
      * this is a list of frozen items.
      */
-    public static ArrayList<IShelf> getFrozenItems(){
+    private static ArrayList<IShelf> getFrozenItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
 
@@ -164,7 +165,7 @@ public class ContentGenerator {
         return shelves;
     }
 
-    public static ArrayList<IShelf> getDairyItems(){
+    private static ArrayList<IShelf> getDairyItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
         //Non-organic items
@@ -200,7 +201,7 @@ public class ContentGenerator {
      * @return returns a Arraylist of item objects.
      * this is a list of bakery items.
      */
-    public static ArrayList<IShelf> getBakeryItems(){
+    private static ArrayList<IShelf> getBakeryItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
         ArrayList<IItem> breads = new ArrayList<>();
@@ -233,7 +234,7 @@ public class ContentGenerator {
      * @return returns a Arraylist of non organic item objects and organic.
      * this is a list of tinned good items.
      */
-    public static ArrayList<IShelf> getTinnedGoodsItems(){
+    private static ArrayList<IShelf> getTinnedGoodsItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
         // Non-organic products
@@ -311,11 +312,13 @@ public class ContentGenerator {
                 return getBodybuilderPlayerType();
             case PICKY_NAME:
                 return getPickyPlayerType();
+            case RANDOM_TYPE_NAME:
+                return getRandomPlayerType();
         }
         throw new IllegalArgumentException("Name should be one of the playerTypes in the ContentGenerator");
     }
 
-    public static PlayerType getStudentPlayerType(){
+    private static PlayerType getStudentPlayerType(){
         PlayerType type = new PlayerType(STUDENT_NAME,
                 "The student is poor.\n" +
                 "You need to minimize the amount of money you spend.\n" +
@@ -323,7 +326,7 @@ public class ContentGenerator {
                 "The student cares about the environment.\n" +
                 "Focus on organic items. \n" +
                 "Please try to avoid making the world explode!");
-        type.setFactors(1,7,2);
+        type.setFactors(1,5,4);
         type.setValues(50,1000,2200);
         type.setPlayerSprite(Game.class.getResource("/sprites/student.png").toString());
         type.addPositiveExtra(Extra.ORGANIC);
@@ -337,7 +340,7 @@ public class ContentGenerator {
 
     }
 
-    public static PlayerType getBodybuilderPlayerType(){
+    private static PlayerType getBodybuilderPlayerType(){
         PlayerType type = new PlayerType(BODYBUILDER_NAME,
                 "The bodybuilder cares about meeting his protein goal!\n" +
                 "You should aim to get at least 3000 calories per day.\n " +
@@ -356,7 +359,7 @@ public class ContentGenerator {
         return type;
     }
 
-    public static PlayerType getPickyPlayerType(){
+    private static PlayerType getPickyPlayerType(){
 
         PlayerType type = new PlayerType(PICKY_NAME,
                 "The picky person has a lot of money to spend.\n" +
@@ -366,7 +369,7 @@ public class ContentGenerator {
                         "but loves organic food!\n" +
                         "His calorie goal is very specific. \n" +
                         "Please try to avoid making the world explode!");
-        type.setFactors(1,1,8);
+        type.setFactors(1,2,7);
         type.setValues(100,1800,2000);
         type.addNegativeExtra(Extra.CONTAINS_GLUTEN);
         type.addNegativeExtra(Extra.CONTAINS_LACTOSE);
@@ -374,13 +377,16 @@ public class ContentGenerator {
         type.addNegativeExtra(Extra.FROZEN);
         type.addNegativeExtra(Extra.CANNED);
         type.addPositiveExtra(Extra.ORGANIC);
-        type.addFaveItems("Gluten Free White Bread Organic", "Gluten Free Pastry Organic",
-                "Salmon Organic","Lamb Chop Organic", "Salami Organic","Almonds Organic",
-                "Blueberries Organic","Mango Organic","Pasta Organic");
+        type.addFaveItems("White Bread", "Pastry",
+                "Salmon","Lamb Chop", "Salami","Almonds",
+                "Blueberries","Mango","Pasta");
         type.addHateItems("Margarine","Pork Rib","Ground Beef","Oats","Rice","Chicken","Roast Beef",
                 "Potatoes","Oat milk");
         type.setFavhateamount(3);
         type.randomizeFaveHateItems();
+
+
+
         type.setPlayerSprite(Game.class.getResource("/sprites/Picky.png").toString());
         return type;
     }
@@ -390,7 +396,7 @@ public class ContentGenerator {
      * @return returns a random playerType with the use of switch
      * statements
      */
-    public static PlayerType getRandomPlayerType(){
+    private static PlayerType getRandomPlayerType(){
         PlayerType type = null;
         switch (new Random().nextInt(3)){
             case 0 -> type = getStudentPlayerType();
@@ -441,7 +447,7 @@ public class ContentGenerator {
 
     public static ArrayList<Room> getRooms(){
         Room outside, aisle1, aisle2, aisle3, cashier, butcher, produce, frozen, dairy, bakery, tinnedGoods;
-        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 8,5, getBackground("supermarket.jpg") );
+        outside = new Room("outside the main entrance of the store\nThe entrance is to your south", 8,5, getBackground("zuupermarket.png") );
         aisle1 = new Room("in the 1st aisle. \nTo your east is the dairy section, to your west is the bakery, " +
                 "to your south is the 2nd aisle", 4,6, getBackground("aisle_butcher_produce.png"));
         aisle2 = new Room("in the 2nd aisle. \nTo your east is the frozen section, to your west is the " +

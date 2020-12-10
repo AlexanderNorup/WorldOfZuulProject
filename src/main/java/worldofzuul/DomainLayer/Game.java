@@ -36,13 +36,12 @@ public class Game implements IGame {
 
     public Game() {
         rooms = ContentGenerator.getRooms();
-        player = new Player(ContentGenerator.getRandomPlayerType(),
+        player = new Player(ContentGenerator.getPlayerTypeByName(ContentGenerator.RANDOM_TYPE_NAME),
                 this.rooms.get(0)); //Set's starting room to the first room (outside).
 
         finishedGames = new ArrayList<>();
         saveGame = new SaveFile("./saveFile.json");
         loadGame();
-        reactToResults();
     }
 
     void loadGame() {
@@ -67,9 +66,9 @@ public class Game implements IGame {
     }
 
     public void deleteSaveFile() {
+        System.out.println("Game deleted !!!");
         saveGame.delete();
         loadGame();
-        reactToResults();
     }
 
     /**
@@ -89,19 +88,19 @@ public class Game implements IGame {
     public void setPlayerType(String playerType) {
         switch (playerType) {
             case "Student":
-                this.player.setPlayerType(ContentGenerator.getStudentPlayerType());
+                this.player.setPlayerType(ContentGenerator.getPlayerTypeByName(ContentGenerator.STUDENT_NAME));
                 break;
             case "Bodybuilder":
-                this.player.setPlayerType(ContentGenerator.getBodybuilderPlayerType());
+                this.player.setPlayerType(ContentGenerator.getPlayerTypeByName(ContentGenerator.BODYBUILDER_NAME));
                 break;
             case "Picky":
-                this.player.setPlayerType(ContentGenerator.getPickyPlayerType());
+                this.player.setPlayerType(ContentGenerator.getPlayerTypeByName(ContentGenerator.PICKY_NAME));
                 break;
             case "Random":
-                this.player.setPlayerType(ContentGenerator.getRandomPlayerType());
+                this.player.setPlayerType(ContentGenerator.getPlayerTypeByName(ContentGenerator.RANDOM_TYPE_NAME));
                 break;
             case "Mystery":
-                PlayerType newPicky = ContentGenerator.getPickyPlayerType();
+                PlayerType newPicky = ContentGenerator.getPlayerTypeByName(ContentGenerator.PICKY_NAME);
                 newPicky.setPlayerSprite(Game.class.getResource("/sprites/gurli.png").toString());
                 this.player.setPlayerType(newPicky);
                 newPicky.setValues(1200, 7500, 9000);
@@ -147,31 +146,81 @@ public class Game implements IGame {
         }
     }
 
-    public String canCheckout() {
+    public CheckoutReturnObject Checkout() {
+        CheckoutReturnObject object = new CheckoutReturnObject();
+
+        //Cannot checkout, return reason
         if (!getPlayer().underBudget()) {
-            return "You are over budget. Drop some items (use \"drop\" command)";
+            object.addReturnStrings("You are over budget. Drop some items (use \"drop\" command)");
+            return object;
         }
         if (!getPlayer().overMinCalories()) {
-            return "You are under your calorie requirements. Pick up some items (use \"take\" command)";
+            object.addReturnStrings("You are under your calorie requirements. Pick up some items (use \"take\" command)");
+            return object;
         }
-        return null;
-    }
 
-    public ArrayList<String> Checkout() {
-        ArrayList<String> strings = new ArrayList<>();
-        ArrayList<IItem> items = getPlayer().getInventory();
-        strings.add("You went to the cash register and checked out.\nThe day is over and you go back home to sleep.\n\n");
+        //Can checkout, return result
         resetGame();
-        strings.add(reactToResults());
-        if (isCo2Bad) {
-            strings.add(co2IsBadString(items));
-        }
-        if (isNotHappy) {
-            strings.add(playerTypeNotHappyString());
-        }
-        strings.add("It is a new day, you wake up and go to the store.");
 
-        return strings;
+        int happiness = 0;
+        double co2 = 0;
+        int timesPlayed = 0; // to count how many times the game has played
+        for (GameResult finishedGame : finishedGames) {
+            happiness += finishedGame.getHappiness();
+            co2 += finishedGame.getCo2();
+            timesPlayed++;
+        }
+
+        if(co2 < 30 && happiness > -200){
+            ArrayList<IItem> items = getPlayer().getInventory();
+            object.addReturnStrings("You went to the cash register and checked out.\nThe day is over and you go back home to sleep.\n\n");
+            if (isCo2Bad) {
+                object.addReturnStrings(co2IsBadString(items));
+            }
+            if (isNotHappy) {
+                object.addReturnStrings(playerTypeNotHappyString());
+            }
+            object.addReturnStrings("It is a new day, you wake up and go to the store.");
+
+            object.setDidCheckout(true);
+            object.addReturnStrings(reactToResults(co2,happiness,timesPlayed));
+            return object;
+        }
+
+        //gameover
+        object.setDidCheckout(true);
+        object.setGameOver(true);
+
+        object.addReturnStrings("Game Over");
+        object.addReturnStrings("you reached day " + timesPlayed);
+
+        //TODO add string with most poluting item purchased
+        //TODO NOT DONE
+        ArrayList<IItem> allItemsBought = new ArrayList<>();
+        for (GameResult finishedGame : finishedGames) { //Go through the items backwards!
+            if (!finishedGame.getPlayerType().getName().equalsIgnoreCase(this.player.getPlayerType().getName())) {
+                //We only want the inventories of the times we played with the current player type.
+                continue;
+            }
+            ArrayList<String> itemsBought = finishedGame.getItemsBought();
+            for(String itemName : finishedGame.getItemsBought()) {
+                for (IRoom room : rooms) {
+                    allItemsBought.add(room.getItem(itemName));
+                }
+            }
+        }
+        //TODO NOT DONE
+
+
+        if(co2 > 30){
+            object.addReturnStrings("The store has burnt down\nno living beings are left\nyour consumption destroyed the world");
+        }else {
+            object.addReturnStrings("The worlds unhappiness has lead to revolution\nYou have successfully overthrown the government. \n Gasoline is now the only currency. \n\n\n");
+        }
+
+        deleteSaveFile();
+
+        return object;
     }
 
     /**
@@ -208,8 +257,7 @@ public class Game implements IGame {
      * the more negative the players happiness, the more unhappy the player will be
      * This will be reflected in the printed messages
      */
-    @Override
-    public String reactToResults() {
+    public String reactToResults(double co2, int happiness, int timesPlayed) {
         StringBuilder returnString = new StringBuilder();
 
         //Prints the results of the day if the player has played a game
@@ -226,13 +274,10 @@ public class Game implements IGame {
             }
         }
 
-        //Sums CO2 and happiness for all the played games
-        int happiness = 0;
-        double co2 = 0;
-        for (GameResult finishedGame : finishedGames) {
-            happiness += finishedGame.getHappiness();
-            co2 += finishedGame.getCo2();
-        }
+        returnString.append("Your results for today\n\n");
+        returnString.append("CO2: ").append(co2).append("\n");
+        returnString.append("Happiness: ").append(happiness).append("\n\n\n");
+        returnString.append("You have played: ").append(timesPlayed).append(" times. \n");
 
         //co2
         returnString.append("Current climate situation: \n");
@@ -240,14 +285,14 @@ public class Game implements IGame {
         if (co2 < 5) {
             isCo2Bad = false;
             returnString.append("The earth is still a green and beautiful place\n");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket.jpg").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket.png").toString());
         } else if (co2 < 10) {
             isCo2Bad = true;
             if (finishedGames.size()>1 && getLastGameCO2()>5 && getLastGameCO2()<10) {
                 isCo2Bad = false;
             }
             returnString.append("You notice your armpits are more stained than usual.\n People seem to be rioting.");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket1.png").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket1.png").toString());
 
         } else if (co2 < 15) {
             isCo2Bad = true;
@@ -255,7 +300,7 @@ public class Game implements IGame {
                 isCo2Bad = false;
             }
             returnString.append("It's getting hot outside and\nyou notice that plants are dying around you. \n");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket2.png").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket2.png").toString());
 
         } else if (co2 < 20) {
             isCo2Bad = true;
@@ -263,7 +308,7 @@ public class Game implements IGame {
                 isCo2Bad = false;
             }
             returnString.append("It's too hot to walk barefoot. \n You notice everything sets on fire.");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket3.png").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket3.png").toString());
 
         } else if (co2 < 25) {System.out.println(co2);
             isCo2Bad = true;
@@ -271,12 +316,12 @@ public class Game implements IGame {
                 isCo2Bad = false;
             }
             returnString.append("All the glaciers have melted and the ocean has risen. \n");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket4.png").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket4.png").toString());
 
         } else {
             isCo2Bad = true;
             returnString.append("The world is burning down and\nthe store is set on fire.\n");
-            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/supermarket5.png").toString());
+            rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket5.png").toString());
         }
 
         //happiness
@@ -312,8 +357,6 @@ public class Game implements IGame {
                 isNotHappy = false;
             }
             returnString.append("You've joined a fascist movement.\n");
-        } else {
-            returnString.append("You have successfully overthrown the government. \n Gasoline is now the only currency. \n");
         }
         return returnString.toString();
     }
@@ -364,6 +407,7 @@ public class Game implements IGame {
             }
 
         }
+
         String co2Percentage = String.format("%.2f", (co2 / co2Total) * 100);
         StringBuilder builder = new StringBuilder();
         builder.append("Your CO2 emissions today was very high:\n");
@@ -394,7 +438,4 @@ public class Game implements IGame {
         }
         return total;
     }
-
-
-
 }
