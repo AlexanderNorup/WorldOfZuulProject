@@ -39,39 +39,42 @@ public class ContentGenerator {
     private static ArrayList<IShelf> getButcherItems(){
         ArrayList<IShelf> shelves = new ArrayList<>();
 
-        ArrayList<IItem> meats = new ArrayList<IItem>();
-        meats.add(new Item("200g Salmon",35,0.6,32,460,new Extra[]{}));
-        meats.add(new Item("100g Salmon",20,0.4,16,230,new Extra[]{}));
-        meats.add(new Item("1300g Whole Chicken",50,5,240,2260,new Extra[]{}));
-        meats.add(new Item("500g Half Chicken",20,2.1,120,1130,new Extra[]{}));
-        meats.add(new Item("250g 2 Lamb Chops",50,5.25,46,500,new Extra[]{}));
-        meats.add(new Item("125g 1 Lamb Chop",27,2.8,23,250,new Extra[]{}));
-        meats.add(new Item("500g Pork Rib",50,3,92,1.340,new Extra[]{}));
-        meats.add(new Item("200g Pork Rib",22,1.8,46,540,new Extra[]{}));
+        ArrayList<IItem> porkLamb = new ArrayList<IItem>();
 
-        ArrayList<IItem> coldCuts = new ArrayList<>();
-        coldCuts.add(new Item("100g Salami",10,0.7,14,509,new Extra[]{}));
-        coldCuts.add(new Item("100g Roast Beef",12,0.7,22,120,new Extra[]{}));
-        coldCuts.add(new Item("500g Chicken Breast",30,1.4,100,640,new Extra[]{}));
-        coldCuts.add(new Item("250g Chicken Breast",20,0.75,50,320,new Extra[]{}));
-        coldCuts.add(new Item("100g Chicken Breast",10,0.45,25,130,new Extra[]{}));
-        coldCuts.add(new Item("500g Ground Beef",25,13,100,820,new Extra[]{}));
-        coldCuts.add(new Item("400g Ground Beef",22,11,80,660,new Extra[]{}));
-        coldCuts.add(new Item("250g Ground Beef",18,7,50,410,new Extra[]{}));
+        porkLamb.add(new Item("250g 2 Lamb Chops",50,5.25,46,500,new Extra[]{}));
+        porkLamb.add(new Item("125g 1 Lamb Chop",27,2.8,23,250,new Extra[]{}));
+        porkLamb.add(new Item("500g Pork Rib",50,3,92,1.340,new Extra[]{}));
+        porkLamb.add(new Item("200g Pork Rib",22,1.8,46,540,new Extra[]{}));
+        porkLamb.add(new Item("100g Salami",10,0.7,14,509,new Extra[]{}));
+
+        ArrayList<IItem> fish = new ArrayList<IItem>();
+        fish.add(new Item("200g Salmon",35,0.6,32,460,new Extra[]{}));
+        fish.add(new Item("100g Salmon",20,0.4,16,230,new Extra[]{}));
+
+        ArrayList<IItem> beefChicken = new ArrayList<>();
+        beefChicken.add(new Item("1300g Whole Chicken",50,5,240,2260,new Extra[]{}));
+        beefChicken.add(new Item("500g Half Chicken",20,2.1,120,1130,new Extra[]{}));
+        beefChicken.add(new Item("500g Chicken Breast",30,1.4,100,640,new Extra[]{}));
+        beefChicken.add(new Item("250g Chicken Breast",20,0.75,50,320,new Extra[]{}));
+        beefChicken.add(new Item("100g Chicken Breast",10,0.45,25,130,new Extra[]{}));
+        beefChicken.add(new Item("100g Roast Beef",12,0.7,22,120,new Extra[]{}));
+        beefChicken.add(new Item("500g Ground Beef",25,13,100,820,new Extra[]{}));
+        beefChicken.add(new Item("400g Ground Beef",22,11,80,660,new Extra[]{}));
+        beefChicken.add(new Item("250g Ground Beef",18,7,50,410,new Extra[]{}));
 
 
-        shelves.add(new Shelf(4,3,coldCuts));
-        shelves.add(new Shelf(5,3,coldCuts));
-        shelves.add(new Shelf(1,3, createOrganics(coldCuts)));
-        shelves.add(new Shelf(2,3, createOrganics(coldCuts)));
-        shelves.add(new Shelf(0,1, createOrganics(meats)));
-        shelves.add(new Shelf(1,1, createOrganics(meats)));
-        shelves.add(new Shelf(2,1, createOrganics(meats)));
-        shelves.add(new Shelf(3,1, createOrganics(meats)));
-        shelves.add(new Shelf(4,1,meats));
-        shelves.add(new Shelf(5,1,meats));
-        shelves.add(new Shelf(6,1,meats));
-        shelves.add(new Shelf(7,1,meats));
+        shelves.add(new Shelf(4,3,beefChicken));
+        shelves.add(new Shelf(5,3,beefChicken));
+        shelves.add(new Shelf(1,3, createOrganics(beefChicken)));
+        shelves.add(new Shelf(2,3, createOrganics(beefChicken)));
+        shelves.add(new Shelf(0,1, createOrganics(porkLamb)));
+        shelves.add(new Shelf(1,1, createOrganics(porkLamb)));
+        shelves.add(new Shelf(2,1, createOrganics(fish)));
+        shelves.add(new Shelf(3,1, createOrganics(fish)));
+        shelves.add(new Shelf(4,1,porkLamb));
+        shelves.add(new Shelf(5,1,porkLamb));
+        shelves.add(new Shelf(6,1,fish));
+        shelves.add(new Shelf(7,1,fish));
 
         return shelves;
     }
@@ -206,26 +209,30 @@ public class ContentGenerator {
 
         ArrayList<IItem> breads = new ArrayList<>();
         ArrayList<IItem> cakes = new ArrayList<>();
+        ArrayList<IItem> glutenFree = new ArrayList<>();
 
         breads.add(new Item("500g White Bread",18,0.3,45,1370,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
         breads.add(new Item("200g White Bread",9,0.18,18,548,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
-        breads.add(new Item("200g Gluten Free White Bread",13,0.18,18,548,new Extra[]{Extra.CONTAINS_LACTOSE}));
         breads.add(new Item("500g Wholegrain Bread",24,0.3,53.5,1080,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
         breads.add(new Item("6 Bread Rolls",18,0.3,31.8,882,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
         breads.add(new Item("4 Bread Rolls",14,0.22,21.2,588,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
         cakes.add(new Item("200g Pastry",15,0.35,10.4,818,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
-        cakes.add(new Item("200g Gluten Free Pastry",19,0.35,10.4,818,new Extra[]{Extra.CONTAINS_LACTOSE}));
         cakes.add(new Item("400g Pastry",36,0.6,20.8,1636,new Extra[]{Extra.CONTAINS_LACTOSE, Extra.CONTAINS_GLUTEN}));
+
+        glutenFree.add(new Item("200g Gluten Free Pastry",19,0.35,10.4,818,new Extra[]{Extra.CONTAINS_LACTOSE}));
+        glutenFree.add(new Item("200g Gluten Free White Bread",13,0.18,18,548,new Extra[]{Extra.CONTAINS_LACTOSE}));
 
         shelves.add(new Shelf(0,1, createOrganics(breads)));
         shelves.add(new Shelf(1,1, createOrganics(breads)));
         shelves.add(new Shelf(2,1, createOrganics(cakes)));
         shelves.add(new Shelf(3,1, createOrganics(cakes)));
+        shelves.add(new Shelf(2,3,createOrganics(glutenFree)));
 
         shelves.add(new Shelf(4,1,breads));
         shelves.add(new Shelf(5,1,breads));
         shelves.add(new Shelf(6,1,cakes));
         shelves.add(new Shelf(7,1,cakes));
+        shelves.add(new Shelf(4,3,glutenFree));
 
         return shelves;
     }
@@ -350,10 +357,10 @@ public class ContentGenerator {
         type.setValues(75,1200,3000);
         type.setPlayerSprite(Game.class.getResource("/sprites/BodyBuilderTight.png").toString());
         type.addNegativeExtra(Extra.CONTAINS_SOY);
-        type.addFaveItems("Chicken Breast", "Chicken", "Ground Beef",
-                "Apples", "Frozen Pizza", "eggs" , "Yogurt", "Oatmeal", "Almonds");
-        type.addHateItems("White Bread", "Clam", "Pastry", "Margarine", "Salmon", "Frozen Pizza",
-                "Shrimp", "Lamb Chop");
+        type.addFaveItems("Chicken Breast", "Chicken",
+                "Apples", "eggs" , "Yogurt", "Oatmeal", "Almonds", "Salmon", "Lamb Chop");
+        type.addHateItems("White Bread", "Clam", "Pastry", "Margarine", "Frozen Pizza",
+                "Shrimp", "Ground Beef");
         type.setFavhateamount(1);
         type.randomizeFaveHateItems();
         return type;
