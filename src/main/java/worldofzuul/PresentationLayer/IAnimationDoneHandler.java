@@ -1,5 +1,5 @@
 package worldofzuul.PresentationLayer;
 
-public interface AnimationDoneHandler {
+public interface IAnimationDoneHandler {
     void animationDone();
 }

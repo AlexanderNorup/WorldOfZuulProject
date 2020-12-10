@@ -43,7 +43,7 @@ public class Transition {
      */
     private boolean animationIsDone;
 
-    private AnimationDoneHandler doneHandler;
+    private IAnimationDoneHandler doneHandler;
 
     public Transition(Canvas canvas){
         this.gc = canvas.getGraphicsContext2D();
@@ -191,7 +191,7 @@ public class Transition {
         this.animationState = -1;
     }
 
-    public void setDoneHandler(AnimationDoneHandler doneHandler) {
+    public void setDoneHandler(IAnimationDoneHandler doneHandler) {
         this.doneHandler = doneHandler;
     }
 }
