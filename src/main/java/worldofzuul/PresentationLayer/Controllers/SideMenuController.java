@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import worldofzuul.DomainLayer.Interfaces.IItem;
 import worldofzuul.Main;
 import worldofzuul.PresentationLayer.MainGUI;
+import worldofzuul.PresentationLayer.PresentationHub;
 
 public class SideMenuController {
     @FXML
@@ -41,14 +42,16 @@ public class SideMenuController {
     @FXML
     BorderPane sideMenu;
 
-    ContextMenu contextMenu;
-    MenuItem drop;
-    MenuItem inspect;
+    private PresentationHub hub;
+    private ContextMenu contextMenu;
+    private MenuItem drop;
+    private MenuItem inspect;
 
     @FXML
     public void initialize() {
+        hub = PresentationHub.getInstance();
         System.out.println("SideMenuController - initialize");
-        MainGUI.hub.setSideMenuListView(sideMenuListView);
+        PresentationHub.getInstance().setSideMenuListView(sideMenuListView);
 
         //ContextMenu that pops up on pressing enter
         contextMenu = new ContextMenu();
@@ -57,19 +60,19 @@ public class SideMenuController {
 
         moneyBar.setProgress(0);
         moneySpent.setText(Double.toString(0));
-        moneyGoal.setText(String.format("%4.2f kr.", MainGUI.game.getPlayer().getBudget()));
+        moneyGoal.setText(String.format("%4.2f kr.", hub.getGame().getPlayer().getBudget()));
 
         ObservableList<IItem> listViewList = FXCollections.observableArrayList();
-        listViewList.addAll(MainGUI.game.getPlayer().getInventory());
+        listViewList.addAll(hub.getGame().getPlayer().getInventory());
 
         sideMenuListView.setItems(listViewList);
         sideMenuListView.getItems().addListener(new ListChangeListener<IItem>() {
             @Override
             public void onChanged(Change<? extends IItem> c) {
-                sideMenuCalorieLabel.setText(Integer.toString((int)(MainGUI.game.getPlayer().getInventoryCalories())));
-                sideMenuProteinLabel.setText((int) (MainGUI.game.getPlayer().getInventoryProtein()) + " g");
-                moneyBar.setProgress(MainGUI.game.getPlayer().getInventoryValue()/MainGUI.game.getPlayer().getBudget());
-                moneySpent.setText(String.format("%4.2f kr.", MainGUI.game.getPlayer().getInventoryValue()));
+                sideMenuCalorieLabel.setText(Integer.toString((int)(hub.getGame().getPlayer().getInventoryCalories())));
+                sideMenuProteinLabel.setText((int) (hub.getGame().getPlayer().getInventoryProtein()) + " g");
+                moneyBar.setProgress(hub.getGame().getPlayer().getInventoryValue()/hub.getGame().getPlayer().getBudget());
+                moneySpent.setText(String.format("%4.2f kr.", hub.getGame().getPlayer().getInventoryValue()));
                 System.out.println("listViewList - item update");
             }
         });
@@ -78,7 +81,7 @@ public class SideMenuController {
 
         inspect.setOnAction(event -> {
             //Finds the textArea node
-            TextArea textArea = MainGUI.hub.getTextBoxTextArea();
+            TextArea textArea = PresentationHub.getInstance().getTextBoxTextArea();
 
             //Sets textArea's text to currently selected item in listView
             textArea.setText(sideMenuListView.getSelectionModel().getSelectedItem().getDescription());
@@ -90,14 +93,14 @@ public class SideMenuController {
         drop.setOnAction(event -> {
             IItem item = sideMenuListView.getSelectionModel().getSelectedItem();
             System.out.println("Dropped");
-            MainGUI.game.drop(item);
-            sideMenuListView.getItems().setAll(MainGUI.game.getPlayer().getInventory());
+            hub.getGame().drop(item);
+            sideMenuListView.getItems().setAll(hub.getGame().getPlayer().getInventory());
         });
 
         contextMenu.getItems().addAll(inspect, drop);
         sideMenuListView.setContextMenu(contextMenu);
         sideMenuListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            MainGUI.playSoundEffect("select.wav");
+            hub.playSoundEffect("select.wav");
         });
     }
 
@@ -111,7 +114,7 @@ public class SideMenuController {
                 break;
             case ESCAPE:
                 //"Close" textBox, if textBox is "open". If textBox is not "open", but sideMenu is, "close" sideMenu
-                Node textBox = MainGUI.hub.getTextBox();
+                Node textBox = PresentationHub.getInstance().getTextBox();
                 if (textBox.isVisible()) {
                     textBox.setVisible(false);
                 }else {

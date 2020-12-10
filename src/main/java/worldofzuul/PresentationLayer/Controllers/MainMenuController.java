@@ -15,10 +15,9 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import worldofzuul.DomainLayer.Game;
-import worldofzuul.DomainLayer.Interfaces.IPlayer;
 import worldofzuul.PresentationLayer.MainGUI;
+import worldofzuul.PresentationLayer.PresentationHub;
 
 import java.io.IOException;
 
@@ -32,12 +31,15 @@ public class MainMenuController {
     public Label selectCharacterLabel;
     public ImageView characterImageView;
 
+    private PresentationHub hub;
+
 
     private final String[] playerTypes = new String[] {"Student", "Bodybuilder", "Picky", "Random", "Mystery"};
     private int playerTypeIndex = 3; // Random playerType
 
     @FXML
     public void initialize(){
+        hub = PresentationHub.getInstance();
         characterImageView.setImage(new Image(Game.class.getResource("/sprites/RandomPlayer.png").toString()));
     }
 
@@ -47,7 +49,7 @@ public class MainMenuController {
 
         try {
             Parent game = FXMLLoader.load(MainGUI.class.getResource("/fxml/GameCanvas.fxml"));
-            MainGUI.hub.getPrimaryStage().setScene(new Scene(game, 1280,720));
+            hub.getPrimaryStage().setScene(new Scene(game, 1280,720));
         } catch (IOException e) {
             playGameLabel.setText("There was en error starting the game!");
             e.printStackTrace();
@@ -62,7 +64,7 @@ public class MainMenuController {
         alert.setContentText("You will lose all progress!");
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) {
-                MainGUI.game.deleteSaveFile();
+                hub.getGame().deleteSaveFile();
             }
         });
 
@@ -104,7 +106,7 @@ public class MainMenuController {
             selectCharacterLabel.setTextFill(Color.WHITE);
             selectCharacterLabel.setFont(new Font(12));
         }
-        MainGUI.game.setPlayerType(playerTypes[playerTypeIndex]);
+        hub.getGame().setPlayerType(playerTypes[playerTypeIndex]);
     }
 
 }
