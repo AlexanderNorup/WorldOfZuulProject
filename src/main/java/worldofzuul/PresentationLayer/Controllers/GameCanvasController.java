@@ -252,7 +252,7 @@ public class GameCanvasController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Quit the game?");
         alert.setHeaderText("Do you want to quit the game?");
-        alert.setContentText("You will lose your unsaved progress");
+        alert.setContentText("You will lose your unsaved progress.");
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) quit();
 
@@ -357,7 +357,12 @@ public class GameCanvasController {
         gridMap.get(outside).setBackground(new Image(outside.getBackground()));
 
         this.transitionScreen.reset();
-        transitionScreen.setDoneHandler(this::quit);
+        transitionScreen.setDoneHandler(new IAnimationDoneHandler() {
+            @Override
+            public void animationDone() {
+                quit();
+            }
+        });
         this.locked = true;
         this.transitionScreen.addText(resultArray);
 
