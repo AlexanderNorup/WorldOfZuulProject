@@ -360,7 +360,6 @@ public class GameCanvasController {
         transitionScreen.setDoneHandler(this::quit);
         this.locked = true;
         this.transitionScreen.addText(resultArray);
-        this.transitionScreen.addLine(MainGUI.game.getPlayer().getPlayerType().getDescription());
 
         playerObject.getActiveGrid().setActive(false);
         this.transitionScreen.setActive(true);

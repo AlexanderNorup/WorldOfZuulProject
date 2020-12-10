@@ -274,11 +274,6 @@ public class Game implements IGame {
             }
         }
 
-        returnString.append("Your results for today\n\n");
-        returnString.append("CO2: ").append(co2).append("\n");
-        returnString.append("Happiness: ").append(happiness).append("\n\n\n");
-        returnString.append("You have played: ").append(timesPlayed).append(" times. \n");
-
         //co2
         returnString.append("Current climate situation: \n");
 
@@ -287,34 +282,22 @@ public class Game implements IGame {
             returnString.append("The earth is still a green and beautiful place\n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket.png").toString());
         } else if (co2 < 10) {
-            isCo2Bad = true;
-            if (finishedGames.size()>1 && getLastGameCO2()>5 && getLastGameCO2()<10) {
-                isCo2Bad = false;
-            }
+            isCo2Bad = finishedGames.size() <= 1 || !(getLastGameCO2() > 5) || !(getLastGameCO2() < 10);
             returnString.append("You notice your armpits are more stained than usual.\n People seem to be rioting.");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket1.png").toString());
 
         } else if (co2 < 15) {
-            isCo2Bad = true;
-            if (finishedGames.size()>1 && getLastGameCO2()>10 && getLastGameCO2()<15) {
-                isCo2Bad = false;
-            }
+            isCo2Bad = finishedGames.size() <= 1 || !(getLastGameCO2() > 10) || !(getLastGameCO2() < 15);
             returnString.append("It's getting hot outside and\nyou notice that plants are dying around you. \n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket2.png").toString());
 
         } else if (co2 < 20) {
-            isCo2Bad = true;
-            if (finishedGames.size()>1 && getLastGameCO2()>15 && getLastGameCO2()<20) {
-                isCo2Bad = false;
-            }
+            isCo2Bad = finishedGames.size() <= 1 || !(getLastGameCO2() > 15) || !(getLastGameCO2() < 20);
             returnString.append("It's too hot to walk barefoot. \n You notice everything sets on fire.");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket3.png").toString());
 
         } else if (co2 < 25) {System.out.println(co2);
-            isCo2Bad = true;
-            if (finishedGames.size()>1 && getLastGameCO2()>20 && getLastGameCO2()<25) {
-                isCo2Bad = false;
-            }
+            isCo2Bad = finishedGames.size() <= 1 || !(getLastGameCO2() > 20) || !(getLastGameCO2() < 25);
             returnString.append("All the glaciers have melted and the ocean has risen. \n");
             rooms.get(0).setBackground(Game.class.getResource("/backgrounds/zuupermarket4.png").toString());
 
@@ -331,31 +314,19 @@ public class Game implements IGame {
             isNotHappy = false;
             returnString.append("You're feeling fine. \n");
         } else if (happiness > -50) {
-            isNotHappy = true;
-            if (finishedGames.size()>1 && getLastGameHappiness()<0 && getLastGameHappiness()>-25) {
-                isNotHappy = false;
-            }
+            isNotHappy = finishedGames.size() <= 1 || !(getLastGameHappiness() < 0) || !(getLastGameHappiness() > -25);
             returnString.append("You notice that you've started snapping at your friends.\n");
 
         } else if (happiness > -100) {
-            isNotHappy = true;
-            if (finishedGames.size()>1 && getLastGameHappiness()<-50 && getLastGameHappiness()>-100) {
-                isNotHappy = false;
-            }
+            isNotHappy = finishedGames.size() <= 1 || !(getLastGameHappiness() < -50) || !(getLastGameHappiness() > -100);
             returnString.append("You don't want to eat anymore. You hate yourself.\n");
 
          }else if (happiness > -150) {
-            isNotHappy = true;
-            if (finishedGames.size()>1 && getLastGameHappiness()<-100 && getLastGameHappiness()>-150) {
-                isNotHappy = false;
-            }
+            isNotHappy = finishedGames.size() <= 1 || !(getLastGameHappiness() < -100) || !(getLastGameHappiness() > -150);
             returnString.append("You're beginning to wonder if there's a point to anything. \n");
 
         } else if (happiness > -200) {
-            isNotHappy = true;
-            if (finishedGames.size()>1 && getLastGameHappiness()<-150 && getLastGameHappiness()>-200) {
-                isNotHappy = false;
-            }
+            isNotHappy = finishedGames.size() <= 1 || !(getLastGameHappiness() < -150) || !(getLastGameHappiness() > -200);
             returnString.append("You've joined a fascist movement.\n");
         }
         return returnString.toString();
