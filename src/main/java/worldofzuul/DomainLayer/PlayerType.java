@@ -114,7 +114,7 @@ public class PlayerType {
         this.calorieGoal = calorieGoal;
     }
 
-    //set factors to determin happiness caluclation for playertype
+    //set factors to determine happiness calculation for playertype
     public void setFactors(int proteinFactor, int budgetFactor, int pickynessFactor){
         double equalizer = 1/(double) (proteinFactor + budgetFactor + pickynessFactor);
         this.proteinFactor = new BigDecimal(proteinFactor * equalizer).setScale(2, RoundingMode.HALF_UP).doubleValue();
