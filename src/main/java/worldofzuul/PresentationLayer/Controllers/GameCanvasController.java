@@ -332,7 +332,7 @@ public class GameCanvasController {
             submitButton.setDefaultButton(true);
             submitButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent t) {
-                    checkoutmenu.setText("If it isn't on the Shelves,\nwe don't have it.");
+                    checkoutmenu.setText("If it isn't on the shelves,\nwe don't have it.");
                     dialog.close();
                     KeyFrame keyFrame = new KeyFrame(Duration.seconds(2.5), event -> close());
                     Timeline timeline = new Timeline();

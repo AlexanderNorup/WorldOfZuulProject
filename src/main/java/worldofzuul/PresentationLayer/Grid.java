@@ -126,7 +126,8 @@ public class Grid {
     private void drawGrid() {
 
         //Clear entire background
-        gc.clearRect(0, 0, windowWidth, windowHeight);
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, windowWidth, windowHeight);
 
         //Then draw the background
         gc.save();                                               //gemmer koordinatsystemets 0-punkt i det øverste venstre hjørne der er i programmet.
