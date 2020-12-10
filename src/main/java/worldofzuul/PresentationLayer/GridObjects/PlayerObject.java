@@ -12,6 +12,7 @@ public class PlayerObject extends GridSprite {
     private Position playerPos;
     private Image avatarImg;
     private Image[] walkingSprites;
+    private PresentationHub hub;
 
     /**
      * The Player on the Grid. The one the player controls around.
@@ -21,6 +22,7 @@ public class PlayerObject extends GridSprite {
      */
     public PlayerObject(Grid grid, Position startingPos) {
         super();
+        hub = PresentationHub.getInstance();
         this.grid = grid;
         this.playerPos = startingPos;
         this.grid.setGridObject(this, this.playerPos);
@@ -76,7 +78,8 @@ public class PlayerObject extends GridSprite {
             this.grid = warp.getGrid(); //Get the new grid that is being opened
             this.grid.setActive(true);//Start animating the new grid.
             this.setAnimating(false);
-            PresentationHub.getInstance().playSoundEffect("door.wav");
+
+            hub.playSoundEffect("door.wav");
             return;
         }
 
@@ -85,7 +88,8 @@ public class PlayerObject extends GridSprite {
             this.setPlayerPos(newPosition);
             //If not moving onto the warp, then we just move by calling the grid.
         }else{
-            PresentationHub.getInstance().playSoundEffect("block.wav");
+
+            hub.playSoundEffect("block.wav");
         }
     }
 
