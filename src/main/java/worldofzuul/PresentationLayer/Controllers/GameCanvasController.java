@@ -173,6 +173,7 @@ public class GameCanvasController {
 
     }
 
+
     private void toggleSideMenu() {
         if (!shelfMenu.isVisible() && !locked) {
             hub.playSoundEffect("inventory.wav");
@@ -254,6 +255,7 @@ public class GameCanvasController {
         alert.setContentText("You will lose your unsaved progress");
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) quit();
+
         });
     }
 
@@ -358,7 +360,6 @@ public class GameCanvasController {
         transitionScreen.setDoneHandler(this::quit);
         this.locked = true;
         this.transitionScreen.addText(resultArray);
-        this.transitionScreen.addLine(hub.getGame().getPlayer().getPlayerType().getDescription());
 
         playerObject.getActiveGrid().setActive(false);
         this.transitionScreen.setActive(true);
